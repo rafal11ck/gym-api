@@ -4,13 +4,49 @@ services:
     ports:
       - 8080:8080
     command:
-      - start-dev
+      # # exporting 
+      # - export
+      # - --realm
+      # - gym
+      # - --users
+      # - same_file
+      # - --file
+      # - /opt/keycloak/data/import/gym.json
+
+      - start
       - --import-realm
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: localhost
       KC_HTTP_ENABLED: true
+      KC_DB: postgres
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_DB_URL: jdbc:postgresql://keycloak-db/postgres
+      KC_DB_PASSWORD: admin
+      KC_DB_USERNAME: postgres
     volumes:
       - ./keycloak/:/opt/keycloak/data/import
     extra_hosts:
-    - "host.docker.internal:host-gateway"
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - keycloak-db
+    networks: 
+      - keycloak_network
+
+  keycloak-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: admin
+    volumes: 
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - keycloak_network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  keycloak_network:
+    driver: bridge
