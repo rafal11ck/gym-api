@@ -1,0 +1,17 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  DOCS_DIR: ./docs
+
+tasks:
+  default:
+    cmds:
+      - task --list-all
+    silent: true
+  docs:
+    desc: generate docs
+    cmds:
+      - plantuml model.puml -tsvg
+    dir: '{{.DOCS_DIR}}'
