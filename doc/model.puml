@@ -1,0 +1,219 @@
+@startuml
+skinparam linetype ortho
+
+enum "user_role" as user_role {
+    id
+    role
+}
+
+enum "employee_position" as employee_position {
+    id
+    position
+}
+
+
+entity "card" as card {
+    id
+    number
+    date
+    cvv
+    name_on_card
+    country
+    postal_code
+}
+
+enum "membership_type" as membership_type {
+    id
+    type
+    price
+}
+
+
+entity "membership" as membership {
+    id
+    id_membership_type
+    payment_interval
+    purchase_date
+    last_payment_date
+    valid_until
+    automatic_renewal
+}
+
+entity "user_details" as user_details {
+    id
+    first_name
+    last_name
+    date_of_birth
+    email
+    phone_number
+    city
+    street
+    house_or_apartment
+    image_url
+}
+
+entity "user" as user {
+    id
+    id_role
+    id_card
+    id_membership
+    id_position
+    id_user_details
+}
+
+entity "workout_session" as workout_session {
+    id
+    id_coach
+    id_hall
+    date
+    time
+    title
+    description
+}
+
+entity "workout_session_exercise" as workout_session_exercise {
+    id
+    id_workout_session
+    id_predefined_exercise
+    reps
+    order
+}
+
+note right of workout_session
+  coach to też user
+end note
+
+entity "user_workout_session" as user_workout_session {
+    id
+    id_user
+    id_workout_session
+}
+
+note right of user_workout_session
+  tutaj user to osoba
+  która uczęszcza na sesję
+end note
+
+enum "target_muscle" as target_muscle {
+    id
+    muscle
+}
+
+entity "exercise_target_muscle" as exercise_target_muscle {
+    id
+    id_predefined_exercise
+    id_target_muscle
+}
+
+entity "predefined_exercise" as predefined_exercise {
+    id
+    name
+}
+
+enum "payment_status" as payment_status {
+    id
+    status
+}
+
+entity "payment" as payment {
+    id
+    id_card
+    id_status
+    id_membership
+    datetime
+    value
+}
+
+enum "hall_type" as hall_type {
+    id
+    type
+}
+
+entity "hall" as hall {
+    id
+    id_hall_type
+    hall_number
+    description
+}
+
+entity "maintenance_task" as maintenance_task {
+    id
+    id_user
+    id_hall
+    estimated_start_datetime
+    estimated_end_datetime
+    description
+}
+
+enum "request_type" as request_type {
+    id
+    type
+}
+
+entity "request" as request {
+    id
+    id_request_type
+    id_user
+    id_new_user_details
+    id_new_card
+}
+
+entity "chat" as chat {
+    id
+}
+
+entity "chat_participant" as chat_participant {
+    id
+    id_chat
+    id_user
+    last_read_datetime
+}
+
+entity "message" as message {
+    id
+    id_chat
+    id_sender
+    datetime
+}
+
+user ||--|| user_details
+user }|--|| user_role
+user }|--|| membership
+user }|--|| employee_position
+user }|--|| card
+
+membership }|--|| membership_type
+
+workout_session }|---|| user
+workout_session }|--|| hall
+
+user_workout_session }|--|| workout_session
+user_workout_session }|--|| user
+
+hall ||--|| hall_type
+
+workout_session_exercise }|--|| workout_session
+workout_session_exercise }|--|| predefined_exercise
+
+exercise_target_muscle }|--|| target_muscle
+exercise_target_muscle }|--|| predefined_exercise
+
+payment }|--|| payment_status
+payment }|--|| membership
+payment }|--|| card
+
+maintenance_task }|--|| hall
+maintenance_task }|---|| user
+
+request }|-left-|| request_type
+request }|---|| user
+request }|--|| user_details
+request }|--|| card
+
+message }|--|| chat
+message }|--|| user
+
+chat_participant }|---|| chat
+chat_participant }|--|| user
+
+@enduml
