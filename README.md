@@ -1,24 +1,26 @@
 # gym-api
 
+### Plan
 
-## Plan
+-   Authorization with [OAuth 2.0](https://datatracker.ietf.org/doc/html/rfc6749) and [keycloack](https://www.keycloak.org/).
+-   [Spring Boot](https://spring.io)
 
-- Możlowość autorzyacji użtkownika przy użyciu [OAuth 2.0](https://datatracker.ietf.org/doc/html/rfc6749) i [keycloack](https://www.keycloak.org/).
-- [Spring Boot](https://spring.io)
+### Database Model
 
-## Schemat bazy danych
+![model](./docs/model.svg)
 
-![schemat](./docs/model.svg)
+### Endpoints
 
+...
 
-# Contrubiting
+## Contributing
 
-## Development setup
+### Development setup
 
 Prerequisites:
 
-- docker-compose
-- https://direnv.net/ or you are on your own with tools.
+-   docker-compose
+-   https://direnv.net/ or you are on your own with tools.
 
 ### Manually generating documetation
 
