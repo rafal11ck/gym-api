@@ -18,6 +18,7 @@
           buildInputs = with pkgs; [
             plantuml
             go-task
+            jdk
           ];
         };
       }
