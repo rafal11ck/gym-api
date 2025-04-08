@@ -309,3 +309,10 @@ Prerequisites:
 ### Manually generating documetation
 
 `task docs`
+
+
+# FAQ
+
+## Q: Why not `@Data`
+
+https://youtu.be/Gd6AQsthXNY?t=2722
