@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/gymapi
+    username: gymapi-user
+    password: supersecretpassword
+    driver-class-name: org.postgresql.Driver
+  application:
+    name: gym-api
+  jpa:
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

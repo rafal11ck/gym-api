@@ -306,6 +306,12 @@ Prerequisites:
 -   docker-compose
 -   https://direnv.net/ or you are on your own with tools.
 
+### Coding
+
+- run `docker-compose -f src/docker/docker-compose.yaml up`
+- ???
+- commit
+
 ### Manually generating documetation
 
 `task docs`
