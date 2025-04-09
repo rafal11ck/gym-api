@@ -5,15 +5,16 @@ import lombok.Data;
 
 import java.util.UUID;
 
-@Data
 @Entity
-@Table(name = "target_muscle")
-public class TargetMuscle {
-
+@Table(name = "payment")
+@Data
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID uuid;
 
-    @Column(unique = true, nullable = false)
-    String name;
+    @Enumerated(EnumType.STRING)
+    PaymentStatus status;
+
+//     TODO payment things
 }

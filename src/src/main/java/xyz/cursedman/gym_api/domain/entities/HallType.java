@@ -7,9 +7,8 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "target_muscle")
-public class TargetMuscle {
-
+@Table(name = "hall_type")
+public class HallType {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID uuid;

@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/gymapi
-    username: gymapi-user
-    password: supersecretpassword
+    url: jdbc:postgresql://localhost:5432/gym-api
+    username: gym-api-user
+    password: admin
     driver-class-name: org.postgresql.Driver
   application:
     name: gym-api

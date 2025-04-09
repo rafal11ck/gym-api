@@ -5,15 +5,14 @@ import lombok.Data;
 
 import java.util.UUID;
 
-@Data
+@Table(name = "hall")
 @Entity
-@Table(name = "target_muscle")
-public class TargetMuscle {
-
+@Data
+public class Hall {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID uuid;
 
-    @Column(unique = true, nullable = false)
-    String name;
+    @OneToOne
+    HallType hallType;
 }

@@ -3,11 +3,13 @@ package xyz.cursedman.gym_api.domain.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 @Data
 @Entity
+@Table(name = "exercise")
 public class Exercise {
     @Id
     UUID uuid;
@@ -16,10 +18,10 @@ public class Exercise {
 
     @ManyToMany
     @JoinTable(
-            name = "ExerciseTargetMuscle",
+            name = "exercise_target_muscle",
             joinColumns = @JoinColumn(name = "exercise_uuid"),
             inverseJoinColumns = @JoinColumn(name = "target_muscle_uuid")
     )
-    Set<TargetMuscle> targetMuscles;
+    Set<TargetMuscle> targetMuscles = new HashSet<>();
 
 }
