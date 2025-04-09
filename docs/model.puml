@@ -6,10 +6,7 @@ enum "user_role" as user_role {
     role
 }
 
-enum "employee_position" as employee_position {
-    id
-    position
-}
+
 
 
 entity "card" as card {
@@ -57,7 +54,6 @@ entity "user" as user {
     id_role
     id_card
     id_membership
-    id_position
     id_user_details
 }
 
@@ -179,7 +175,6 @@ entity "message" as message {
 user ||--|| user_details
 user }|--|| user_role
 user }|--|| membership
-user }|--|| employee_position
 user }|--|| card
 
 membership }|--|| membership_type
