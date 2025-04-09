@@ -11,6 +11,13 @@
 
 ### Endpoints
 
+
+<details open>
+<summary>Legacy endpoints plan</summary>
+<br>
+
+
+
 `GET` `/roles`
 
 ```json
@@ -296,6 +303,7 @@
 ```json
 <empty body>
 ```
+</details>
 
 ## Contributing
 
