@@ -20,6 +20,9 @@
             go-task
             jdk
           ];
+          shellHook = ''
+            task
+          '';
         };
       }
     );

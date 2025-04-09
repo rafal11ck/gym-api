@@ -308,6 +308,11 @@ Prerequisites:
 
 ### Coding
 
+#### using task
+
+`task dev`
+
+#### Manually
 - run `docker-compose -f src/docker/docker-compose.yaml up`
 - ???
 - commit

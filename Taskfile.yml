@@ -4,6 +4,7 @@ version: '3'
 
 vars:
   DOCS_DIR: ./docs
+  DOCKER_COMPOSE_FILE: src/docker/docker-compose.yaml
 
 tasks:
   default:
@@ -15,3 +16,10 @@ tasks:
     cmds:
       - plantuml model.puml -tsvg
     dir: '{{.DOCS_DIR}}'
+  dev:
+    desc: run devleopment setup, starts containers needed for development
+    cmds:
+      - docker-compose -f {{.DOCKER_COMPOSE_FILE}} up
+    preconditions:
+      - which docker-compose
+      - test -f
