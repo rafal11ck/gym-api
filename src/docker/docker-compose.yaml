@@ -47,13 +47,14 @@ services:
   gym-api-db:
     image: postgres:latest
     environment:
-      POSTGRES_PASSWORD: &dbpass supersecretpassword
-      POSTGRES_USER: &dbuser gymapi-user
-      POSTGRES_DB: &dbname gymapi
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: gym-api-user
+      POSTGRES_DB: &dbname gym-api
     ports:  
       - 5432:5432
-  
-      # FIXME fix
+    container_name:
+      &dbserver gym-api-db
+
   adminer:
     image: adminer
     restart: always
@@ -62,7 +63,7 @@ services:
     environment:
       ADMINER_DEFAULT_DB_NAME: *dbname
       ADMINER_DEFAULT_DB_DRIVER: pgsql
-      ADMINER_DEFAULT_SERVER: gym-api-db
+      ADMINER_DEFAULT_SERVER: *dbserver
       
 
 volumes:
