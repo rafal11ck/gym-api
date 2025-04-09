@@ -74,7 +74,7 @@ entity "workout_session" as workout_session {
 entity "workout_session_exercise" as workout_session_exercise {
     id
     id_workout_session
-    id_predefined_exercise
+    id_exercise
     reps
     order
 }
@@ -101,11 +101,11 @@ enum "target_muscle" as target_muscle {
 
 entity "exercise_target_muscle" as exercise_target_muscle {
     id
-    id_predefined_exercise
+    id_exercise
     id_target_muscle
 }
 
-entity "predefined_exercise" as predefined_exercise {
+entity "exercise" as exercise {
     id
     name
 }
@@ -193,10 +193,10 @@ user_workout_session }|--|| user
 hall ||--|| hall_type
 
 workout_session_exercise }|--|| workout_session
-workout_session_exercise }|--|| predefined_exercise
+workout_session_exercise }|--|| exercise
 
 exercise_target_muscle }|--|| target_muscle
-exercise_target_muscle }|--|| predefined_exercise
+exercise_target_muscle }|--|| exercise
 
 payment }|--|| payment_status
 payment }|--|| membership
