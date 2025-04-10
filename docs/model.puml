@@ -31,7 +31,6 @@ entity "membership" as membership {
     id_membership_type
     payment_interval
     purchase_date
-    last_payment_date
     valid_until
     automatic_renewal
 }
