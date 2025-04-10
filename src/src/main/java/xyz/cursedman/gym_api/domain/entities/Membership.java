@@ -2,6 +2,7 @@ package xyz.cursedman.gym_api.domain.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -13,6 +14,8 @@ public class Membership {
 
     @ManyToOne
     Payment payment;
+
+    Date validUntil;
 
     @ManyToOne
     MembershipType membershipType;

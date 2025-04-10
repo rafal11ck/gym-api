@@ -7,7 +7,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "card")
 public class Card {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    UUID uuid;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	UUID uuid;
 }

@@ -9,10 +9,15 @@ import java.util.UUID;
 @Entity
 @Data
 public class Hall {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    UUID uuid;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	UUID uuid;
 
-    @OneToOne
-    HallType hallType;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(nullable = false)
+	HallType hallType;
+
+	String hallName;
+
+	String hallDescription;
 }

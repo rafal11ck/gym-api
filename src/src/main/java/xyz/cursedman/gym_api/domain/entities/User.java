@@ -9,20 +9,19 @@ import java.util.UUID;
 @Entity
 @Table(name = "users")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    UUID userId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	UUID userId;
 
-    @Enumerated(EnumType.STRING)
-    UserRole role = UserRole.CLIENT;
+	@Enumerated(EnumType.STRING)
+	UserRole role = UserRole.CLIENT;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	Card card;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    Card card;
+	@OneToOne()
+	Membership memberShip;
 
-    @OneToOne()
-    Membership memberShip;
-
-    @OneToOne()
-    UserDetails userDetails;
+	@OneToOne()
+	UserDetails userDetails;
 }
