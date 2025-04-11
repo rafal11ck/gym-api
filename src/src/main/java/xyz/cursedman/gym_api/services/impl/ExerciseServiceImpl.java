@@ -19,3 +19,4 @@ public class ExerciseServiceImpl implements ExerciseService {
 		return exerciseRepository.findAll();
 	}
 }
+
