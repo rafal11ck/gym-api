@@ -1,6 +1,9 @@
 name: Autogenerate Documentation
 run-name: Generating Documentation
-on: push
+on:
+  push:
+    paths:
+      - /docs/**
 jobs:
   genearte-docs:
     runs-on: ubuntu-latest
