@@ -7,7 +7,6 @@ vars:
   API_SPEC_DIR: '{{.DOCS_DIR}}/api-spec'
   DOCKER_COMPOSE_FILE: '{{.ROOT_DIR}}/src/docker/docker-compose.yaml'
   JAVA_ROOT: '{{.ROOT_DIR}}/src'
-
 tasks:
   default:
     cmds:
@@ -30,8 +29,15 @@ tasks:
     dir: '{{.JAVA_ROOT}}'
     cmds:
       - mkdir -p {{.API_SPEC_DIR}}/apispec
-      - ./mvnw test -Dtest=OpenApiSpecGeneratorTest
+      - ./mvnw test -Dtest=OpenApiSpecGeneratorTest -Dspring.profiles.active=test
       - cp target/openapi.{json,yaml} {{.API_SPEC_DIR}}
     preconditions:
       - test -f mvnw
       - test -d "$(dirname {{.DOCS_DIR}})" # parent dir of apispec exists
+  test:
+    desc: Run tests
+    dir: '{{.JAVA_ROOT}}'
+    cmds:
+      - ./mvnw test -Dtest=!OpenApiSpecGeneratorTest -Dspring.profiles.active=test
+    preconditions:
+      - test -f mvnw

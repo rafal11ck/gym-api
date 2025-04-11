@@ -18,6 +18,6 @@ public class ExerciseDto {
 
 	private UUID uuid;
 	private String name;
-	
+
 	private Set<TargetMuscle> targetMuscles = new HashSet<>();
 }
