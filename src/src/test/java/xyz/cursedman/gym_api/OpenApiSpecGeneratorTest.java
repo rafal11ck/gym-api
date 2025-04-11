@@ -12,8 +12,7 @@ import java.nio.file.Paths;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class OpenApiGeneratorTest {
-
+public class OpenApiSpecGeneratorTest {
 
 	@Autowired
 	private MockMvc mockMvc;

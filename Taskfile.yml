@@ -30,7 +30,7 @@ tasks:
     dir: '{{.JAVA_ROOT}}'
     cmds:
       - mkdir -p {{.API_SPEC_DIR}}/apispec
-      - ./mvnw test -Dtest=OpenApiGeneratorTest
+      - ./mvnw test -Dtest=OpenApiSpecGeneratorTest
       - cp target/openapi.{json,yaml} {{.API_SPEC_DIR}}
     preconditions:
       - test -f mvnw
