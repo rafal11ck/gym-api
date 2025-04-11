@@ -9,7 +9,7 @@ https://github.com/filip-stepien/gym-frontend
 
 ### Plan
 
--   Authorization with [OAuth 2.0](https://datatracker.ietf.org/doc/html/rfc6749) and [keycloack](https://www.keycloak.org/).
+-   Authorization with [OAuth 2.0](https://datatracker.ietf.org/doc/html/rfc6749) and [keycloak](https://www.keycloak.org/).
 -   [Spring Boot](https://spring.io)
 
 ### Database Model
