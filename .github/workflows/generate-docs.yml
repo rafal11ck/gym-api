@@ -3,7 +3,7 @@ run-name: Generating Documentation
 on:
   push:
     paths:
-      - /docs/**
+      - docs/**
 jobs:
   genearte-docs:
     runs-on: ubuntu-latest

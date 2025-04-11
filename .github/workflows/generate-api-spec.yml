@@ -3,7 +3,7 @@ run-name: Generating openAPI specification
 on:
   push:
     paths:
-      - /src/**
+      - src/**
 jobs:
   generate-api-spec:
     runs-on: ubuntu-latest
