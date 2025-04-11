@@ -3,8 +3,10 @@
 version: '3'
 
 vars:
-  DOCS_DIR: ./docs
-  DOCKER_COMPOSE_FILE: src/docker/docker-compose.yaml
+  DOCS_DIR: '{{.ROOT_DIR}}/docs'
+  API_SPEC_DIR: '{{.DOCS_DIR}}/api-spec'
+  DOCKER_COMPOSE_FILE: '{{.ROOT_DIR}}/src/docker/docker-compose.yaml'
+  JAVA_ROOT: '{{.ROOT_DIR}}/src'
 
 tasks:
   default:
@@ -22,4 +24,14 @@ tasks:
       - docker-compose -f {{.DOCKER_COMPOSE_FILE}} up
     preconditions:
       - which docker-compose
-      - test -f
+      - test -f {{.DOCKER_COMPOSE_FILE}}
+  api-spec:
+    desc: generate openAPI spec
+    dir: '{{.JAVA_ROOT}}'
+    cmds:
+      - mkdir -p {{.API_SPEC_DIR}}/apispec
+      - ./mvnw test -Dtest=OpenApiGeneratorTest
+      - cp target/openapi.{json,yaml} {{.API_SPEC_DIR}}
+    preconditions:
+      - test -f mvnw
+      - test -d "$(dirname {{.DOCS_DIR}})" # parent dir of apispec exists

@@ -9,14 +9,23 @@ https://github.com/filip-stepien/gym-frontend
 
 ### Plan
 
--   Authorization with [OAuth 2.0](https://datatracker.ietf.org/doc/html/rfc6749) and [keycloak](https://www.keycloak.org/).
--   [Spring Boot](https://spring.io)
+- Authorization with [OAuth 2.0](https://datatracker.ietf.org/doc/html/rfc6749) and [keycloak](https://www.keycloak.org/).
+- [Spring Boot](https://spring.io)
 
 ### Database Model
 
 ![model](./docs/model.svg)
 
 ### Endpoints
+
+Documetation can be acceseed at 
+
+> [!NOTE]  
+> Those paths do not include context path which is by default `/api`
+
+
+- WEBui `/swagger`
+- openAPI `/api-docs`
 
 
 <details open>
@@ -87,7 +96,7 @@ https://github.com/filip-stepien/gym-frontend
             "street": "Nowa",
             "house_number": "1b",
             "apartment_number": "2a",
-            "image_url": "foo/bar/image.png"
+            "image_url": "foo/ bar/image.png"
         }
     },
     {

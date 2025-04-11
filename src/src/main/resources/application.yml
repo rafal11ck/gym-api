@@ -11,3 +11,11 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+server:
+  servlet:
+    context-path: /api
+springdoc:
+  api-docs:
+    path: '/api-docs'
+  swagger-ui:
+    path: '/swagger'
