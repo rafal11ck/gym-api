@@ -18,7 +18,8 @@ https://github.com/filip-stepien/gym-frontend
 
 ### Endpoints
 
-Documetation can be acceseed at 
+openAPI spec is located in [docs/api-spec](docs/api-spec) directory.
+Documetation can also be acceseed from running instance.
 
 > [!NOTE]  
 > Those paths do not include context path which is by default `/api`
