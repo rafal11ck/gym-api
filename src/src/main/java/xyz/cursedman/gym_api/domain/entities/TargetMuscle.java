@@ -10,10 +10,10 @@ import java.util.UUID;
 @Table(name = "target_muscle")
 public class TargetMuscle {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    UUID uuid;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	UUID uuid;
 
-    @Column(unique = true, nullable = false)
-    String name;
+	@Column(unique = true, nullable = false)
+	String name;
 }

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface TargetMuscleService {
 	List<TargetMuscle> listTargetMuscles();
+
+	TargetMuscle createTargetMuscle(TargetMuscle targetMuscleToCreate);
 }

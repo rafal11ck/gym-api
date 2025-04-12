@@ -1,6 +1,7 @@
 package xyz.cursedman.gym_api.services.impl;
 
-import lombok.RequiredArgsConstructor;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.entities.TargetMuscle;
 import xyz.cursedman.gym_api.repositories.TargetMuscleRepository;
@@ -9,7 +10,7 @@ import xyz.cursedman.gym_api.services.TargetMuscleService;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class TargetMuscleServiceImpl implements TargetMuscleService {
 	TargetMuscleRepository targetMuscleRepository;
 
@@ -17,4 +18,18 @@ public class TargetMuscleServiceImpl implements TargetMuscleService {
 	public List<TargetMuscle> listTargetMuscles() {
 		return targetMuscleRepository.findAll();
 	}
+
+	@Override
+	@Transactional
+	public TargetMuscle createTargetMuscle(TargetMuscle targetMuscle) {
+		String targetMuscleName = targetMuscle.getName();
+		if (targetMuscleRepository.existsByNameIgnoreCase(targetMuscleName)) {
+			throw new IllegalArgumentException("Target Muscle already exists with name "
+				+ targetMuscleName);
+		}
+
+		return targetMuscleRepository.save(targetMuscle);
+	}
+
+
 }

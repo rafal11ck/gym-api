@@ -8,4 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface TargetMuscleRepository extends JpaRepository<TargetMuscle, UUID> {
+
+	boolean existsByNameIgnoreCase(String name);
 }
