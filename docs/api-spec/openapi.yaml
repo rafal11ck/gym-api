@@ -33,9 +33,9 @@ components:
         targetMuscles:
           type: array
           items:
-            $ref: "#/components/schemas/TargetMuscle"
+            $ref: "#/components/schemas/TargetMuscleDto"
           uniqueItems: true
-    TargetMuscle:
+    TargetMuscleDto:
       type: object
       properties:
         uuid:
