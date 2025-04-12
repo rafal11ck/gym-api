@@ -5,18 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Data
+@AllArgsConstructor
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
-public class ExerciseDto {
-
-	private UUID uuid;
-	private String name;
-
-	private Set<TargetMuscleDto> targetMuscles = new HashSet<>();
+public class TargetMuscleDto {
+	UUID uuid;
+	String name;
 }
