@@ -6,6 +6,37 @@ servers:
 - url: http://localhost
   description: Generated server url
 paths:
+  /target-muscles:
+    get:
+      tags:
+      - target-muscle-controller
+      operationId: listTargetMuscles
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TargetMuscleDto"
+    post:
+      tags:
+      - target-muscle-controller
+      operationId: createTargetMuscle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTargetMuscleRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TargetMuscleDto"
   /exercises:
     get:
       tags:
@@ -22,6 +53,20 @@ paths:
                   $ref: "#/components/schemas/ExerciseDto"
 components:
   schemas:
+    CreateTargetMuscleRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+    TargetMuscleDto:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
     ExerciseDto:
       type: object
       properties:
@@ -35,11 +80,3 @@ components:
           items:
             $ref: "#/components/schemas/TargetMuscleDto"
           uniqueItems: true
-    TargetMuscleDto:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        name:
-          type: string
