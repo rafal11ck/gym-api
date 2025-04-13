@@ -41,7 +41,7 @@ paths:
     get:
       tags:
       - exercise-controller
-      operationId: listCategories
+      operationId: listExercises
       responses:
         "200":
           description: OK
@@ -51,6 +51,53 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ExerciseDto"
+    post:
+      tags:
+      - exercise-controller
+      operationId: createExercise
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateExerciseRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ExerciseDto"
+  /target-muscles/{id}:
+    delete:
+      tags:
+      - target-muscle-controller
+      operationId: deleteTargetMuscle
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+  /exercises/{id}:
+    delete:
+      tags:
+      - exercise-controller
+      operationId: deleteExercise
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
 components:
   schemas:
     CreateTargetMuscleRequest:
@@ -67,6 +114,16 @@ components:
           format: uuid
         name:
           type: string
+    CreateExerciseRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        targetMuscles:
+          type: array
+          items:
+            $ref: "#/components/schemas/TargetMuscleDto"
+          uniqueItems: true
     ExerciseDto:
       type: object
       properties:
