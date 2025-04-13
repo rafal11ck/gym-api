@@ -8,6 +8,7 @@ import xyz.cursedman.gym_api.repositories.TargetMuscleRepository;
 import xyz.cursedman.gym_api.services.TargetMuscleService;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -31,5 +32,9 @@ public class TargetMuscleServiceImpl implements TargetMuscleService {
 		return targetMuscleRepository.save(targetMuscle);
 	}
 
+	@Override
+	public void deleteTargetMuscle(UUID id) {
+		targetMuscleRepository.deleteById(id);
+	}
 
 }

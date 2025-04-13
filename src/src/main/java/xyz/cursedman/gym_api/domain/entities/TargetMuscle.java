@@ -5,11 +5,14 @@ import lombok.Data;
 
 import java.util.UUID;
 
+/**
+ * @brief Represents muscle targeted by Exercise
+ * @see Exercise
+ */
 @Data
 @Entity
 @Table(name = "target_muscle")
 public class TargetMuscle {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;

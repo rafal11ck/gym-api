@@ -2,6 +2,7 @@ package xyz.cursedman.gym_api.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
+import xyz.cursedman.gym_api.domain.dtos.CreateExerciseRequest;
 import xyz.cursedman.gym_api.domain.dtos.ExerciseDto;
 import xyz.cursedman.gym_api.domain.entities.Exercise;
 
@@ -9,5 +10,7 @@ import xyz.cursedman.gym_api.domain.entities.Exercise;
 public interface ExerciseMapper {
 
 	ExerciseDto toDto(Exercise exercise);
+
+	Exercise toEntity(CreateExerciseRequest request);
 
 }

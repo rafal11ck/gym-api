@@ -12,6 +12,7 @@ import xyz.cursedman.gym_api.mappers.TargetMuscleMapper;
 import xyz.cursedman.gym_api.services.TargetMuscleService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/target-muscles")
@@ -38,5 +39,13 @@ public class TargetMuscleController {
 			, HttpStatus.CREATED);
 	}
 
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteTargetMuscle(
+		@Valid @PathVariable UUID id
+	) {
+		targetMuscleService.deleteTargetMuscle(id);
+		return ResponseEntity.noContent().build();
+	}
 
 }

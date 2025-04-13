@@ -1,17 +1,19 @@
 package xyz.cursedman.gym_api.domain.dtos;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateTargetMuscleRequest {
+public class CreateExerciseRequest {
+	String name;
 
-	@NotBlank(message = "Muscle name is required")
-	private String name;
+	Set<TargetMuscleDto> targetMuscles = new HashSet<>();
 }
