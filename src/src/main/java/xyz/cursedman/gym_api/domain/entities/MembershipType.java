@@ -10,8 +10,8 @@ import java.util.UUID;
 
 @Entity
 @Data
-public class MembershipType {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    UUID uuid;
+public final class MembershipType {
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	UUID uuid;
 }

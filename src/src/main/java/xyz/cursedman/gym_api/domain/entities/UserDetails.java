@@ -7,15 +7,15 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "user_details")
-public class UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    UUID uuid;
+public final class UserDetails {
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	UUID uuid;
 
-    String firstName;
-    String lastName;
-    Date dateOfBirth;
-    String email;
-    String phoneNumber;
-    String imageUrl;
+	String firstName;
+	String lastName;
+	Date dateOfBirth;
+	String email;
+	String phoneNumber;
+	String imageUrl;
 }

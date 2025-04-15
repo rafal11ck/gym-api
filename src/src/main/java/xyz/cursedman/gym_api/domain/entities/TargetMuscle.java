@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "target_muscle")
-public class TargetMuscle {
+public final class TargetMuscle {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;

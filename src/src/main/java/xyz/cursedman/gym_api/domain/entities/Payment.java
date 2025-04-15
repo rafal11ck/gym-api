@@ -8,13 +8,13 @@ import java.util.UUID;
 @Entity
 @Table(name = "payment")
 @Data
-public class Payment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    UUID uuid;
+public final class Payment {
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	UUID uuid;
 
-    @Enumerated(EnumType.STRING)
-    PaymentStatus status;
+	@Enumerated(EnumType.STRING)
+	PaymentStatus status;
 
 //     TODO payment things
 }

@@ -11,26 +11,26 @@ import java.util.UUID;
 @Table(name = "workout_session")
 @Entity
 @Data
-public class WorkoutSession {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    UUID uuid;
+public final class WorkoutSession {
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	UUID uuid;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    User coach;
+	@ManyToOne(fetch = FetchType.LAZY)
+	User coach;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    Hall hall;
+	@ManyToOne(fetch = FetchType.LAZY)
+	Hall hall;
 
-    Date date;
+	Date date;
 
-    String title;
+	String title;
 
-    String description;
+	String description;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    Set<User> attendants = new HashSet<>();
+	@ManyToMany(fetch = FetchType.LAZY)
+	Set<User> attendants = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    Set<Exercise> exercises = new HashSet<>();
+	@ManyToMany(fetch = FetchType.LAZY)
+	Set<Exercise> exercises = new HashSet<>();
 }

@@ -7,16 +7,16 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "membership")
-public class Membership {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    UUID uuid;
+public final class Membership {
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	UUID uuid;
 
-    @ManyToOne
-    Payment payment;
+	@ManyToOne
+	Payment payment;
 
-    Date validUntil;
+	Date validUntil;
 
-    @ManyToOne
-    MembershipType membershipType;
+	@ManyToOne
+	MembershipType membershipType;
 }
