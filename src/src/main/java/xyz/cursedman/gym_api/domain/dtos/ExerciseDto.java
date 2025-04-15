@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExerciseDto {
+public final class ExerciseDto {
 
 	private UUID uuid;
 	private String name;

@@ -11,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class TargetMuscleDto {
+public final class TargetMuscleDto {
 	UUID uuid;
 	String name;
 }

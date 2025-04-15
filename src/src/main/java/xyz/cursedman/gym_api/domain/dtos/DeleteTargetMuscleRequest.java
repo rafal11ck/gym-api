@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.util.UUID;
 
-public class DeleteTargetMuscleRequest {
+public final class DeleteTargetMuscleRequest {
 	@NotBlank(message = "UUID of target muscle to delete has to be provided")
 	UUID uuid;
 }

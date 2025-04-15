@@ -7,13 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateExerciseRequest {
+public final class CreateExerciseRequest {
 	String name;
 
-	Set<TargetMuscleDto> targetMuscles = new HashSet<>();
+	/**
+	 * targetMuscles targeted by Exercise
+	 */
+	Set<UUID> targetMuscles = new HashSet<>();
 }

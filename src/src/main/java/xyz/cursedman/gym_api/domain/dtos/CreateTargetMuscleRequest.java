@@ -10,8 +10,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateTargetMuscleRequest {
 
+public final class CreateTargetMuscleRequest {
+
+	/**
+	 * Name of target muscle to be created.
+	 */
 	@NotBlank(message = "Muscle name is required")
 	private String name;
 }
