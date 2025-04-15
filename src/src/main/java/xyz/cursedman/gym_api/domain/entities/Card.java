@@ -2,10 +2,12 @@ package xyz.cursedman.gym_api.domain.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.UUID;
 
+@Data
 @Entity
 @Table(name = "card")
 public final class Card {
