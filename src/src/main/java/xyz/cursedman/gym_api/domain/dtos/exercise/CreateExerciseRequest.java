@@ -1,4 +1,4 @@
-package xyz.cursedman.gym_api.domain.dtos;
+package xyz.cursedman.gym_api.domain.dtos.exercise;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,10 +1,11 @@
 package xyz.cursedman.gym_api.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.cursedman.gym_api.domain.dtos.CreateExerciseRequest;
-import xyz.cursedman.gym_api.domain.dtos.ExerciseDto;
+import xyz.cursedman.gym_api.domain.dtos.exercise.CreateExerciseRequest;
+import xyz.cursedman.gym_api.domain.dtos.exercise.ExerciseDto;
 import xyz.cursedman.gym_api.domain.entities.Exercise;
 import xyz.cursedman.gym_api.mappers.ExerciseMapper;
 import xyz.cursedman.gym_api.services.ExerciseService;

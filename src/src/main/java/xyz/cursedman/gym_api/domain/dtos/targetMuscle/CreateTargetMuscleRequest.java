@@ -1,4 +1,4 @@
-package xyz.cursedman.gym_api.domain.dtos;
+package xyz.cursedman.gym_api.domain.dtos.targetMuscle;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.cursedman.gym_api.domain.dtos.ExerciseDto;
 import xyz.cursedman.gym_api.domain.dtos.country.CountryDto;
 import xyz.cursedman.gym_api.mappers.CountryMapper;
 import xyz.cursedman.gym_api.services.CountryService;
