@@ -8,7 +8,7 @@ import xyz.cursedman.gym_api.domain.entities.Card;
 import xyz.cursedman.gym_api.services.CountryService;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = CountryService.class)
-public abstract class CardMapper {
+public interface CardMapper {
 	public abstract CardDto toDto(Card card);
 
 	@Mapping(source = "countryUuid", target = "country")

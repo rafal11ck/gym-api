@@ -15,6 +15,7 @@ public final class Exercise {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;
 
+	@Column(nullable = false, unique = true)
 	String name;
 
 	@ManyToMany

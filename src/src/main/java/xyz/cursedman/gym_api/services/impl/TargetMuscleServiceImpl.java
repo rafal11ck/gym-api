@@ -7,7 +7,9 @@ import xyz.cursedman.gym_api.domain.entities.TargetMuscle;
 import xyz.cursedman.gym_api.repositories.TargetMuscleRepository;
 import xyz.cursedman.gym_api.services.TargetMuscleService;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -37,4 +39,8 @@ public class TargetMuscleServiceImpl implements TargetMuscleService {
 		targetMuscleRepository.deleteById(id);
 	}
 
+    @Override
+    public Set<TargetMuscle> findAllById(Set<UUID> ids) {
+		return new HashSet<>(targetMuscleRepository.findAllById(ids));
+    }
 }
