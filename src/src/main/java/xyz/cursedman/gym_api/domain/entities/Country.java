@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "country")
-public class Country {
+public final class Country {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;
