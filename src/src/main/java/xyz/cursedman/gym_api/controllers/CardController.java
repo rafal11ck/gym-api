@@ -2,13 +2,12 @@ package xyz.cursedman.gym_api.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.cursedman.gym_api.domain.dtos.card.CardDto;
 import xyz.cursedman.gym_api.domain.dtos.card.CreateCardRequest;
 import xyz.cursedman.gym_api.domain.dtos.card.UpdateCardRequest;
-import xyz.cursedman.gym_api.domain.entities.Card;
-import xyz.cursedman.gym_api.mappers.CardMapper;
 import xyz.cursedman.gym_api.services.CardService;
 
 import java.util.List;
@@ -27,7 +26,7 @@ public class CardController {
 
 	@PostMapping
 	public ResponseEntity<CardDto> createCard(@RequestBody CreateCardRequest createCardRequestDto) {
-		return ResponseEntity.ok(cardService.createCard(createCardRequestDto));
+		return new ResponseEntity<>(cardService.createCard(createCardRequestDto), HttpStatus.CREATED);
 	}
 
 	@PatchMapping(path = "/{id}")

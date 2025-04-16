@@ -11,6 +11,9 @@ import xyz.cursedman.gym_api.services.CountryService;
 public interface CardMapper {
 	CardDto toDto(Card card);
 
+	@Mapping(source = "country.uuid", target = "countryUuid")
+	CreateCardRequest toCreateCardRequest(Card card);
+
 	@Mapping(source = "countryUuid", target = "country")
 	Card toEntity(CreateCardRequest request);
 
