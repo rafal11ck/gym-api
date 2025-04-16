@@ -68,6 +68,76 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/ExerciseDto"
+  /cards:
+    get:
+      tags:
+      - card-controller
+      operationId: listCards
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CardDto"
+    post:
+      tags:
+      - card-controller
+      operationId: createCard
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCardRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CardDto"
+  /cards/{id}:
+    patch:
+      tags:
+      - card-controller
+      operationId: updateCard
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCardRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CardDto"
+  /countries:
+    get:
+      tags:
+      - country-controller
+      operationId: getCountry
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CountryDto"
   /target-muscles/{id}:
     delete:
       tags:
@@ -122,7 +192,8 @@ components:
         targetMuscles:
           type: array
           items:
-            $ref: "#/components/schemas/TargetMuscleDto"
+            type: string
+            format: uuid
           uniqueItems: true
     ExerciseDto:
       type: object
@@ -137,3 +208,74 @@ components:
           items:
             $ref: "#/components/schemas/TargetMuscleDto"
           uniqueItems: true
+    CreateCardRequest:
+      type: object
+      properties:
+        countryUuid:
+          type: string
+          format: uuid
+        cardNumber:
+          type: string
+        cvv:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date-time
+        nameOnCard:
+          type: string
+        postalCode:
+          type: string
+    CardDto:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        country:
+          $ref: "#/components/schemas/Country"
+        cardNumber:
+          type: string
+        cvv:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date-time
+        nameOnCard:
+          type: string
+        postalCode:
+          type: string
+    Country:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        countryName:
+          type: string
+      required:
+      - countryName
+    UpdateCardRequest:
+      type: object
+      properties:
+        countryUuid:
+          type: string
+          format: uuid
+        cardNumber:
+          type: string
+        cvv:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date-time
+        nameOnCard:
+          type: string
+        postalCode:
+          type: string
+    CountryDto:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        countryName:
+          type: string
