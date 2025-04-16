@@ -9,11 +9,11 @@ import xyz.cursedman.gym_api.services.CountryService;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = CountryService.class)
 public interface CardMapper {
-	public abstract CardDto toDto(Card card);
+	CardDto toDto(Card card);
 
 	@Mapping(source = "countryUuid", target = "country")
-	public abstract Card toEntity(CreateCardRequest request);
+	Card toEntity(CreateCardRequest request);
 
 	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-	public abstract void updateFromDto(UpdateCardRequest dto, @MappingTarget Card entity);
+	void updateFromDto(UpdateCardRequest dto, @MappingTarget Card entity);
 }
