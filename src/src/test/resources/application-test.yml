@@ -12,6 +12,9 @@ spring:
       ddl-auto: create
     defer-datasource-initialization: true
     database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        format_sql: true
   sql:
     init:
       mode: always

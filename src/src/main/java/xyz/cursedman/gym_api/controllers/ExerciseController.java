@@ -1,7 +1,7 @@
 package xyz.cursedman.gym_api.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.cursedman.gym_api.domain.dtos.exercise.CreateExerciseRequest;
@@ -37,7 +37,7 @@ public class ExerciseController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ExerciseDto> createExercise(@RequestBody CreateExerciseRequest request) {
+	public ResponseEntity<ExerciseDto> createExercise(@Valid @RequestBody CreateExerciseRequest request) {
 		Exercise exercise = exerciseMapper.toEntity(request);
 		Exercise savedExercise = exerciseService.createExercise(exercise);
 		return ResponseEntity.ok(exerciseMapper.toDto(savedExercise));
