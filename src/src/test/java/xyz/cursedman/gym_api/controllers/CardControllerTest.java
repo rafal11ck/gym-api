@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import xyz.cursedman.gym_api.domain.dtos.card.CreateCardRequest;
-import xyz.cursedman.gym_api.domain.dtos.card.UpdateCardRequest;
+import xyz.cursedman.gym_api.domain.dtos.card.PatchCardRequest;
 import xyz.cursedman.gym_api.domain.entities.Card;
 import xyz.cursedman.gym_api.helpers.TestCardDataHelper;
 import xyz.cursedman.gym_api.helpers.TestJsonHelper;
@@ -55,9 +55,9 @@ class CardControllerTest {
 	}
 
 	@Test
-	void checkIfPatchCardUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
+	void checkIfCardPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
 		String newCardNumber = "newCardNumber";
-		UpdateCardRequest testUpdateCardRequest = testCardDataHelper.getUpdateCardRequest(newCardNumber);
+		PatchCardRequest testPatchCardRequest = testCardDataHelper.getUpdateCardRequest(newCardNumber);
 		Card testCard = testCardDataHelper.saveAndGetTestCard();
 
 		testCard.setCardNumber(newCardNumber);
@@ -65,7 +65,7 @@ class CardControllerTest {
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch("/cards/" + testCard.getUuid())
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.stringify(testUpdateCardRequest))
+				.content(TestJsonHelper.stringify(testPatchCardRequest))
 		).andExpect(MockMvcResultMatchers.status().isOk())
 		 .andExpect(TestJsonHelper.contentEqualsJsonOf(testCard));
 	}

@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.cursedman.gym_api.domain.dtos.card.CardDto;
 import xyz.cursedman.gym_api.domain.dtos.card.CreateCardRequest;
-import xyz.cursedman.gym_api.domain.dtos.card.UpdateCardRequest;
+import xyz.cursedman.gym_api.domain.dtos.card.PatchCardRequest;
 import xyz.cursedman.gym_api.services.CardService;
 
 import java.util.List;
@@ -32,8 +32,8 @@ public class CardController {
 	@PatchMapping(path = "/{id}")
 	public ResponseEntity<CardDto> updateCard(
 		@Valid @PathVariable UUID id,
-		@RequestBody UpdateCardRequest updateCardRequestDto
+		@RequestBody PatchCardRequest patchCardRequestDto
 	) {
-		return ResponseEntity.ok(cardService.updateCard(id, updateCardRequestDto));
+		return ResponseEntity.ok(cardService.patchCard(id, patchCardRequestDto));
 	}
 }

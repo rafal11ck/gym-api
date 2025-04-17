@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.card.CardDto;
 import xyz.cursedman.gym_api.domain.dtos.card.CreateCardRequest;
-import xyz.cursedman.gym_api.domain.dtos.card.UpdateCardRequest;
+import xyz.cursedman.gym_api.domain.dtos.card.PatchCardRequest;
 import xyz.cursedman.gym_api.domain.entities.Card;
 import xyz.cursedman.gym_api.mappers.CardMapper;
 import xyz.cursedman.gym_api.mappers.CountryMapper;
@@ -42,11 +42,11 @@ public class CardServiceImpl implements CardService {
 	}
 
 	@Override
-	public CardDto updateCard(UUID id, UpdateCardRequest updateCardRequest) {
+	public CardDto patchCard(UUID id, PatchCardRequest patchCardRequest) {
 		Card card = cardRepository.findById(id).orElseThrow(
 			() -> new EntityNotFoundException("Card with ID " + id + " not found"));
 
-		cardMapper.updateFromDto(updateCardRequest, card);
+		cardMapper.updateFromDto(patchCardRequest, card);
 		Card result = cardRepository.save(card);
 
 		return cardMapper.toDto(result);

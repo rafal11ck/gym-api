@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import xyz.cursedman.gym_api.domain.entities.Country;
 
 import java.util.Date;
 import java.util.UUID;
@@ -13,7 +12,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateCardRequest {
+public class PatchCardRequest {
 	private UUID countryUuid;
 	private String cardNumber;
 	private String cvv;
