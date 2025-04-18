@@ -41,3 +41,10 @@ tasks:
       - ./mvnw test -Dtest=!OpenApiSpecGeneratorTest -Dspring.profiles.active=test
     preconditions:
       - test -f mvnw
+  set-version:
+    desc: Set version [version=required]
+    cmds:
+      - cd '{{.JAVA_ROOT}}' && ./mvnw versions:set -DnewVersion={{.version}} && ./mvnw versions:commit
+    requires:
+      vars:
+        - version
