@@ -1,0 +1,50 @@
+package xyz.cursedman.gym_api.services.impl;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeDto;
+import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeRequest;
+import xyz.cursedman.gym_api.domain.entities.MembershipType;
+import xyz.cursedman.gym_api.mappers.MembershipTypeMapper;
+import xyz.cursedman.gym_api.repositories.MembershipTypeRepository;
+import xyz.cursedman.gym_api.services.MembershipTypeService;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+@AllArgsConstructor
+public class MembershipTypeServiceImpl implements MembershipTypeService {
+
+	private final MembershipTypeRepository membershipTypeRepository;
+	private final MembershipTypeMapper membershipTypeMapper;
+
+	@Override
+	public List<MembershipTypeDto> listMembershipTypes() {
+		return membershipTypeRepository.findAll().stream().map(membershipTypeMapper::toDtoFromEntity).toList();
+	}
+
+	@Override
+	public MembershipTypeDto createMembershipType(MembershipTypeRequest request) {
+		MembershipType membershipType = membershipTypeMapper.toEntityFromRequest(request);
+		MembershipType result = membershipTypeRepository.save(membershipType);
+		return membershipTypeMapper.toDtoFromEntity(result);
+	}
+
+	@Override
+	public MembershipTypeDto patchMembershipType(UUID membershipTypeId, MembershipTypeRequest request) {
+		MembershipType membershipType = membershipTypeRepository.findById(membershipTypeId).orElseThrow(
+			() -> new EntityNotFoundException("MembershipType with ID " + membershipTypeId + " not found"));
+
+		membershipTypeMapper.updateFromRequestDto(request, membershipType);
+		MembershipType result = membershipTypeRepository.save(membershipType);
+
+		return membershipTypeMapper.toDtoFromEntity(result);
+	}
+
+	@Override
+	public void deleteMembershipType(UUID membershipTypeId) {
+		membershipTypeRepository.deleteById(membershipTypeId);
+	}
+}
