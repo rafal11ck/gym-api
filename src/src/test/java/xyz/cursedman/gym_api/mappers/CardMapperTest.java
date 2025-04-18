@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import xyz.cursedman.gym_api.domain.dtos.card.CreateCardRequest;
+import xyz.cursedman.gym_api.domain.dtos.card.CardRequest;
 import xyz.cursedman.gym_api.domain.entities.Card;
 import xyz.cursedman.gym_api.helpers.TestCardDataHelper;
 
@@ -25,9 +25,14 @@ class CardMapperTest {
 	private CardMapper cardMapper;
 
 	@Test
-	void checkIfCardMapperCorrectlyMapsCountryInCreateCardRequest() {
+	void checkIfCardMapperCorrectlyMapsCountry() {
+		// Card -> CardRequest
 		Card card = testCardDataHelper.getTestCard();
-		CreateCardRequest cardRequest = cardMapper.toCreateCardRequest(card);
-		assertEquals(card.getCountry().getUuid(), cardRequest.getCountryUuid());
+		CardRequest request = cardMapper.toRequestFromEntity(card);
+		assertEquals(card.getCountry().getUuid(), request.getCountryUuid());
+
+		// CardRequest -> Card
+		Card cardFromRequest = cardMapper.toEntityFromRequest(request);
+		assertEquals(cardFromRequest.getCountry().getUuid(), request.getCountryUuid());
 	}
 }

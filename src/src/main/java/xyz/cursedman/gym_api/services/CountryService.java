@@ -9,5 +9,5 @@ public interface CountryService {
 	List<Country> listCountries();
 
 	// used by mapper under the hood
-	Country getByUuid(UUID id);
+	Country getCountryByUuid(UUID id);
 }

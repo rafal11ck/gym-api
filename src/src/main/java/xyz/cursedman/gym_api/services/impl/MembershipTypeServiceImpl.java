@@ -37,7 +37,7 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
 		MembershipType membershipType = membershipTypeRepository.findById(membershipTypeId).orElseThrow(
 			() -> new EntityNotFoundException("MembershipType with ID " + membershipTypeId + " not found"));
 
-		membershipTypeMapper.updateFromRequestDto(request, membershipType);
+		membershipTypeMapper.updateFromRequest(request, membershipType);
 		MembershipType result = membershipTypeRepository.save(membershipType);
 
 		return membershipTypeMapper.toDtoFromEntity(result);

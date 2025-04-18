@@ -12,7 +12,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatchCardRequest {
+public class CardRequest {
 	private UUID countryUuid;
 	private String cardNumber;
 	private String cvv;

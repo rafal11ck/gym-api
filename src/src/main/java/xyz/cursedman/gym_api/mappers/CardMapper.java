@@ -2,21 +2,17 @@ package xyz.cursedman.gym_api.mappers;
 
 import org.mapstruct.*;
 import xyz.cursedman.gym_api.domain.dtos.card.CardDto;
-import xyz.cursedman.gym_api.domain.dtos.card.CreateCardRequest;
-import xyz.cursedman.gym_api.domain.dtos.card.PatchCardRequest;
+import xyz.cursedman.gym_api.domain.dtos.card.CardRequest;
 import xyz.cursedman.gym_api.domain.entities.Card;
 import xyz.cursedman.gym_api.services.CountryService;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = CountryService.class)
-public interface CardMapper {
-	CardDto toDto(Card card);
+public interface CardMapper extends GenericMapper<Card, CardDto, CardRequest> {
+	@Override
+	@Mapping(target = "countryUuid", source = "country.uuid")
+	CardRequest toRequestFromEntity(Card dto);
 
-	@Mapping(source = "country.uuid", target = "countryUuid")
-	CreateCardRequest toCreateCardRequest(Card card);
-
-	@Mapping(source = "countryUuid", target = "country")
-	Card toEntity(CreateCardRequest request);
-
-	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-	void updateFromDto(PatchCardRequest dto, @MappingTarget Card entity);
+	@Override
+	@Mapping(target = "country", source = "countryUuid")
+	Card toEntityFromRequest(CardRequest request);
 }

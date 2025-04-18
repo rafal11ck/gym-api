@@ -23,7 +23,7 @@ public class CountryServiceImpl implements CountryService {
 	}
 
 	@Override
-	public Country getByUuid(UUID id) {
+	public Country getCountryByUuid(UUID id) {
 		return countryRepository.findById(id).orElseThrow(
 			() -> new EntityNotFoundException("Country with ID " + id + " not found"));
 		}

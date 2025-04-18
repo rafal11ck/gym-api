@@ -2,8 +2,7 @@ package xyz.cursedman.gym_api.helpers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import xyz.cursedman.gym_api.domain.dtos.card.CreateCardRequest;
-import xyz.cursedman.gym_api.domain.dtos.card.PatchCardRequest;
+import xyz.cursedman.gym_api.domain.dtos.card.CardRequest;
 import xyz.cursedman.gym_api.domain.entities.Card;
 import xyz.cursedman.gym_api.domain.entities.Country;
 import xyz.cursedman.gym_api.mappers.CardMapper;
@@ -40,12 +39,12 @@ public class TestCardDataHelper {
 		return cardRepository.saveAndFlush(testCard);
 	}
 
-	public CreateCardRequest getCreateCardRequestFromTestCard(Card testCard) {
-		return cardMapper.toCreateCardRequest(testCard);
+	public CardRequest getCreateCardRequestFromTestCard(Card testCard) {
+		return cardMapper.toRequestFromEntity(testCard);
 	}
 
-	public PatchCardRequest getUpdateCardRequest(String newCardNumber) {
-		return PatchCardRequest.builder()
+	public CardRequest getUpdateCardRequest(String newCardNumber) {
+		return CardRequest.builder()
 			.cardNumber(newCardNumber)
 			.build();
 	}

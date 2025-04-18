@@ -1,8 +1,7 @@
 package xyz.cursedman.gym_api.services;
 
 import xyz.cursedman.gym_api.domain.dtos.card.CardDto;
-import xyz.cursedman.gym_api.domain.dtos.card.CreateCardRequest;
-import xyz.cursedman.gym_api.domain.dtos.card.PatchCardRequest;
+import xyz.cursedman.gym_api.domain.dtos.card.CardRequest;
 
 import java.util.List;
 import java.util.UUID;
@@ -10,9 +9,9 @@ import java.util.UUID;
 public interface CardService {
 	List<CardDto> listCards();
 
-	CardDto createCard(CreateCardRequest cardToCreate);
+	CardDto createCard(CardRequest cardToCreate);
 
-	CardDto patchCard(UUID id, PatchCardRequest cardToUpdate);
+	CardDto patchCard(UUID id, CardRequest request);
 
 	void deleteCard(UUID id);
 }

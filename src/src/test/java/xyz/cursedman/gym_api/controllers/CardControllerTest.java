@@ -12,8 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import xyz.cursedman.gym_api.domain.dtos.card.CreateCardRequest;
-import xyz.cursedman.gym_api.domain.dtos.card.PatchCardRequest;
+import xyz.cursedman.gym_api.domain.dtos.card.CardRequest;
 import xyz.cursedman.gym_api.domain.entities.Card;
 import xyz.cursedman.gym_api.helpers.TestCardDataHelper;
 import xyz.cursedman.gym_api.helpers.TestJsonHelper;
@@ -44,12 +43,12 @@ class CardControllerTest {
 	void checkIfCreateCardReturnsHttp201AndCreatedRecord() throws Exception {
 		String[] ignoredFields = { "uuid" };
 		Card testCard = testCardDataHelper.getTestCard();
-		CreateCardRequest createCardRequest = testCardDataHelper.getCreateCardRequestFromTestCard(testCard);
+		CardRequest cardRequest = testCardDataHelper.getCreateCardRequestFromTestCard(testCard);
 
 		mockMvc.perform(
 				MockMvcRequestBuilders.post("/cards")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(TestJsonHelper.stringify(createCardRequest))
+					.content(TestJsonHelper.stringify(cardRequest))
 			).andExpect(MockMvcResultMatchers.status().isCreated())
 			 .andExpect(TestJsonHelper.contentEqualsJsonOf(testCard, ignoredFields));
 	}
@@ -57,7 +56,7 @@ class CardControllerTest {
 	@Test
 	void checkIfCardPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
 		String newCardNumber = "newCardNumber";
-		PatchCardRequest testPatchCardRequest = testCardDataHelper.getUpdateCardRequest(newCardNumber);
+		CardRequest request = testCardDataHelper.getUpdateCardRequest(newCardNumber);
 		Card testCard = testCardDataHelper.saveAndGetTestCard();
 
 		testCard.setCardNumber(newCardNumber);
@@ -65,7 +64,7 @@ class CardControllerTest {
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch("/cards/" + testCard.getUuid())
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.stringify(testPatchCardRequest))
+				.content(TestJsonHelper.stringify(request))
 		).andExpect(MockMvcResultMatchers.status().isOk())
 		 .andExpect(TestJsonHelper.contentEqualsJsonOf(testCard));
 	}

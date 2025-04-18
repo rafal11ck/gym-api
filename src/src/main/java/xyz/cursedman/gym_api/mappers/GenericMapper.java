@@ -9,6 +9,8 @@ public interface GenericMapper<EntityT, DtoT, RequestT> {
 
 	EntityT toEntityFromRequest(RequestT request);
 
+	RequestT toRequestFromEntity(EntityT dto);
+
 	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-	void updateFromRequestDto(RequestT request, @MappingTarget EntityT entity);
+	void updateFromRequest(RequestT request, @MappingTarget EntityT entity);
 }
