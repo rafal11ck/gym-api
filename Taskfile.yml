@@ -48,3 +48,9 @@ tasks:
     requires:
       vars:
         - version
+  semver-ci:
+    desc: smenatic-release CI entrypoint
+    cmds:
+      - npx -p semantic-release/git -p semantic-release -p @semantic-release/exec semantic-release --no-ci --dry-run
+    preconditions:
+      - command -v npx
