@@ -5,7 +5,7 @@ on:
     paths:
       - src/**
 jobs:
-  genearte-docs:
+  run-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
