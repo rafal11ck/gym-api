@@ -59,6 +59,6 @@ tasks:
   semrel-ci:
     desc: smenatic-release CI entrypoint
     cmds:
-      - npx -p semantic-release/git -p semantic-release -p @semantic-release/exec semantic-release --no-ci --dry-run
+      - npx -p semantic-release/git -p semantic-release -p @semantic-release/exec semantic-release
     preconditions:
       - command -v npx
