@@ -41,14 +41,22 @@ tasks:
       - ./mvnw test -Dtest=!OpenApiSpecGeneratorTest -Dspring.profiles.active=test
     preconditions:
       - test -f mvnw
-  set-version:
-    desc: Set version [version=required]
+  build-release:
+    desc: do release and set version [version=required]
     cmds:
+      # set version in mvn
       - cd '{{.JAVA_ROOT}}' && ./mvnw versions:set -DnewVersion={{.version}} && ./mvnw versions:commit
+      # build jar
+      - task build-jar
     requires:
       vars:
         - version
-  semver-ci:
+  build-jar:
+    desc: builds API jar release
+    cmds:
+      - ./mvnw package -Dmaven.test.skip
+    dir: '{{.JAVA_ROOT}}'
+  semrel-ci:
     desc: smenatic-release CI entrypoint
     cmds:
       - npx -p semantic-release/git -p semantic-release -p @semantic-release/exec semantic-release --no-ci --dry-run

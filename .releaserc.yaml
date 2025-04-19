@@ -2,8 +2,12 @@ plugins:
   - '@semantic-release/commit-analyzer'
   - '@semantic-release/release-notes-generator'
   - - '@semantic-release/exec'
-    - verifyRelease: './src/mvnw versions:set -DnewVersion="${nextRelease.version}" && echo "NEXT_VERSION=${nextRelease.version}" >> build.env'
-  - '@semantic-release/github'
+    - verifyRelease: 'printf "NEXT_VERSION=${nextRelease.version}" >> build.env && task release version=${nextRelease.version}'
+    # './src/mvnw versions:set -DnewVersion="${nextRelease.version}" && echo "NEXT_VERSION=${nextRelease.version}" >> build.env'
+  - - '@semantic-release/github'
+    - assets:
+        - 'docs/api-spec/*'
+        - 'src/target/gym-api-*.jar'
   - - '@semantic-release/git'
     - assets:
         - pom.xml

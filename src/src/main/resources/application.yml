@@ -8,12 +8,8 @@ spring:
     name: gym-api
   jpa:
     database: postgresql
-    show-sql: true
     hibernate:
       ddl-auto: create
-server:
-  servlet:
-    context-path: /api
 springdoc:
   api-docs:
     path: '/api-docs'
