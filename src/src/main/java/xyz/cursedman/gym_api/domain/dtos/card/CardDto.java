@@ -9,6 +9,7 @@ import xyz.cursedman.gym_api.domain.entities.Country;
 import java.util.Date;
 import java.util.UUID;
 
+// xd
 @Data
 @Builder
 @NoArgsConstructor
