@@ -1,4 +1,5 @@
 name: Semantic Release
+run-name: Release
 
 on:
   workflow_run:
@@ -26,7 +27,3 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: nicknovitski/nix-develop@v1
       - run: task semrel-ci
-  temp-logger:
-    runs-on: ubuntu-latest
-    steps:
-      - run: printf 'hello world'
