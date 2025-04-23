@@ -12,9 +12,6 @@ public final class Membership {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;
 
-	@ManyToOne
-	Payment payment;
-
 	Date validUntil;
 
 	@ManyToOne

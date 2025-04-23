@@ -13,8 +13,11 @@ public final class Payment {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;
 
-	@Enumerated(EnumType.STRING)
+	@ManyToOne
 	PaymentStatus status;
+
+	@ManyToOne
+	Membership membership;
 
 //     TODO payment things
 }
