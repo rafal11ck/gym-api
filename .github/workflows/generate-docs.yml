@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - docs/**
-      - src/**
 
 jobs:
   generate:
@@ -20,11 +19,8 @@ jobs:
 
       - uses: nicknovitski/nix-develop@v1
 
-      - name: Generate Docs (if docs changed)
+      - name: Generate Docs
         run: task docs
-
-      - name: Generate API Spec (if src changed)
-        run: task api-spec
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
