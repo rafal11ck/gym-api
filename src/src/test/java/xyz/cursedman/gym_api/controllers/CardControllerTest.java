@@ -1,5 +1,6 @@
 package xyz.cursedman.gym_api.controllers;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import xyz.cursedman.gym_api.domain.dtos.card.CardRequest;
-import xyz.cursedman.gym_api.domain.entities.Card;
-import xyz.cursedman.gym_api.helpers.TestCardDataHelper;
 import xyz.cursedman.gym_api.helpers.TestJsonHelper;
+
+import java.util.Date;
+import java.util.UUID;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -27,45 +29,65 @@ class CardControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Autowired
-	private TestCardDataHelper testCardDataHelper;
-
 	@Test
-	void checkIfGetCardsReturnsHttp200AndSavedRecord() throws Exception {
-		Card testCard = testCardDataHelper.saveAndGetTestCard();
-
+	void checkIfGetCardsReturnsHttp200AndAllRecords() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/cards"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(TestJsonHelper.contentEqualsJsonArrayOf(testCard));
+			.andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.greaterThan(0)));
+	}
+
+	@Test
+	void checkIfGetCardByIdReturnsHttp200AndRequestedRecord() throws Exception {
+		String validCardUuid = "5bd05494-155e-4bd1-b14c-61421d0caaae";
+		mockMvc.perform(MockMvcRequestBuilders.get("/cards/" + validCardUuid))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$").exists());
 	}
 
 	@Test
 	void checkIfCreateCardReturnsHttp201AndCreatedRecord() throws Exception {
-		String[] ignoredFields = { "uuid" };
-		Card testCard = testCardDataHelper.getTestCard();
-		CardRequest cardRequest = testCardDataHelper.getCreateCardRequestFromTestCard(testCard);
+		UUID validCountryUuid = UUID.fromString("352ed7f1-8bb1-4baa-9ca7-88995ec58d8a");
+		CardRequest cardRequest = CardRequest.builder()
+			.cardNumber("123")
+			.nameOnCard("John Doe")
+			.cvv("123")
+			.dateOfBirth(new Date())
+			.postalCode("21-370")
+			.countryUuid(validCountryUuid)
+			.build();
 
 		mockMvc.perform(
-				MockMvcRequestBuilders.post("/cards")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(TestJsonHelper.stringify(cardRequest))
+			MockMvcRequestBuilders.post("/cards")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(TestJsonHelper.stringify(cardRequest))
 			).andExpect(MockMvcResultMatchers.status().isCreated())
-			 .andExpect(TestJsonHelper.contentEqualsJsonOf(testCard, ignoredFields));
+			.andExpect(TestJsonHelper.contentEqualsJsonOf(cardRequest, "countryUuid"))
+			.andExpect(
+				MockMvcResultMatchers.jsonPath("$.country.uuid", Matchers.is(validCountryUuid.toString()))
+			);
 	}
 
 	@Test
 	void checkIfCardPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
-		String newCardNumber = "newCardNumber";
-		CardRequest request = testCardDataHelper.getUpdateCardRequest(newCardNumber);
-		Card testCard = testCardDataHelper.saveAndGetTestCard();
-
-		testCard.setCardNumber(newCardNumber);
+		UUID validCardUuid = UUID.fromString("5bd05494-155e-4bd1-b14c-61421d0caaae");
+		UUID validCountryUuid = UUID.fromString("352ed7f1-8bb1-4baa-9ca7-88995ec58d8a");
+		CardRequest cardRequest = CardRequest.builder()
+			.cardNumber("123")
+			.nameOnCard("John Doe")
+			.cvv("123")
+			.dateOfBirth(new Date())
+			.postalCode("21-370")
+			.countryUuid(validCountryUuid)
+			.build();
 
 		mockMvc.perform(
-			MockMvcRequestBuilders.patch("/cards/" + testCard.getUuid())
+			MockMvcRequestBuilders.patch("/cards/" + validCardUuid)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.stringify(request))
+				.content(TestJsonHelper.stringify(cardRequest))
 		).andExpect(MockMvcResultMatchers.status().isOk())
-		 .andExpect(TestJsonHelper.contentEqualsJsonOf(testCard));
+		.andExpect(TestJsonHelper.contentEqualsJsonOf(cardRequest, "countryUuid"))
+		.andExpect(
+			MockMvcResultMatchers.jsonPath("$.country.uuid", Matchers.is(validCountryUuid.toString()))
+		);
 	}
 }

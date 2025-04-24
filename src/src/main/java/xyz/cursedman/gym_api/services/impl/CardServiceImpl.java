@@ -29,6 +29,11 @@ public class CardServiceImpl implements CardService {
 	}
 
 	@Override
+	public CardDto getCard(UUID id) {
+		return cardRepository.findById(id).map(cardMapper::toDtoFromEntity).orElse(null);
+	}
+
+	@Override
 	public CardDto createCard(CardRequest cardRequest) {
 		Card card = cardMapper.toEntityFromRequest(cardRequest);
 		Card result = cardRepository.save(card);

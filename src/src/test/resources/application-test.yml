@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:public
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE
     username: sa
     password: password
     driver-class-name: org.h2.Driver
   application:
     name: gym-api
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: create
     defer-datasource-initialization: true
@@ -26,3 +26,4 @@ springdoc:
     path: '/api-docs'
   swagger-ui:
     path: '/swagger'
+

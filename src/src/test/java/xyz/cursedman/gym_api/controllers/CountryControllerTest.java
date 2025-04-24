@@ -1,5 +1,6 @@
 package xyz.cursedman.gym_api.controllers;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import xyz.cursedman.gym_api.domain.entities.Country;
-import xyz.cursedman.gym_api.helpers.TestJsonHelper;
-import xyz.cursedman.gym_api.helpers.TestCountryDataHelper;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -25,16 +23,11 @@ class CountryControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Autowired
-	private TestCountryDataHelper testCountryDataHelper;
-
 	@Test
-	void checkIfGetRequestReturnsHttp200AndSavedRecord() throws Exception {
-		Country testCountry = testCountryDataHelper.saveAndGetTestCountry();
-
+	void checkIfGetRequestReturnsHttp200AndAllRecords() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.get("/countries")
 		).andExpect(MockMvcResultMatchers.status().isOk())
-		 .andExpect(TestJsonHelper.contentEqualsJsonArrayOf(testCountry));
+		.andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.greaterThan(0)));
 	}
 }

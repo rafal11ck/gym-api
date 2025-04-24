@@ -23,6 +23,12 @@ public class CardController {
 		return ResponseEntity.ok(cardService.listCards());
 	}
 
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<CardDto> getCard(@Valid @PathVariable UUID id) {
+		CardDto cardDto = cardService.getCard(id);
+		return ResponseEntity.ok(cardDto);
+	}
+
 	@PostMapping
 	public ResponseEntity<CardDto> createCard(@RequestBody CardRequest cardRequestDto) {
 		return new ResponseEntity<>(cardService.createCard(cardRequestDto), HttpStatus.CREATED);
