@@ -52,7 +52,7 @@ entity "user" as user {
     id_membership
     id_user_details
 }
-
+' 
 entity "workout_session" as workout_session {
     id
     id_coach
