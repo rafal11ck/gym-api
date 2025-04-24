@@ -7,10 +7,8 @@ import xyz.cursedman.gym_api.domain.dtos.card.CardDto;
 import xyz.cursedman.gym_api.domain.dtos.card.CardRequest;
 import xyz.cursedman.gym_api.domain.entities.Card;
 import xyz.cursedman.gym_api.mappers.CardMapper;
-import xyz.cursedman.gym_api.mappers.CountryMapper;
 import xyz.cursedman.gym_api.repositories.CardRepository;
 import xyz.cursedman.gym_api.services.CardService;
-import xyz.cursedman.gym_api.services.CountryService;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,8 +18,6 @@ import java.util.UUID;
 public class CardServiceImpl implements CardService {
 	private final CardRepository cardRepository;
 	private final CardMapper cardMapper;
-	private final CountryMapper countryMapper;
-	private final CountryService countryService;
 
 	@Override
 	public List<CardDto> listCards() {
@@ -29,8 +25,11 @@ public class CardServiceImpl implements CardService {
 	}
 
 	@Override
-	public CardDto getCard(UUID id) {
-		return cardRepository.findById(id).map(cardMapper::toDtoFromEntity).orElse(null);
+	public CardDto getCard(UUID id) throws EntityNotFoundException {
+		return cardRepository
+			.findById(id)
+			.map(cardMapper::toDtoFromEntity)
+			.orElseThrow(EntityNotFoundException::new);
 	}
 
 	@Override
@@ -41,14 +40,8 @@ public class CardServiceImpl implements CardService {
 	}
 
 	@Override
-	public void deleteCard(UUID id) {
-		cardRepository.deleteById(id);
-	}
-
-	@Override
-	public CardDto patchCard(UUID id, CardRequest request) {
-		Card card = cardRepository.findById(id).orElseThrow(
-			() -> new EntityNotFoundException("Card with ID " + id + " not found"));
+	public CardDto patchCard(UUID id, CardRequest request) throws EntityNotFoundException {
+		Card card = cardRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
 		cardMapper.updateFromRequest(request, card);
 		Card result = cardRepository.save(card);

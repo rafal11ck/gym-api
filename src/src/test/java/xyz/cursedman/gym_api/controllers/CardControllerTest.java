@@ -29,6 +29,21 @@ class CardControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	private final String validCardUuid = "5bd05494-155e-4bd1-b14c-61421d0caaae";
+
+	private final String validCountryUuid = "352ed7f1-8bb1-4baa-9ca7-88995ec58d8a";
+
+	private final CardRequest validCardRequest = CardRequest.builder()
+		.cardNumber("123")
+		.nameOnCard("John Doe")
+		.cvv("123")
+		.dateOfBirth(new Date())
+		.postalCode("21-370")
+		.countryUuid(UUID.fromString(validCountryUuid))
+		.build();
+
+	// GET
+
 	@Test
 	void checkIfGetCardsReturnsHttp200AndAllRecords() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/cards"))
@@ -38,56 +53,72 @@ class CardControllerTest {
 
 	@Test
 	void checkIfGetCardByIdReturnsHttp200AndRequestedRecord() throws Exception {
-		String validCardUuid = "5bd05494-155e-4bd1-b14c-61421d0caaae";
 		mockMvc.perform(MockMvcRequestBuilders.get("/cards/" + validCardUuid))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$").exists());
 	}
 
 	@Test
-	void checkIfCreateCardReturnsHttp201AndCreatedRecord() throws Exception {
-		UUID validCountryUuid = UUID.fromString("352ed7f1-8bb1-4baa-9ca7-88995ec58d8a");
-		CardRequest cardRequest = CardRequest.builder()
-			.cardNumber("123")
-			.nameOnCard("John Doe")
-			.cvv("123")
-			.dateOfBirth(new Date())
-			.postalCode("21-370")
-			.countryUuid(validCountryUuid)
-			.build();
+	void checkIfGetNonExistingCardReturns404AndEmptyBody() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/cards/" + UUID.randomUUID()))
+			.andExpect(MockMvcResultMatchers.status().isNotFound())
+			.andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
+	}
 
+	// POST
+
+	@Test
+	void checkIfCreateCardReturnsHttp201AndCreatedRecord() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.post("/cards")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.stringify(cardRequest))
-			).andExpect(MockMvcResultMatchers.status().isCreated())
-			.andExpect(TestJsonHelper.contentEqualsJsonOf(cardRequest, "countryUuid"))
-			.andExpect(
-				MockMvcResultMatchers.jsonPath("$.country.uuid", Matchers.is(validCountryUuid.toString()))
-			);
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(TestJsonHelper.stringify(validCardRequest))
+		).andExpect(MockMvcResultMatchers.status().isCreated())
+		.andExpect(TestJsonHelper.contentEqualsJsonOf(validCardRequest, "countryUuid"))
+		.andExpect(
+			MockMvcResultMatchers.jsonPath("$.country.uuid", Matchers.is(validCountryUuid))
+		);
 	}
 
 	@Test
-	void checkIfCardPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
-		UUID validCardUuid = UUID.fromString("5bd05494-155e-4bd1-b14c-61421d0caaae");
-		UUID validCountryUuid = UUID.fromString("352ed7f1-8bb1-4baa-9ca7-88995ec58d8a");
-		CardRequest cardRequest = CardRequest.builder()
-			.cardNumber("123")
-			.nameOnCard("John Doe")
-			.cvv("123")
-			.dateOfBirth(new Date())
-			.postalCode("21-370")
-			.countryUuid(validCountryUuid)
-			.build();
+	void checkIfInvalidCardCreateBodyReturnsHttp400() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.post("/cards")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{}")
+		).andExpect(MockMvcResultMatchers.status().isBadRequest());
+	}
 
+	// PATCH
+
+	@Test
+	void checkIfCardPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch("/cards/" + validCardUuid)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.stringify(cardRequest))
+				.content(TestJsonHelper.stringify(validCardRequest))
 		).andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(TestJsonHelper.contentEqualsJsonOf(cardRequest, "countryUuid"))
+		.andExpect(TestJsonHelper.contentEqualsJsonOf(validCardRequest, "countryUuid"))
 		.andExpect(
-			MockMvcResultMatchers.jsonPath("$.country.uuid", Matchers.is(validCountryUuid.toString()))
+			MockMvcResultMatchers.jsonPath("$.country.uuid", Matchers.is(validCountryUuid))
 		);
+	}
+
+	@Test
+	void checkIfCardPatchUpdateOfNonExistingCardReturnsHttp404() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.patch("/cards/" + UUID.randomUUID())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(TestJsonHelper.stringify(validCardRequest))
+		).andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	@Test
+	void checkIfInvalidCardPatchUpdateBodyReturnsHttp400() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.patch("/cards/" + validCardUuid)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{}")
+		).andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 }

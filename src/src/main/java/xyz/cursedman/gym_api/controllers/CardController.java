@@ -1,5 +1,6 @@
 package xyz.cursedman.gym_api.controllers;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,20 +26,29 @@ public class CardController {
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<CardDto> getCard(@Valid @PathVariable UUID id) {
-		CardDto cardDto = cardService.getCard(id);
-		return ResponseEntity.ok(cardDto);
+		try {
+			CardDto cardDto = cardService.getCard(id);
+			return ResponseEntity.ok(cardDto);
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@PostMapping
-	public ResponseEntity<CardDto> createCard(@RequestBody CardRequest cardRequestDto) {
-		return new ResponseEntity<>(cardService.createCard(cardRequestDto), HttpStatus.CREATED);
+	public ResponseEntity<CardDto> createCard(@Valid @RequestBody CardRequest cardRequestDto) {
+		CardDto createdCard = cardService.createCard(cardRequestDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdCard);
 	}
 
 	@PatchMapping(path = "/{id}")
 	public ResponseEntity<CardDto> updateCard(
 		@Valid @PathVariable UUID id,
-		@RequestBody CardRequest request
+		@Valid @RequestBody CardRequest request
 	) {
-		return ResponseEntity.ok(cardService.patchCard(id, request));
+		try {
+			return ResponseEntity.ok(cardService.patchCard(id, request));
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
 	}
 }

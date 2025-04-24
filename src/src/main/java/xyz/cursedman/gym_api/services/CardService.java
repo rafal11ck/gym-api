@@ -1,5 +1,6 @@
 package xyz.cursedman.gym_api.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import xyz.cursedman.gym_api.domain.dtos.card.CardDto;
 import xyz.cursedman.gym_api.domain.dtos.card.CardRequest;
 
@@ -9,11 +10,9 @@ import java.util.UUID;
 public interface CardService {
 	List<CardDto> listCards();
 
-	CardDto getCard(UUID id);
+	CardDto getCard(UUID id) throws EntityNotFoundException;
 
 	CardDto createCard(CardRequest cardToCreate);
 
-	CardDto patchCard(UUID id, CardRequest request);
-
-	void deleteCard(UUID id);
+	CardDto patchCard(UUID id, CardRequest request) throws EntityNotFoundException;
 }
