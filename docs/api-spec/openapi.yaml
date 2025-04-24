@@ -37,6 +37,37 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/TargetMuscleDto"
+  /membership-types:
+    get:
+      tags:
+      - membership-type-controller
+      operationId: listCards
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MembershipTypeDto"
+    post:
+      tags:
+      - membership-type-controller
+      operationId: createMembershipType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MembershipTypeRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/MembershipTypeDto"
   /exercises:
     get:
       tags:
@@ -72,7 +103,7 @@ paths:
     get:
       tags:
       - card-controller
-      operationId: listCards
+      operationId: listCards_1
       responses:
         "200":
           description: OK
@@ -90,7 +121,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateCardRequest"
+              $ref: "#/components/schemas/CardRequest"
         required: true
       responses:
         "200":
@@ -99,10 +130,28 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/CardDto"
-  /cards/{id}:
+  /membership-types/{id}:
+    delete:
+      tags:
+      - membership-type-controller
+      operationId: deleteMembershipType
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/MembershipTypeDto"
     patch:
       tags:
-      - card-controller
+      - membership-type-controller
       operationId: updateCard
       parameters:
       - name: id
@@ -115,7 +164,50 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateCardRequest"
+              $ref: "#/components/schemas/MembershipTypeRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/MembershipTypeDto"
+  /cards/{id}:
+    get:
+      tags:
+      - card-controller
+      operationId: getCard
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CardDto"
+    patch:
+      tags:
+      - card-controller
+      operationId: updateCard_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardRequest"
         required: true
       responses:
         "200":
@@ -184,6 +276,25 @@ components:
           format: uuid
         name:
           type: string
+    MembershipTypeRequest:
+      type: object
+      properties:
+        type:
+          type: string
+        price:
+          type: number
+          format: float
+    MembershipTypeDto:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        type:
+          type: string
+        price:
+          type: number
+          format: float
     CreateExerciseRequest:
       type: object
       properties:
@@ -208,7 +319,7 @@ components:
           items:
             $ref: "#/components/schemas/TargetMuscleDto"
           uniqueItems: true
-    CreateCardRequest:
+    CardRequest:
       type: object
       properties:
         countryUuid:
@@ -225,6 +336,13 @@ components:
           type: string
         postalCode:
           type: string
+      required:
+      - cardNumber
+      - countryUuid
+      - cvv
+      - dateOfBirth
+      - nameOnCard
+      - postalCode
     CardDto:
       type: object
       properties:
@@ -254,23 +372,6 @@ components:
           type: string
       required:
       - countryName
-    UpdateCardRequest:
-      type: object
-      properties:
-        countryUuid:
-          type: string
-          format: uuid
-        cardNumber:
-          type: string
-        cvv:
-          type: string
-        dateOfBirth:
-          type: string
-          format: date-time
-        nameOnCard:
-          type: string
-        postalCode:
-          type: string
     CountryDto:
       type: object
       properties:
