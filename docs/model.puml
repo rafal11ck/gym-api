@@ -6,9 +6,6 @@ enum "user_role" as user_role {
     role
 }
 
-
-
-
 entity "card" as card {
     id
     number
@@ -140,19 +137,6 @@ entity "maintenance_task" as maintenance_task {
     description
 }
 
-enum "request_type" as request_type {
-    id
-    type
-}
-
-entity "request" as request {
-    id
-    id_request_type
-    id_user
-    id_new_user_details
-    id_new_card
-}
-
 entity "chat" as chat {
     id
 }
@@ -197,17 +181,11 @@ payment }|--|| membership
 payment }|--|| card
 
 maintenance_task }|--|| hall
-maintenance_task }|---|| user
-
-request }|-left-|| request_type
-request }|---|| user
-request }|--|| user_details
-request }|--|| card
+maintenance_task }|--|| user
 
 message }|--|| chat
 message }|--|| user
 
-chat_participant }|---|| chat
+chat_participant }|--|| chat
 chat_participant }|--|| user
-
 @enduml
