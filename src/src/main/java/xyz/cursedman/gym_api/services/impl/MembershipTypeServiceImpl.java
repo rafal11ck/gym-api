@@ -27,6 +27,11 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
 	}
 
 	@Override
+	public MembershipType getMembershipTypeEntity(UUID id) {
+		return membershipTypeRepository.findById(id).orElse(null);
+	}
+
+	@Override
 	public MembershipTypeDto getMembershipType(UUID id) throws EntityNotFoundException {
 		return membershipTypeRepository
 			.findById(id)
