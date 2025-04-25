@@ -1,5 +1,6 @@
 package xyz.cursedman.gym_api.controllers;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,22 +25,30 @@ public class MembershipTypeController {
 		return ResponseEntity.ok(membershipTypeService.listMembershipTypes());
 	}
 
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<MembershipTypeDto> getCard(@Valid @PathVariable UUID id) {
+		try {
+			MembershipTypeDto membershipTypeDto = membershipTypeService.getMembershipType(id);
+			return ResponseEntity.ok(membershipTypeDto);
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
 	@PostMapping
-	public ResponseEntity<MembershipTypeDto> createMembershipType(@RequestBody MembershipTypeRequest request) {
+	public ResponseEntity<MembershipTypeDto> createMembershipType(@Valid @RequestBody MembershipTypeRequest request) {
 		return new ResponseEntity<>(membershipTypeService.createMembershipType(request), HttpStatus.CREATED);
 	}
 
 	@PatchMapping(path = "/{id}")
 	public ResponseEntity<MembershipTypeDto> updateCard(
 		@Valid @PathVariable UUID id,
-		@RequestBody MembershipTypeRequest request
+		@Valid @RequestBody MembershipTypeRequest request
 	) {
-		return ResponseEntity.ok(membershipTypeService.patchMembershipType(id, request));
-	}
-
-	@DeleteMapping(path = "/{id}")
-	public ResponseEntity<MembershipTypeDto> deleteMembershipType(@Valid @PathVariable UUID id) {
-		membershipTypeService.deleteMembershipType(id);
-		return ResponseEntity.noContent().build();
+		try {
+			return ResponseEntity.ok(membershipTypeService.patchMembershipType(id, request));
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
 	}
 }

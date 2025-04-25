@@ -18,11 +18,20 @@ import java.util.UUID;
 public class MembershipTypeServiceImpl implements MembershipTypeService {
 
 	private final MembershipTypeRepository membershipTypeRepository;
+
 	private final MembershipTypeMapper membershipTypeMapper;
 
 	@Override
 	public List<MembershipTypeDto> listMembershipTypes() {
 		return membershipTypeRepository.findAll().stream().map(membershipTypeMapper::toDtoFromEntity).toList();
+	}
+
+	@Override
+	public MembershipTypeDto getMembershipType(UUID id) throws EntityNotFoundException {
+		return membershipTypeRepository
+			.findById(id)
+			.map(membershipTypeMapper::toDtoFromEntity)
+			.orElseThrow(EntityNotFoundException::new);
 	}
 
 	@Override
@@ -33,18 +42,18 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
 	}
 
 	@Override
-	public MembershipTypeDto patchMembershipType(UUID membershipTypeId, MembershipTypeRequest request) {
-		MembershipType membershipType = membershipTypeRepository.findById(membershipTypeId).orElseThrow(
-			() -> new EntityNotFoundException("MembershipType with ID " + membershipTypeId + " not found"));
+	public MembershipTypeDto patchMembershipType(
+		UUID membershipTypeId,
+		MembershipTypeRequest request
+	) throws EntityNotFoundException {
+
+		MembershipType membershipType = membershipTypeRepository
+			.findById(membershipTypeId)
+			.orElseThrow(EntityNotFoundException::new);
 
 		membershipTypeMapper.updateFromRequest(request, membershipType);
 		MembershipType result = membershipTypeRepository.save(membershipType);
 
 		return membershipTypeMapper.toDtoFromEntity(result);
-	}
-
-	@Override
-	public void deleteMembershipType(UUID membershipTypeId) {
-		membershipTypeRepository.deleteById(membershipTypeId);
 	}
 }
