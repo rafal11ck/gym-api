@@ -35,21 +35,21 @@ class MembershipTypeControllerTest {
 	// GET
 
 	@Test
-	void checkIfGetMembershipTypesReturnsHttp200AndAllRecords() throws Exception {
+	void checkIfGetReturnsHttp200AndAllRecords() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.greaterThan(0)));
 	}
 
 	@Test
-	void checkIfGetMembershipTypeByIdReturnsHttp200AndRequestedRecord() throws Exception {
+	void checkIfGetByIdReturnsHttp200AndRequestedRecord() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri + "/" + validMembershipTypeUuid))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$").exists());
 	}
 
 	@Test
-	void checkIfGetNonExistingMembershipTypeReturns404AndEmptyBody() throws Exception {
+	void checkIfGetNonExistingRecordReturns404AndEmptyBody() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri + "/" + UUID.randomUUID()))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
@@ -58,7 +58,7 @@ class MembershipTypeControllerTest {
 	// POST
 
 	@Test
-	void checkIfCreateMembershipTypeReturnsHttp201AndCreatedRecord() throws Exception {
+	void checkIfCreateReturnsHttp201AndCreatedRecord() throws Exception {
 		mockMvc.perform(
 				MockMvcRequestBuilders.post(endpointUri)
 					.contentType(MediaType.APPLICATION_JSON)
@@ -68,7 +68,7 @@ class MembershipTypeControllerTest {
 	}
 
 	@Test
-	void checkIfInvalidMembershipTypeCreateBodyReturnsHttp400() throws Exception {
+	void checkIfInvalidCreateBodyReturnsHttp400() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.post(endpointUri)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -79,7 +79,7 @@ class MembershipTypeControllerTest {
 	// PATCH
 
 	@Test
-	void checkIfMembershipTypePatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
+	void checkIfPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch(endpointUri + "/" + validMembershipTypeUuid)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -89,7 +89,7 @@ class MembershipTypeControllerTest {
 	}
 
 	@Test
-	void checkIfPatchUpdateOfNonExistingMembershipTypeReturnsHttp404() throws Exception {
+	void checkIfPatchUpdateOfNonExistingRecordReturnsHttp404() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch(endpointUri + "/" + UUID.randomUUID())
 				.contentType(MediaType.APPLICATION_JSON)
@@ -98,7 +98,7 @@ class MembershipTypeControllerTest {
 	}
 
 	@Test
-	void checkIfInvalidMembershipTypePatchUpdateBodyReturnsHttp400() throws Exception {
+	void checkIfInvalidPatchUpdateBodyReturnsHttp400() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch(endpointUri + "/" + validMembershipTypeUuid)
 				.contentType(MediaType.APPLICATION_JSON)

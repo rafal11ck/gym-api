@@ -1,6 +1,5 @@
 package xyz.cursedman.gym_api.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +19,8 @@ class TargetMuscleControllerTest {
 	@Autowired
 	MockMvc mockMvc;
 
-	@Autowired
-	ObjectMapper objectMapper = new ObjectMapper();
-
 	@Test
-	void checkIfGetTargetMuscleReturnsHttp200AndAllRecords() throws Exception {
+	void checkIfGetReturnsHttp200AndAllRecords() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/target-muscles"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.greaterThan(0)));
