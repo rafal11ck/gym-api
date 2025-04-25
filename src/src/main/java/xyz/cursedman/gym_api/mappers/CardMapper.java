@@ -15,4 +15,9 @@ public interface CardMapper extends GenericMapper<Card, CardDto, CardRequest> {
 	@Override
 	@Mapping(target = "country", source = "countryUuid")
 	Card toEntityFromRequest(CardRequest request);
+
+	@Override
+	@Mapping(target = "country", source = "countryUuid")
+	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+	void updateFromRequest(CardRequest request, @MappingTarget Card entity);
 }
