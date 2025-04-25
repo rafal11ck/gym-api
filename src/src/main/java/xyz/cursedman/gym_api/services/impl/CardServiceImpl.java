@@ -42,10 +42,9 @@ public class CardServiceImpl implements CardService {
 	@Override
 	public CardDto patchCard(UUID id, CardRequest request) throws EntityNotFoundException {
 		Card card = cardRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-
 		cardMapper.updateFromRequest(request, card);
-		Card result = cardRepository.save(card);
 
+		Card result = cardRepository.save(card);
 		return cardMapper.toDtoFromEntity(result);
 	}
 }

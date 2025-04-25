@@ -10,7 +10,7 @@ import xyz.cursedman.gym_api.services.CountryService;
 public interface CardMapper extends GenericMapper<Card, CardDto, CardRequest> {
 	@Override
 	@Mapping(target = "countryUuid", source = "country.uuid")
-	CardRequest toRequestFromEntity(Card dto);
+	CardRequest toRequestFromEntity(Card entity);
 
 	@Override
 	@Mapping(target = "country", source = "countryUuid")

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.util.StdDateFormat;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class TestJsonHelper {
@@ -34,5 +35,11 @@ public class TestJsonHelper {
 		String json = objectMapper.writeValueAsString(jsonMap);
 
 		return MockMvcResultMatchers.content().json(json);
+	}
+
+	public static <T> String toJSONField(String fieldName, T fieldValue) throws Exception {
+		Map<String, T> map = new HashMap<>();
+		map.put(fieldName, fieldValue);
+		return objectMapper.writeValueAsString(map);
 	}
 }
