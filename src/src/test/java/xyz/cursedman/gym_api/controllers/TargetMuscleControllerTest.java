@@ -17,11 +17,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 class TargetMuscleControllerTest {
 
 	@Autowired
-	MockMvc mockMvc;
+	private MockMvc mockMvc;
+
+	private final String endpointUri = "/target-muscles";
 
 	@Test
 	void checkIfGetReturnsHttp200AndAllRecords() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/target-muscles"))
+		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.greaterThan(0)));
 	}

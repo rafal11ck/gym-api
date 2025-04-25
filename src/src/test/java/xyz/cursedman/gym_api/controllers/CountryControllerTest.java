@@ -23,10 +23,12 @@ class CountryControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	private final String endpointUri = "/countries";
+
 	@Test
 	void checkIfGetReturnsHttp200AndAllRecords() throws Exception {
 		mockMvc.perform(
-			MockMvcRequestBuilders.get("/countries")
+			MockMvcRequestBuilders.get(endpointUri)
 		).andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.greaterThan(0)));
 	}
