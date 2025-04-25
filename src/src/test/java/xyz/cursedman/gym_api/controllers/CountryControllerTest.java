@@ -24,7 +24,7 @@ class CountryControllerTest {
 	private MockMvc mockMvc;
 
 	@Test
-	void checkIfGetRequestReturnsHttp200AndAllRecords() throws Exception {
+	void checkIfGetReturnsHttp200AndAllRecords() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.get("/countries")
 		).andExpect(MockMvcResultMatchers.status().isOk())

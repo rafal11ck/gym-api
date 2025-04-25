@@ -45,21 +45,21 @@ class CardControllerTest {
 	// GET
 
 	@Test
-	void checkIfGetCardsReturnsHttp200AndAllRecords() throws Exception {
+	void checkIfGetReturnsHttp200AndAllRecords() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/cards"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.greaterThan(0)));
 	}
 
 	@Test
-	void checkIfGetCardByIdReturnsHttp200AndRequestedRecord() throws Exception {
+	void checkIfGetByIdReturnsHttp200AndRequestedRecord() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/cards/" + validCardUuid))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$").exists());
 	}
 
 	@Test
-	void checkIfGetNonExistingCardReturns404AndEmptyBody() throws Exception {
+	void checkIfGetNonExistingRecordReturns404AndEmptyBody() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/cards/" + UUID.randomUUID()))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
@@ -68,7 +68,7 @@ class CardControllerTest {
 	// POST
 
 	@Test
-	void checkIfCreateCardReturnsHttp201AndCreatedRecord() throws Exception {
+	void checkIfCreateReturnsHttp201AndCreatedRecord() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.post("/cards")
 			.contentType(MediaType.APPLICATION_JSON)
@@ -81,7 +81,7 @@ class CardControllerTest {
 	}
 
 	@Test
-	void checkIfInvalidCardCreateBodyReturnsHttp400() throws Exception {
+	void checkIfInvalidCreateBodyReturnsHttp400() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.post("/cards")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -92,7 +92,7 @@ class CardControllerTest {
 	// PATCH
 
 	@Test
-	void checkIfCardPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
+	void checkIfPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch("/cards/" + validCardUuid)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -105,7 +105,7 @@ class CardControllerTest {
 	}
 
 	@Test
-	void checkIfCardPatchUpdateOfNonExistingCardReturnsHttp404() throws Exception {
+	void checkIfPatchUpdateOfNonExistingRecordReturnsHttp404() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch("/cards/" + UUID.randomUUID())
 				.contentType(MediaType.APPLICATION_JSON)
@@ -114,7 +114,7 @@ class CardControllerTest {
 	}
 
 	@Test
-	void checkIfInvalidCardPatchUpdateBodyReturnsHttp400() throws Exception {
+	void checkIfInvalidPatchUpdateBodyReturnsHttp400() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch("/cards/" + validCardUuid)
 				.contentType(MediaType.APPLICATION_JSON)
