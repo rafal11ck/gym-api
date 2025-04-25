@@ -43,7 +43,7 @@ public class CardController {
 	@PatchMapping(path = "/{id}")
 	public ResponseEntity<CardDto> updateCard(
 		@Valid @PathVariable UUID id,
-		@Valid @RequestBody CardRequest request
+		@RequestBody CardRequest request
 	) {
 		try {
 			return ResponseEntity.ok(cardService.patchCard(id, request));

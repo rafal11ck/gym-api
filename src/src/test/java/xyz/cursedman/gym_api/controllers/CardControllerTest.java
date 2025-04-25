@@ -95,14 +95,14 @@ class CardControllerTest {
 
 	@Test
 	void checkIfPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
+		String countryUuidToUpdate = "55fbb9f2-22ae-4195-a390-92a9d740d7cb";
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch(endpointUri + "/" + validCardUuid)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.stringify(validCardRequest))
+				.content(TestJsonHelper.toJSONField("countryUuid", countryUuidToUpdate))
 		).andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(TestJsonHelper.contentEqualsJsonOf(validCardRequest, "countryUuid"))
 		.andExpect(
-			MockMvcResultMatchers.jsonPath("$.country.uuid", Matchers.is(validCountryUuid))
+			MockMvcResultMatchers.jsonPath("$.country.uuid", Matchers.is(countryUuidToUpdate))
 		);
 	}
 
@@ -113,14 +113,5 @@ class CardControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(TestJsonHelper.stringify(validCardRequest))
 		).andExpect(MockMvcResultMatchers.status().isNotFound());
-	}
-
-	@Test
-	void checkIfInvalidPatchUpdateBodyReturnsHttp400() throws Exception {
-		mockMvc.perform(
-			MockMvcRequestBuilders.patch(endpointUri + "/" + validCardUuid)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("{}")
-		).andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 }

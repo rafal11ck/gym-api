@@ -43,7 +43,7 @@ public class MembershipTypeController {
 	@PatchMapping(path = "/{id}")
 	public ResponseEntity<MembershipTypeDto> updateCard(
 		@Valid @PathVariable UUID id,
-		@Valid @RequestBody MembershipTypeRequest request
+		@RequestBody MembershipTypeRequest request
 	) {
 		try {
 			return ResponseEntity.ok(membershipTypeService.patchMembershipType(id, request));
