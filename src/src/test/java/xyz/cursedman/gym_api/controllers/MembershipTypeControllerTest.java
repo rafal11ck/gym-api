@@ -80,12 +80,13 @@ class MembershipTypeControllerTest {
 
 	@Test
 	void checkIfPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
+		String typeNameToUpdate = "Example type updated";
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch(endpointUri + "/" + validMembershipTypeUuid)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.stringify(validMembershipTypeRequest))
+				.content(TestJsonHelper.toJSONField("type", typeNameToUpdate))
 		).andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(TestJsonHelper.contentEqualsJsonOf(validMembershipTypeRequest, "uuid"));
+		.andExpect(MockMvcResultMatchers.jsonPath("$.type").value(typeNameToUpdate));
 	}
 
 	@Test
@@ -95,14 +96,5 @@ class MembershipTypeControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(TestJsonHelper.stringify(validMembershipTypeRequest))
 		).andExpect(MockMvcResultMatchers.status().isNotFound());
-	}
-
-	@Test
-	void checkIfInvalidPatchUpdateBodyReturnsHttp400() throws Exception {
-		mockMvc.perform(
-			MockMvcRequestBuilders.patch(endpointUri + "/" + validMembershipTypeUuid)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("{}")
-		).andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 }

@@ -87,7 +87,6 @@ class MembershipControllerTest {
 	@Test
 	void checkIfPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
 		String membershipTypeUuidToUpdate = "38dc2c0f-566f-48c7-a147-95fd0f0632ee";
-
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch(endpointUri + "/" + validMembershipUuid)
 				.contentType(MediaType.APPLICATION_JSON)
