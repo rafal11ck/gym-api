@@ -1,8 +1,10 @@
 package xyz.cursedman.gym_api.domain.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -19,9 +21,21 @@ public final class User {
 	@ManyToOne(fetch = FetchType.LAZY)
 	Card card;
 
-	@OneToOne()
-	Membership memberShip;
+	@OneToOne
+	Membership membership;
 
-	@OneToOne()
-	UserDetails userDetails;
+	@NotNull
+	String firstName;
+
+	@NotNull
+	String lastName;
+
+	@NotNull
+	Date dateOfBirth;
+
+	String email;
+
+	String phoneNumber;
+
+	String imageUrl;
 }
