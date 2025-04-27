@@ -53,4 +53,11 @@ public class MembershipServiceImpl implements MembershipService  {
 		Membership savedMembership = membershipRepository.save(membership);
 		return membershipMapper.toDtoFromEntity(savedMembership);
 	}
+
+	@Override
+	public Membership getMembershipById(UUID id) {
+		return membershipRepository.findById(id).orElseThrow(
+			() -> new EntityNotFoundException("Membership with ID " + id + " not found")
+		);
+	}
 }

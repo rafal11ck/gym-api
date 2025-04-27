@@ -16,7 +16,9 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class CardServiceImpl implements CardService {
+
 	private final CardRepository cardRepository;
+
 	private final CardMapper cardMapper;
 
 	@Override
@@ -46,5 +48,12 @@ public class CardServiceImpl implements CardService {
 
 		Card result = cardRepository.save(card);
 		return cardMapper.toDtoFromEntity(result);
+	}
+
+	@Override
+	public Card getCardByUUID(UUID id) {
+		return cardRepository.findById(id).orElseThrow(
+			() -> new EntityNotFoundException("Card with ID " + id + " not found")
+		);
 	}
 }
