@@ -7,7 +7,7 @@ import xyz.cursedman.gym_api.domain.entities.Membership;
 import xyz.cursedman.gym_api.services.MembershipTypeService;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = MembershipTypeService.class)
-public interface MembershipMapper extends GenericMapper<Membership, MembershipDto, MembershipRequest> {
+public interface MembershipMapper extends EntityRequestMapper<Membership, MembershipDto, MembershipRequest> {
 	@Override
 	@Mapping(target = "membershipTypeUuid", source = "membershipType.uuid")
 	MembershipRequest toRequestFromEntity(Membership entity);

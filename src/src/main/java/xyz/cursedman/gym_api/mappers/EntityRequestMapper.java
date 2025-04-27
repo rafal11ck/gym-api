@@ -2,11 +2,7 @@ package xyz.cursedman.gym_api.mappers;
 
 import org.mapstruct.*;
 
-public interface GenericMapper<EntityT, DtoT, RequestT> {
-	DtoT toDtoFromEntity(EntityT entity);
-
-	EntityT toEntityFromDto(DtoT dto);
-
+public interface EntityRequestMapper<EntityT, DtoT, RequestT> extends EntityMapper<EntityT, DtoT> {
 	EntityT toEntityFromRequest(RequestT request);
 
 	RequestT toRequestFromEntity(EntityT entity);

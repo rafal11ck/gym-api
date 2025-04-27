@@ -7,7 +7,7 @@ import xyz.cursedman.gym_api.domain.entities.Card;
 import xyz.cursedman.gym_api.services.CountryService;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = CountryService.class)
-public interface CardMapper extends GenericMapper<Card, CardDto, CardRequest> {
+public interface CardMapper extends EntityRequestMapper<Card, CardDto, CardRequest> {
 	@Override
 	@Mapping(target = "countryUuid", source = "country.uuid")
 	CardRequest toRequestFromEntity(Card entity);
