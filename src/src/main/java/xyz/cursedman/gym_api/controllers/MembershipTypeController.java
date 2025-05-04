@@ -21,12 +21,12 @@ public class MembershipTypeController {
 	private final MembershipTypeService membershipTypeService;
 
 	@GetMapping
-	public ResponseEntity<List<MembershipTypeDto>> listCards() {
+	public ResponseEntity<List<MembershipTypeDto>> listMembershipTypes() {
 		return ResponseEntity.ok(membershipTypeService.listMembershipTypes());
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<MembershipTypeDto> getCard(@Valid @PathVariable UUID id) {
+	public ResponseEntity<MembershipTypeDto> getMembershipType(@Valid @PathVariable UUID id) {
 		try {
 			MembershipTypeDto membershipTypeDto = membershipTypeService.getMembershipType(id);
 			return ResponseEntity.ok(membershipTypeDto);
