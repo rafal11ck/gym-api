@@ -1,0 +1,24 @@
+package xyz.cursedman.gym_api.services.impl;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import xyz.cursedman.gym_api.domain.dtos.hallType.HallTypeDto;
+import xyz.cursedman.gym_api.mappers.HallTypeMapper;
+import xyz.cursedman.gym_api.repositories.HallTypeRepository;
+import xyz.cursedman.gym_api.services.HallTypeService;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class HallTypeServiceImpl implements HallTypeService {
+
+	private final HallTypeRepository hallTypeRepository;
+
+	private final HallTypeMapper hallTypeMapper;
+
+	@Override
+	public List<HallTypeDto> listHallTypes() {
+		return hallTypeRepository.findAll().stream().map(hallTypeMapper::toDtoFromEntity).toList();
+	}
+}
