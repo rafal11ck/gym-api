@@ -13,15 +13,15 @@ INSERT INTO payment_status (uuid, status) VALUES ('dbc10aab-cce9-4813-b8b1-cb0ff
 INSERT INTO payment_status (uuid, status) VALUES ('6cc7d83c-cfb3-46d5-a6cb-d16b5f1ef246', 'Pending');
 INSERT INTO payment_status (uuid, status) VALUES ('0ebfdd32-7faf-48f1-8921-d59155acb756', 'Error');
 
-INSERT INTO payment (membership_uuid, status_uuid, uuid) VALUES ('06d25bae-8d09-4170-b566-fd17f2ee6a23', 'dbc10aab-cce9-4813-b8b1-cb0ff763b0b1', 'a9e17e91-8792-42dd-badd-f2639e09ebc2');
-INSERT INTO payment (membership_uuid, status_uuid, uuid) VALUES ('bbac838e-4a2f-4ef8-b562-075d64d8493a', '0ebfdd32-7faf-48f1-8921-d59155acb756', 'f36c3d20-00c6-4227-af89-ea8c04442ea5');
-
 INSERT INTO country (uuid, country_name) VALUES ('352ed7f1-8bb1-4baa-9ca7-88995ec58d8a', 'Poland');
 INSERT INTO country (uuid, country_name) VALUES ('15529918-2212-4451-ae0d-b9e0f2301bbd', 'USA');
 INSERT INTO country (uuid, country_name) VALUES ('55fbb9f2-22ae-4195-a390-92a9d740d7cb', 'Germany');
 
 INSERT INTO card (date_of_birth, country_uuid, uuid, card_number, cvv, name_on_card, postal_code) VALUES ('2025-04-23 19:34:43.34018', '352ed7f1-8bb1-4baa-9ca7-88995ec58d8a', '5bd05494-155e-4bd1-b14c-61421d0caaae', '1234123412341234', '069', 'John Pork', '21-000');
 INSERT INTO card (date_of_birth, country_uuid, uuid, card_number, cvv, name_on_card, postal_code) VALUES ('2025-04-23 19:35:20.328561', '15529918-2212-4451-ae0d-b9e0f2301bbd', 'ed36b15c-89d7-43cd-aa1b-354b2ec9067d', '2137213721372137', '213', 'Bob Beef', '21-370');
+
+INSERT INTO payment (card_uuid, membership_uuid, status_uuid, uuid) VALUES ('5bd05494-155e-4bd1-b14c-61421d0caaae', '06d25bae-8d09-4170-b566-fd17f2ee6a23', 'dbc10aab-cce9-4813-b8b1-cb0ff763b0b1', 'a9e17e91-8792-42dd-badd-f2639e09ebc2');
+INSERT INTO payment (card_uuid, membership_uuid, status_uuid, uuid) VALUES ('ed36b15c-89d7-43cd-aa1b-354b2ec9067d', 'bbac838e-4a2f-4ef8-b562-075d64d8493a', '0ebfdd32-7faf-48f1-8921-d59155acb756', 'f36c3d20-00c6-4227-af89-ea8c04442ea5');
 
 INSERT INTO user_role (uuid, role) VALUES ('0608911b-f8fa-4a83-8f63-f314030a36ed', 'Client');
 INSERT INTO user_role (uuid, role) VALUES ('645195cd-6194-4d9c-a361-4882e146ccfc', 'Employee');
