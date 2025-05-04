@@ -20,12 +20,12 @@ public class UserController {
 	private final UserService userService;
 
 	@GetMapping
-	public ResponseEntity<List<UserDto>> listCards() {
+	public ResponseEntity<List<UserDto>> listUsers() {
 		return ResponseEntity.ok(userService.listUsers());
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<UserDto> getCard(@Valid @PathVariable UUID id) {
+	public ResponseEntity<UserDto> getUser(@Valid @PathVariable UUID id) {
 		try {
 			UserDto userDto = userService.getUser(id);
 			return ResponseEntity.ok(userDto);
@@ -35,13 +35,13 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDto> createCard(@Valid @RequestBody UserRequest request) {
+	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserRequest request) {
 		UserDto createdUser = userService.createUser(request);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
 	}
 
 	@PatchMapping(path = "/{id}")
-	public ResponseEntity<UserDto> updateCard(
+	public ResponseEntity<UserDto> updateUser(
 		@Valid @PathVariable UUID id,
 		@RequestBody UserRequest request
 	) {
