@@ -17,7 +17,7 @@ public class PaymentStatusController {
 	private final PaymentStatusService paymentStatusService;
 
 	@GetMapping
-	public ResponseEntity<List<PaymentStatusDto>> listCards() {
+	public ResponseEntity<List<PaymentStatusDto>> listPaymentStatuses() {
 		return ResponseEntity.ok(paymentStatusService.listPaymentStatuses());
 	}
 }

@@ -20,12 +20,12 @@ public class PaymentController {
 	private final PaymentService paymentService;
 
 	@GetMapping
-	public ResponseEntity<List<PaymentDto>> listCards() {
+	public ResponseEntity<List<PaymentDto>> listPayments() {
 		return ResponseEntity.ok(paymentService.listPayments());
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<PaymentDto> getCard(@Valid @PathVariable UUID id) {
+	public ResponseEntity<PaymentDto> getPayment(@Valid @PathVariable UUID id) {
 		try {
 			PaymentDto paymentDto = paymentService.getPayment(id);
 			return ResponseEntity.ok(paymentDto);
@@ -35,13 +35,13 @@ public class PaymentController {
 	}
 
 	@PostMapping
-	public ResponseEntity<PaymentDto> createCard(@Valid @RequestBody PaymentRequest request) {
+	public ResponseEntity<PaymentDto> createPayment(@Valid @RequestBody PaymentRequest request) {
 		PaymentDto createdPayment = paymentService.createPayment(request);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdPayment);
 	}
 
 	@PatchMapping(path = "/{id}")
-	public ResponseEntity<PaymentDto> updateCard(
+	public ResponseEntity<PaymentDto> updatePayment(
 		@Valid @PathVariable UUID id,
 		@RequestBody PaymentRequest request
 	) {
