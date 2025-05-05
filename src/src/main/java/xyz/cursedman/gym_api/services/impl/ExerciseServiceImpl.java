@@ -1,5 +1,6 @@
 package xyz.cursedman.gym_api.services.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.entities.Exercise;
@@ -28,6 +29,13 @@ public class ExerciseServiceImpl implements ExerciseService {
 	@Override
 	public Exercise createExercise(Exercise exercise) {
 		return exerciseRepository.save(exercise);
+	}
+
+	@Override
+	public Exercise getExerciseByUuid(UUID id) {
+		return exerciseRepository.findById(id).orElseThrow(
+			() -> new EntityNotFoundException("Exercise with ID " + id + " not found")
+		);
 	}
 }
 

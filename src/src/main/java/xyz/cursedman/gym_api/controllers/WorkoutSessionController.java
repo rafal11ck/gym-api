@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionDto;
+import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionExerciseRequest;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionRequest;
+import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionUserRequest;
 import xyz.cursedman.gym_api.services.WorkoutSessionService;
 
 import java.util.List;
@@ -18,6 +20,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class WorkoutSessionController {
 	private final WorkoutSessionService workoutSessionService;
+
+	// workout session
 
 	@GetMapping
 	public ResponseEntity<List<WorkoutSessionDto>> listWorkoutSessions() {
@@ -49,6 +53,60 @@ public class WorkoutSessionController {
 	) {
 		try {
 			return ResponseEntity.ok(workoutSessionService.patchWorkoutSession(id, request));
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	// session attendants
+
+	@PostMapping("/{id}/attendants")
+	public ResponseEntity<WorkoutSessionDto> addWorkoutSessionAttendant(
+		@Valid @PathVariable UUID id,
+		@RequestBody @Valid WorkoutSessionUserRequest request
+	) {
+		try {
+			return ResponseEntity.ok(workoutSessionService.addAttendantToWorkoutSession(id, request));
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@DeleteMapping("/{id}/attendants/{userId}")
+	public ResponseEntity<Void> deleteWorkoutSessionAttendant(
+		@Valid @PathVariable UUID id,
+		@Valid @PathVariable UUID userId
+	) {
+		try {
+			workoutSessionService.deleteWorkoutSessionAttendant(id, userId);
+			return ResponseEntity.noContent().build();
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	// session exercises
+
+	@PostMapping("/{id}/exercises")
+	public ResponseEntity<WorkoutSessionDto> addWorkoutSessionExercise(
+		@Valid @PathVariable UUID id,
+		@RequestBody @Valid WorkoutSessionExerciseRequest request
+	) {
+		try {
+			return ResponseEntity.ok(workoutSessionService.addExerciseToWorkoutSession(id, request));
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@DeleteMapping("/{id}/exercises/{exerciseId}")
+	public ResponseEntity<Void> deleteWorkoutSessionExercise(
+		@Valid @PathVariable UUID id,
+		@Valid @PathVariable UUID exerciseId
+	) {
+		try {
+			workoutSessionService.deleteWorkoutSessionExercise(id, exerciseId);
+			return ResponseEntity.noContent().build();
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.notFound().build();
 		}

@@ -4,13 +4,14 @@ import org.mapstruct.*;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionDto;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionRequest;
 import xyz.cursedman.gym_api.domain.entities.WorkoutSession;
+import xyz.cursedman.gym_api.services.ExerciseService;
 import xyz.cursedman.gym_api.services.HallService;
 import xyz.cursedman.gym_api.services.UserService;
 
 @Mapper(
 	componentModel = "spring",
 	unmappedTargetPolicy = ReportingPolicy.IGNORE,
-	uses = { HallService.class, UserService.class }
+	uses = { HallService.class, UserService.class, ExerciseService.class}
 )
 public interface WorkoutSessionMapper extends EntityRequestMapper<
 	WorkoutSession, WorkoutSessionDto, WorkoutSessionRequest
