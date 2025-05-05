@@ -11,4 +11,7 @@ public interface ExerciseService {
 	void deleteExercise(UUID id);
 
 	Exercise createExercise(Exercise exercise);
+
+	// used by mapper
+	Exercise getExerciseByUuid(UUID id);
 }

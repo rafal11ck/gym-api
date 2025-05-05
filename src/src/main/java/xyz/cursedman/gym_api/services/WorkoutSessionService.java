@@ -2,7 +2,9 @@ package xyz.cursedman.gym_api.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionDto;
+import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionExerciseRequest;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionRequest;
+import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionUserRequest;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,4 +17,16 @@ public interface WorkoutSessionService {
 	WorkoutSessionDto createWorkoutSession(WorkoutSessionRequest request);
 
 	WorkoutSessionDto patchWorkoutSession(UUID id, WorkoutSessionRequest request) throws EntityNotFoundException;
+
+	WorkoutSessionDto addAttendantToWorkoutSession(UUID workoutSessionId, WorkoutSessionUserRequest request)
+		throws EntityNotFoundException;
+
+	void deleteWorkoutSessionAttendant(UUID workoutSessionId, UUID userId)
+		throws EntityNotFoundException;
+
+	WorkoutSessionDto addExerciseToWorkoutSession(UUID workoutSessionId, WorkoutSessionExerciseRequest request)
+		throws EntityNotFoundException;
+
+	void deleteWorkoutSessionExercise(UUID workoutSessionId, UUID exerciseId)
+		throws EntityNotFoundException;
 }

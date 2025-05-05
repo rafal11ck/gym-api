@@ -13,10 +13,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionExerciseRequest;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionRequest;
+import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionUserRequest;
 import xyz.cursedman.gym_api.helpers.TestJsonHelper;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 @SpringBootTest
@@ -30,11 +33,15 @@ class WorkoutSessionControllerTest {
 
 	private final String endpointUri = "/workout-sessions";
 
-	private final String validWorkoutSessionUuid = "8d64dca2-87dc-479f-bcb5-9f91b16d870c";
-
 	private final String validHallUuid = "ce5f8d01-6fa8-4226-97fc-51d3e9cd91e5";
 
 	private final String validCoachUuid = "4a3e70f9-bd65-45c4-a47a-eaae0a0d3d56";
+
+	private final Map<String, String> validWorkoutSessionUuids = Map.of(
+		"attendant_uuid", "65f40335-135a-47ec-ad7d-72278c4be65c",
+		"exercise_uuid", "ee371adf-3ac7-4a0a-a6c2-254990c1c80f",
+		"workout_session_uuid", "8d64dca2-87dc-479f-bcb5-9f91b16d870c"
+	);
 
 	private final WorkoutSessionRequest validWorkoutSessionRequest = WorkoutSessionRequest.builder()
 		.title("title")
@@ -43,6 +50,14 @@ class WorkoutSessionControllerTest {
 		.hallUuid(UUID.fromString(validHallUuid))
 		.coachUuid(UUID.fromString(validCoachUuid))
 		.build();
+
+	private final WorkoutSessionUserRequest validWorkoutSessionUserRequest =
+		new WorkoutSessionUserRequest(UUID.fromString("f18d2783-77f6-4f3d-a58e-f72bb31600c6"));
+
+	private final WorkoutSessionExerciseRequest validWorkoutSessionExerciseRequest
+		= new WorkoutSessionExerciseRequest(UUID.fromString("ee371adf-3ac7-4a0a-a6c2-254990c1c80f"));
+
+	// workout sessions
 
 	// GET
 
@@ -55,9 +70,13 @@ class WorkoutSessionControllerTest {
 
 	@Test
 	void checkIfGetByIdReturnsHttp200AndRequestedRecord() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri + "/" + validWorkoutSessionUuid))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.jsonPath("$").exists());
+		mockMvc.perform(
+			MockMvcRequestBuilders.get(
+				endpointUri + "/" + validWorkoutSessionUuids.get("workout_session_uuid")
+			)
+		)
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.jsonPath("$").exists());
 	}
 
 	@Test
@@ -100,13 +119,14 @@ class WorkoutSessionControllerTest {
 	void checkIfPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
 		String hallUuidToUpdate = "9256b9cb-40a6-4d17-b987-180e4e6596e0";
 		mockMvc.perform(
-				MockMvcRequestBuilders.patch(endpointUri + "/" + validWorkoutSessionUuid)
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(TestJsonHelper.toJSONField("hallUuid", hallUuidToUpdate))
-			).andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(
-				MockMvcResultMatchers.jsonPath("$.hall.uuid", Matchers.is(hallUuidToUpdate))
-			);
+			MockMvcRequestBuilders.patch(
+				endpointUri + "/" + validWorkoutSessionUuids.get("workout_session_uuid")
+			).contentType(MediaType.APPLICATION_JSON)
+			.content(TestJsonHelper.toJSONField("hallUuid", hallUuidToUpdate))
+		).andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(
+			MockMvcResultMatchers.jsonPath("$.hall.uuid", Matchers.is(hallUuidToUpdate))
+		);
 	}
 
 	@Test
@@ -115,6 +135,213 @@ class WorkoutSessionControllerTest {
 			MockMvcRequestBuilders.patch(endpointUri + "/" + UUID.randomUUID())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(TestJsonHelper.stringify(validWorkoutSessionRequest))
+		).andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	// session attendants
+
+	// POST
+
+	@Test
+	void checkIfAddingAttendantReturnsHttp200AndUpdatedRecord() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.post(
+				endpointUri + "/" + validWorkoutSessionUuids.get("workout_session_uuid") + "/attendants"
+			).contentType(MediaType.APPLICATION_JSON)
+			.content(TestJsonHelper.stringify(validWorkoutSessionUserRequest))
+		).andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(
+			MockMvcResultMatchers.jsonPath(
+				"$.attendants[?(@.uuid == '%s')]",
+				validWorkoutSessionUserRequest.getUserUuid()
+			).exists()
+		);
+	}
+
+	@Test
+	void checkIfAddingAttendantToNonExistingWorkoutSessionReturnsHttp404() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.post(endpointUri + "/" + UUID.randomUUID() + "/attendants")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(TestJsonHelper.stringify(validWorkoutSessionUserRequest))
+		).andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	@Test
+	void checkIfAddingNonExistingAttendantReturnsHttp404() throws Exception {
+		WorkoutSessionUserRequest invalidSessionUserRequest = new WorkoutSessionUserRequest(UUID.randomUUID());
+		mockMvc.perform(
+			MockMvcRequestBuilders.post(
+				endpointUri + "/" + validWorkoutSessionUuids.get("workout_session_uuid") + "/attendants"
+			).contentType(MediaType.APPLICATION_JSON)
+			.content(TestJsonHelper.stringify(invalidSessionUserRequest))
+		).andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	@Test
+	void checkIfInvalidAttendantBodyReturnsHttp400() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.post(
+				endpointUri + "/" + validWorkoutSessionUuids.get("workout_session_uuid") + "/attendants"
+			).contentType(MediaType.APPLICATION_JSON)
+			.content("{}")
+		).andExpect(MockMvcResultMatchers.status().isBadRequest());
+	}
+
+	// DELETE
+
+	@Test
+	void checkIfDeletingAttendantUpdatesRecordAndReturnsHttp204() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.delete(
+			endpointUri
+				+ "/"
+				+ validWorkoutSessionUuids.get("workout_session_uuid")
+				+ "/attendants/"
+				+ validWorkoutSessionUuids.get("attendant_uuid")
+			)
+		).andExpect(MockMvcResultMatchers.status().isNoContent());
+
+		mockMvc.perform(
+			MockMvcRequestBuilders.get(
+				endpointUri + "/" + validWorkoutSessionUuids.get("workout_session_uuid")
+			)
+		).andExpect(
+			MockMvcResultMatchers.jsonPath(
+				"$.attendants[?(@.uuid == '%s')]",
+				validWorkoutSessionUuids.get("attendant_uuid")
+			).doesNotExist()
+		);
+	}
+
+	@Test
+	void checkIfDeletingAttendantOfNonExistingWorkoutSessionReturnsHttp404() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.delete(
+				endpointUri
+				+ "/"
+				+ UUID.randomUUID()
+				+ "/attendants/"
+				+ validWorkoutSessionUuids.get("attendant_uuid")
+			)
+		).andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	@Test
+	void checkIfDeletingNonExistingAttendantReturnsHttp404() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.delete(
+				endpointUri
+				+ "/"
+				+ validWorkoutSessionUuids.get("workout_session_uuid")
+				+ "/attendants/"
+				+ UUID.randomUUID()
+			)
+		).andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	// session exercises
+
+	// POST
+
+	@Test
+	void checkIfAddingExerciseReturnsHttp200AndUpdatedRecord() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.post(
+					endpointUri + "/" + validWorkoutSessionUuids.get("workout_session_uuid") + "/exercises"
+				).contentType(MediaType.APPLICATION_JSON)
+				.content(TestJsonHelper.stringify(validWorkoutSessionExerciseRequest))
+		).andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(
+			MockMvcResultMatchers.jsonPath(
+				"$.exercises[?(@.uuid == '%s')]",
+				validWorkoutSessionExerciseRequest.getExerciseUuid()
+			).exists()
+		);
+	}
+
+	@Test
+	void checkIfAddingExerciseToNonExistingWorkoutSessionReturnsHttp404() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.post(endpointUri + "/" + UUID.randomUUID() + "/exercises")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(TestJsonHelper.stringify(validWorkoutSessionExerciseRequest))
+		).andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	@Test
+	void checkIfAddingNonExistingExerciseReturnsHttp404() throws Exception {
+		WorkoutSessionExerciseRequest invalidSessionExerciseRequest = new WorkoutSessionExerciseRequest(
+			UUID.randomUUID()
+		);
+
+		mockMvc.perform(
+			MockMvcRequestBuilders.post(
+					endpointUri + "/" + validWorkoutSessionUuids.get("workout_session_uuid") + "/exercises"
+				).contentType(MediaType.APPLICATION_JSON)
+				.content(TestJsonHelper.stringify(invalidSessionExerciseRequest))
+		).andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	@Test
+	void checkIfInvalidExerciseBodyReturnsHttp400() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.post(
+					endpointUri + "/" + validWorkoutSessionUuids.get("workout_session_uuid") + "/exercises"
+				).contentType(MediaType.APPLICATION_JSON)
+				.content("{}")
+		).andExpect(MockMvcResultMatchers.status().isBadRequest());
+	}
+
+	// DELETE
+
+	@Test
+	void checkIfDeletingExerciseUpdatesRecordAndReturnsHttp204() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.delete(
+				endpointUri
+					+ "/"
+					+ validWorkoutSessionUuids.get("workout_session_uuid")
+					+ "/exercises/"
+					+ validWorkoutSessionUuids.get("exercise_uuid")
+			)
+		).andExpect(MockMvcResultMatchers.status().isNoContent());
+
+		mockMvc.perform(
+			MockMvcRequestBuilders.get(
+				endpointUri + "/" + validWorkoutSessionUuids.get("workout_session_uuid")
+			)
+		).andExpect(
+			MockMvcResultMatchers.jsonPath(
+				"$.exercises[?(@.uuid == '%s')]",
+				validWorkoutSessionUuids.get("exercise_uuid")
+			).doesNotExist()
+		);
+	}
+
+	@Test
+	void checkIfDeletingExerciseOfNonExistingWorkoutSessionReturnsHttp404() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.delete(
+				endpointUri
+					+ "/"
+					+ UUID.randomUUID()
+					+ "/exercises/"
+					+ validWorkoutSessionUuids.get("exercise_uuid")
+			)
+		).andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	@Test
+	void checkIfDeletingNonExistingExerciseReturnsHttp404() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.delete(
+				endpointUri
+					+ "/"
+					+ validWorkoutSessionUuids.get("workout_session_uuid")
+					+ "/exercises/"
+					+ UUID.randomUUID()
+			)
 		).andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 }
