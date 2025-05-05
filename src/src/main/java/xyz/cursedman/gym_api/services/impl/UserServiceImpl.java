@@ -49,4 +49,11 @@ public class UserServiceImpl implements UserService {
 		User result = userRepository.save(user);
 		return userMapper.toDtoFromEntity(result);
 	}
+
+	@Override
+	public User getUserByUuid(UUID id) {
+		return userRepository.findById(id).orElseThrow(
+			() -> new EntityNotFoundException("User with ID " + id + " not found")
+		);
+	}
 }
