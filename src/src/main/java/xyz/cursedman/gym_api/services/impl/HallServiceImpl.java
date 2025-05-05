@@ -49,4 +49,11 @@ public class HallServiceImpl implements HallService {
 		Hall result = hallRepository.save(hall);
 		return hallMapper.toDtoFromEntity(result);
 	}
+
+	@Override
+	public Hall findHallByUuid(UUID id) {
+		return hallRepository.findById(id).orElseThrow(
+			() -> new EntityNotFoundException("Hall with ID " + id + " not found")
+		);
+	}
 }
