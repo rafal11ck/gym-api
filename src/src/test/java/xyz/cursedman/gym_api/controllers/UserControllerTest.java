@@ -54,21 +54,21 @@ class UserControllerTest {
 	// GET
 
 	@Test
-	void checkIfGetReturnsHttp200AndAllRecords() throws Exception {
+	void checkIfGetUsersReturnsHttp200AndAllRecords() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.greaterThan(0)));
 	}
 
 	@Test
-	void checkIfGetByIdReturnsHttp200AndRequestedRecord() throws Exception {
+	void checkIfGetUserByIdReturnsHttp200AndRequestedRecord() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri + "/" + validUserUuid))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$").exists());
 	}
 
 	@Test
-	void checkIfGetNonExistingRecordReturns404AndEmptyBody() throws Exception {
+	void checkIfGetNonExistingUserRecordReturns404AndEmptyBody() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri + "/" + UUID.randomUUID()))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
 			.andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
@@ -77,7 +77,7 @@ class UserControllerTest {
 	// POST
 
 	@Test
-	void checkIfCreateReturnsHttp201AndCreatedRecord() throws Exception {
+	void checkIfCreateUserReturnsHttp201AndCreatedRecord() throws Exception {
 		String[] fieldsToIgnore = { "membershipUuid", "cardUuid", "roleUuid" };
 		mockMvc.perform(
 			MockMvcRequestBuilders.post(endpointUri)
@@ -97,7 +97,7 @@ class UserControllerTest {
 	}
 
 	@Test
-	void checkIfInvalidCreateBodyReturnsHttp400() throws Exception {
+	void checkIfInvalidUserCreateBodyReturnsHttp400() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.post(endpointUri)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -108,7 +108,7 @@ class UserControllerTest {
 	// PATCH
 
 	@Test
-	void checkIfPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
+	void checkIfUserPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
 		String cardUuidToUpdate = "ed36b15c-89d7-43cd-aa1b-354b2ec9067d";
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch(endpointUri + "/" + validUserUuid)
@@ -121,9 +121,32 @@ class UserControllerTest {
 	}
 
 	@Test
-	void checkIfPatchUpdateOfNonExistingRecordReturnsHttp404() throws Exception {
+	void checkIfPatchUpdateOfNonExistingUserReturnsHttp404() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch(endpointUri + "/" + UUID.randomUUID())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(TestJsonHelper.stringify(validUserRequest))
+		).andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	// chat
+
+	// GET
+
+	@Test
+	void checkIfGetUserChatsReturnsHttp200AndAllRecords() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.get(endpointUri + "/" + validUserUuid + "/chats")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(TestJsonHelper.stringify(validUserRequest))
+		).andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.greaterThan(0)));
+	}
+
+	@Test
+	void checkIfGetChatsOfNonExistingUserReturnsHttp404() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.get(endpointUri + "/" + UUID.randomUUID() + "/chats")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(TestJsonHelper.stringify(validUserRequest))
 		).andExpect(MockMvcResultMatchers.status().isNotFound());
