@@ -6,8 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xyz.cursedman.gym_api.domain.dtos.chat.ChatDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
+import xyz.cursedman.gym_api.services.ChatService;
 import xyz.cursedman.gym_api.services.UserService;
 
 import java.util.List;
@@ -18,6 +20,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserController {
 	private final UserService userService;
+
+	private final ChatService chatService;
 
 	@GetMapping
 	public ResponseEntity<List<UserDto>> listUsers() {
@@ -47,6 +51,17 @@ public class UserController {
 	) {
 		try {
 			return ResponseEntity.ok(userService.patchUser(id, request));
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	// chats
+
+	@GetMapping("{id}/chats")
+	public ResponseEntity<List<ChatDto>> listChats(@PathVariable UUID id) {
+		try {
+			return ResponseEntity.ok(chatService.listUserChats(id));
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.notFound().build();
 		}
