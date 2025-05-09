@@ -6,6 +6,37 @@ servers:
 - url: http://localhost
   description: Generated server url
 paths:
+  /users:
+    get:
+      tags:
+      - user-controller
+      operationId: listUsers
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserDto"
+    post:
+      tags:
+      - user-controller
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
   /target-muscles:
     get:
       tags:
@@ -37,11 +68,73 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/TargetMuscleDto"
+  /payments:
+    get:
+      tags:
+      - payment-controller
+      operationId: listPayments
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PaymentDto"
+    post:
+      tags:
+      - payment-controller
+      operationId: createPayment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaymentDto"
+  /memberships:
+    get:
+      tags:
+      - membership-controller
+      operationId: listMemberships
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MembershipDto"
+    post:
+      tags:
+      - membership-controller
+      operationId: createMembership
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MembershipRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/MembershipDto"
   /membership-types:
     get:
       tags:
       - membership-type-controller
-      operationId: listCards
+      operationId: listMembershipTypes
       responses:
         "200":
           description: OK
@@ -68,6 +161,37 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/MembershipTypeDto"
+  /halls:
+    get:
+      tags:
+      - hall-controller
+      operationId: listHalls
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HallDto"
+    post:
+      tags:
+      - hall-controller
+      operationId: createHall
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HallRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HallDto"
   /exercises:
     get:
       tags:
@@ -103,7 +227,7 @@ paths:
     get:
       tags:
       - card-controller
-      operationId: listCards_1
+      operationId: listCards
       responses:
         "200":
           description: OK
@@ -130,11 +254,140 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/CardDto"
+  /users/{id}:
+    get:
+      tags:
+      - user-controller
+      operationId: getUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+    patch:
+      tags:
+      - user-controller
+      operationId: updateUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+  /payments/{id}:
+    get:
+      tags:
+      - payment-controller
+      operationId: getPayment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaymentDto"
+    patch:
+      tags:
+      - payment-controller
+      operationId: updatePayment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaymentDto"
+  /memberships/{id}:
+    get:
+      tags:
+      - membership-controller
+      operationId: getMembership
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/MembershipDto"
+    patch:
+      tags:
+      - membership-controller
+      operationId: patchMembership
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MembershipRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/MembershipDto"
   /membership-types/{id}:
-    delete:
+    get:
       tags:
       - membership-type-controller
-      operationId: deleteMembershipType
+      operationId: getMembershipType
       parameters:
       - name: id
         in: path
@@ -173,6 +426,49 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/MembershipTypeDto"
+  /halls/{id}:
+    get:
+      tags:
+      - hall-controller
+      operationId: getHall
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HallDto"
+    patch:
+      tags:
+      - hall-controller
+      operationId: updateHall
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HallRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HallDto"
   /cards/{id}:
     get:
       tags:
@@ -216,6 +512,48 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/CardDto"
+  /user-roles:
+    get:
+      tags:
+      - user-role-controller
+      operationId: listUserRoles
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserRoleDto"
+  /payment-statuses:
+    get:
+      tags:
+      - payment-status-controller
+      operationId: listPaymentStatuses
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PaymentStatusDto"
+  /hall-types:
+    get:
+      tags:
+      - hall-type-controller
+      operationId: listHallTypes
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HallTypeDto"
   /countries:
     get:
       tags:
@@ -262,6 +600,134 @@ paths:
           description: OK
 components:
   schemas:
+    UserRequest:
+      type: object
+      properties:
+        roleUuid:
+          type: string
+          format: uuid
+        cardUuid:
+          type: string
+          format: uuid
+        membershipUuid:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date-time
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        imageUrl:
+          type: string
+      required:
+      - cardUuid
+      - dateOfBirth
+      - email
+      - firstName
+      - imageUrl
+      - lastName
+      - membershipUuid
+      - phoneNumber
+      - roleUuid
+    Card:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        country:
+          $ref: "#/components/schemas/Country"
+        cardNumber:
+          type: string
+        cvv:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date-time
+        nameOnCard:
+          type: string
+        postalCode:
+          type: string
+      required:
+      - cardNumber
+      - cvv
+      - dateOfBirth
+      - nameOnCard
+      - postalCode
+    Country:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        countryName:
+          type: string
+      required:
+      - countryName
+    Membership:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        purchaseDate:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+        membershipType:
+          $ref: "#/components/schemas/MembershipType"
+    MembershipType:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        type:
+          type: string
+        price:
+          type: number
+          format: float
+    UserDto:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        role:
+          $ref: "#/components/schemas/UserRole"
+        card:
+          $ref: "#/components/schemas/Card"
+        membership:
+          $ref: "#/components/schemas/Membership"
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date-time
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        imageUrl:
+          type: string
+    UserRole:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        role:
+          type: string
     CreateTargetMuscleRequest:
       type: object
       properties:
@@ -276,6 +742,72 @@ components:
           format: uuid
         name:
           type: string
+    PaymentRequest:
+      type: object
+      properties:
+        cardUuid:
+          type: string
+          format: uuid
+        statusUuid:
+          type: string
+          format: uuid
+        membershipUuid:
+          type: string
+          format: uuid
+      required:
+      - cardUuid
+      - membershipUuid
+      - statusUuid
+    PaymentDto:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        card:
+          $ref: "#/components/schemas/Card"
+        status:
+          $ref: "#/components/schemas/PaymentStatus"
+        membership:
+          $ref: "#/components/schemas/Membership"
+    PaymentStatus:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        status:
+          type: string
+    MembershipRequest:
+      type: object
+      properties:
+        purchaseDate:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+        membershipTypeUuid:
+          type: string
+          format: uuid
+      required:
+      - membershipTypeUuid
+      - purchaseDate
+      - validUntil
+    MembershipDto:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        purchaseDate:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+        membershipType:
+          $ref: "#/components/schemas/MembershipType"
     MembershipTypeRequest:
       type: object
       properties:
@@ -284,6 +816,9 @@ components:
         price:
           type: number
           format: float
+      required:
+      - price
+      - type
     MembershipTypeDto:
       type: object
       properties:
@@ -295,6 +830,40 @@ components:
         price:
           type: number
           format: float
+    HallRequest:
+      type: object
+      properties:
+        hallTypeUuid:
+          type: string
+          format: uuid
+        hallName:
+          type: string
+        hallDescription:
+          type: string
+      required:
+      - hallDescription
+      - hallName
+      - hallTypeUuid
+    HallDto:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        hallType:
+          $ref: "#/components/schemas/HallType"
+        hallName:
+          type: string
+        hallDescription:
+          type: string
+    HallType:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
     CreateExerciseRequest:
       type: object
       properties:
@@ -362,16 +931,30 @@ components:
           type: string
         postalCode:
           type: string
-    Country:
+    UserRoleDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        role:
+          type: string
+    PaymentStatusDto:
       type: object
       properties:
         uuid:
           type: string
           format: uuid
-        countryName:
+        status:
           type: string
-      required:
-      - countryName
+    HallTypeDto:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
     CountryDto:
       type: object
       properties:
