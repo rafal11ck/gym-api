@@ -28,7 +28,7 @@ tasks:
     desc: generate openAPI spec
     dir: '{{.JAVA_ROOT}}'
     cmds:
-      - mkdir -p {{.API_SPEC_DIR}}/apispec
+      - mkdir -p {{.API_SPEC_DIR}}
       - ./mvnw test -Dtest=OpenApiSpecGeneratorTest -Dspring.profiles.active=test
       - cp target/openapi.{json,yaml} {{.API_SPEC_DIR}}
     preconditions:
