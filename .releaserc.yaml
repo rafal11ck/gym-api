@@ -2,7 +2,7 @@ plugins:
   - '@semantic-release/commit-analyzer'
   - '@semantic-release/release-notes-generator'
   - - '@semantic-release/exec'
-    - verifyRelease: 'printf "NEXT_VERSION=${nextRelease.version}" >> build.env && task release version=${nextRelease.version}'
+    - verifyRelease: 'printf "NEXT_VERSION=${nextRelease.version}" >> build.env && task build-release version=${nextRelease.version}'
     # './src/mvnw versions:set -DnewVersion="${nextRelease.version}" && echo "NEXT_VERSION=${nextRelease.version}" >> build.env'
   - - '@semantic-release/github'
     - assets:
