@@ -48,6 +48,8 @@ tasks:
       - cd '{{.JAVA_ROOT}}' && ./mvnw versions:set -DnewVersion={{.version}} && ./mvnw versions:commit
       # build jar
       - task build-jar
+      # build api spec
+      - task api-spec
     requires:
       vars:
         - version
