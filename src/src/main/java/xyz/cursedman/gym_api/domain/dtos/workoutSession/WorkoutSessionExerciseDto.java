@@ -1,24 +1,23 @@
 package xyz.cursedman.gym_api.domain.dtos.workoutSession;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import xyz.cursedman.gym_api.domain.entities.Exercise;
 
 import java.util.UUID;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Data
-public class WorkoutSessionExerciseRequest {
-	@NotNull
-	private UUID exerciseUuid;
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class WorkoutSessionExerciseDto {
+	private UUID uuid;
 
-	@NotNull
+	private Exercise exercise;
+
 	private Integer reps;
 
-	@NotNull
 	private Integer exerciseOrder;
 }

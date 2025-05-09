@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import xyz.cursedman.gym_api.domain.entities.Exercise;
 import xyz.cursedman.gym_api.domain.entities.Hall;
 import xyz.cursedman.gym_api.domain.entities.User;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,5 +31,5 @@ public class WorkoutSessionDto {
 
 	private Set<User> attendants;
 
-	private Set<Exercise> exercises;
+	private List<WorkoutSessionExerciseDto> exercises;
 }

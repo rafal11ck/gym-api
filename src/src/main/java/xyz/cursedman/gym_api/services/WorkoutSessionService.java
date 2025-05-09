@@ -1,10 +1,11 @@
 package xyz.cursedman.gym_api.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionAttendantRequest;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionDto;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionExerciseRequest;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionRequest;
-import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionUserRequest;
+import xyz.cursedman.gym_api.domain.entities.WorkoutSession;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +19,7 @@ public interface WorkoutSessionService {
 
 	WorkoutSessionDto patchWorkoutSession(UUID id, WorkoutSessionRequest request) throws EntityNotFoundException;
 
-	WorkoutSessionDto addAttendantToWorkoutSession(UUID workoutSessionId, WorkoutSessionUserRequest request)
+	WorkoutSessionDto addAttendantToWorkoutSession(UUID workoutSessionId, WorkoutSessionAttendantRequest request)
 		throws EntityNotFoundException;
 
 	void deleteWorkoutSessionAttendant(UUID workoutSessionId, UUID userId)
@@ -29,4 +30,7 @@ public interface WorkoutSessionService {
 
 	void deleteWorkoutSessionExercise(UUID workoutSessionId, UUID exerciseId)
 		throws EntityNotFoundException;
+
+	// used by mapper
+	WorkoutSession getWorkoutSessionByUuid(UUID id);
 }

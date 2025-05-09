@@ -30,7 +30,4 @@ public final class WorkoutSession {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	Set<User> attendants = new HashSet<>();
-
-	@ManyToMany(fetch = FetchType.LAZY)
-	Set<Exercise> exercises = new HashSet<>();
 }
