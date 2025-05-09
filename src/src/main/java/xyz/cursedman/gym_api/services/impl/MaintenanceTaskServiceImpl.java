@@ -47,7 +47,6 @@ public class MaintenanceTaskServiceImpl implements MaintenanceTaskService {
 	{
 		MaintenanceTask task = maintenanceTaskRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 		maintenanceTaskMapper.updateFromRequest(request, task);
-		System.out.println(maintenanceTaskMapper.toDtoFromEntity(task));
 
 		MaintenanceTask result = maintenanceTaskRepository.save(task);
 		return maintenanceTaskMapper.toDtoFromEntity(result);

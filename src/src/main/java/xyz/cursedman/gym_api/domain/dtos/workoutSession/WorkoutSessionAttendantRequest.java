@@ -10,7 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class WorkoutSessionUserRequest {
+public class WorkoutSessionAttendantRequest {
 	@NotNull
 	private UUID userUuid;
 }

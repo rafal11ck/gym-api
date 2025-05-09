@@ -7,11 +7,12 @@ import xyz.cursedman.gym_api.domain.entities.WorkoutSession;
 import xyz.cursedman.gym_api.services.ExerciseService;
 import xyz.cursedman.gym_api.services.HallService;
 import xyz.cursedman.gym_api.services.UserService;
+import xyz.cursedman.gym_api.services.WorkoutSessionExerciseService;
 
 @Mapper(
 	componentModel = "spring",
 	unmappedTargetPolicy = ReportingPolicy.IGNORE,
-	uses = { HallService.class, UserService.class, ExerciseService.class}
+	uses = { HallService.class, UserService.class, ExerciseService.class, WorkoutSessionExerciseService.class }
 )
 public interface WorkoutSessionMapper extends EntityRequestMapper<
 	WorkoutSession, WorkoutSessionDto, WorkoutSessionRequest
@@ -31,4 +32,8 @@ public interface WorkoutSessionMapper extends EntityRequestMapper<
 	@Mapping(target = "coach", source = "coachUuid")
 	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 	void updateFromRequest(WorkoutSessionRequest request, @MappingTarget WorkoutSession entity);
+
+	@Override
+	@Mapping(target = "exercises", source = "uuid")
+	WorkoutSessionDto toDtoFromEntity(WorkoutSession entity);
 }

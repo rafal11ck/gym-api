@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionDto;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionExerciseRequest;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionRequest;
-import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionUserRequest;
+import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionAttendantRequest;
 import xyz.cursedman.gym_api.services.WorkoutSessionService;
 
 import java.util.List;
@@ -63,7 +63,7 @@ public class WorkoutSessionController {
 	@PostMapping("/{id}/attendants")
 	public ResponseEntity<WorkoutSessionDto> addWorkoutSessionAttendant(
 		@Valid @PathVariable UUID id,
-		@RequestBody @Valid WorkoutSessionUserRequest request
+		@RequestBody @Valid WorkoutSessionAttendantRequest request
 	) {
 		try {
 			return ResponseEntity.ok(workoutSessionService.addAttendantToWorkoutSession(id, request));

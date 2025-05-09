@@ -3,17 +3,16 @@ package xyz.cursedman.gym_api.services.impl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionAttendantRequest;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionDto;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionExerciseRequest;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionRequest;
-import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionUserRequest;
-import xyz.cursedman.gym_api.domain.entities.Exercise;
 import xyz.cursedman.gym_api.domain.entities.User;
 import xyz.cursedman.gym_api.domain.entities.WorkoutSession;
 import xyz.cursedman.gym_api.mappers.WorkoutSessionMapper;
-import xyz.cursedman.gym_api.repositories.ExerciseRepository;
-import xyz.cursedman.gym_api.repositories.UserRepository;
 import xyz.cursedman.gym_api.repositories.WorkoutSessionRepository;
+import xyz.cursedman.gym_api.services.UserService;
+import xyz.cursedman.gym_api.services.WorkoutSessionExerciseService;
 import xyz.cursedman.gym_api.services.WorkoutSessionService;
 
 import java.util.List;
@@ -27,13 +26,18 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 
 	private final WorkoutSessionMapper workoutSessionMapper;
 
-	private final UserRepository userRepository;
+	private final WorkoutSessionExerciseService workoutSessionExerciseService;
 
-	private final ExerciseRepository exerciseRepository;
+	private final UserService userService;
+
 
 	@Override
 	public List<WorkoutSessionDto> listWorkoutSessions() {
-		return workoutSessionRepository.findAll().stream().map(workoutSessionMapper::toDtoFromEntity).toList();
+		return workoutSessionRepository
+			.findAll()
+			.stream()
+			.map(workoutSessionMapper::toDtoFromEntity)
+			.toList();
 	}
 
 	@Override
@@ -66,14 +70,13 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 	}
 
 	@Override
-	public WorkoutSessionDto addAttendantToWorkoutSession(UUID workoutSessionId, WorkoutSessionUserRequest request)
+	public WorkoutSessionDto addAttendantToWorkoutSession(UUID workoutSessionId, WorkoutSessionAttendantRequest request)
 		throws EntityNotFoundException
 	{
 		WorkoutSession session = workoutSessionRepository.findById(workoutSessionId)
 			.orElseThrow(EntityNotFoundException::new);
 
-		User user = userRepository.findById(request.getUserUuid())
-			.orElseThrow(EntityNotFoundException::new);
+		User user = userService.getUserByUuid(request.getUserUuid());
 
 		session.getAttendants().add(user);
 		WorkoutSession updatedSession = workoutSessionRepository.save(session);
@@ -88,8 +91,7 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 		WorkoutSession session = workoutSessionRepository.findById(workoutSessionId)
 			.orElseThrow(EntityNotFoundException::new);
 
-		User user = userRepository.findById(userId)
-			.orElseThrow(EntityNotFoundException::new);
+		User user = userService.getUserByUuid(userId);
 
 		boolean deleted = session.getAttendants().remove(user);
 		if (!deleted) {
@@ -103,31 +105,23 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 	public WorkoutSessionDto addExerciseToWorkoutSession(UUID workoutSessionId, WorkoutSessionExerciseRequest request)
 		throws EntityNotFoundException
 	{
-		WorkoutSession session = workoutSessionRepository.findById(workoutSessionId)
-			.orElseThrow(EntityNotFoundException::new);
-
-		Exercise exercise = exerciseRepository.findById(request.getExerciseUuid())
-			.orElseThrow(EntityNotFoundException::new);
-
-		session.getExercises().add(exercise);
-		WorkoutSession updatedSession = workoutSessionRepository.save(session);
-
-		return workoutSessionMapper.toDtoFromEntity(updatedSession);
+		workoutSessionExerciseService.createWorkoutSessionExercise(request, getWorkoutSessionByUuid(workoutSessionId));
+		return getWorkoutSession(workoutSessionId);
 	}
 
 	@Override
 	public void deleteWorkoutSessionExercise(UUID workoutSessionId, UUID exerciseId) throws EntityNotFoundException {
-		WorkoutSession session = workoutSessionRepository.findById(workoutSessionId)
-			.orElseThrow(EntityNotFoundException::new);
-
-		Exercise exercise = exerciseRepository.findById(exerciseId)
-			.orElseThrow(EntityNotFoundException::new);
-
-		boolean deleted = session.getExercises().remove(exercise);
-		if (!deleted) {
+		if (!workoutSessionRepository.existsById(workoutSessionId)) {
 			throw new EntityNotFoundException();
 		}
 
-		workoutSessionRepository.save(session);
+		workoutSessionExerciseService.deleteWorkoutSessionExercise(exerciseId);
+	}
+
+	@Override
+	public WorkoutSession getWorkoutSessionByUuid(UUID id) {
+		return workoutSessionRepository.findById(id).orElseThrow(
+			() -> new EntityNotFoundException("Workout session with ID " + id + " not found")
+		);
 	}
 }

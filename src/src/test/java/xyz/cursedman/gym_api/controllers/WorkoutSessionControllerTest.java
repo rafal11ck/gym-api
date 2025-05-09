@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionExerciseRequest;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionRequest;
-import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionUserRequest;
+import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionAttendantRequest;
 import xyz.cursedman.gym_api.helpers.TestJsonHelper;
 
 import java.util.Date;
@@ -38,9 +38,10 @@ class WorkoutSessionControllerTest {
 	private final String validCoachUuid = "4a3e70f9-bd65-45c4-a47a-eaae0a0d3d56";
 
 	private final Map<String, String> validWorkoutSessionUuids = Map.of(
+		"workout_session_uuid", "8d64dca2-87dc-479f-bcb5-9f91b16d870c",
 		"attendant_uuid", "65f40335-135a-47ec-ad7d-72278c4be65c",
 		"exercise_uuid", "ee371adf-3ac7-4a0a-a6c2-254990c1c80f",
-		"workout_session_uuid", "8d64dca2-87dc-479f-bcb5-9f91b16d870c"
+		"workout_session_exercise_uuid", "0713a057-a183-4f13-be9d-9fe3985db31e"
 	);
 
 	private final WorkoutSessionRequest validWorkoutSessionRequest = WorkoutSessionRequest.builder()
@@ -51,11 +52,15 @@ class WorkoutSessionControllerTest {
 		.coachUuid(UUID.fromString(validCoachUuid))
 		.build();
 
-	private final WorkoutSessionUserRequest validWorkoutSessionUserRequest =
-		new WorkoutSessionUserRequest(UUID.fromString("f18d2783-77f6-4f3d-a58e-f72bb31600c6"));
+	private final WorkoutSessionAttendantRequest validWorkoutSessionAttendantRequest =
+		new WorkoutSessionAttendantRequest(UUID.fromString("f18d2783-77f6-4f3d-a58e-f72bb31600c6"));
 
 	private final WorkoutSessionExerciseRequest validWorkoutSessionExerciseRequest
-		= new WorkoutSessionExerciseRequest(UUID.fromString("ee371adf-3ac7-4a0a-a6c2-254990c1c80f"));
+		= WorkoutSessionExerciseRequest.builder()
+		.exerciseUuid(UUID.fromString("ee371adf-3ac7-4a0a-a6c2-254990c1c80f"))
+		.exerciseOrder(1)
+		.reps(1)
+		.build();
 
 	// workout sessions
 
@@ -76,7 +81,9 @@ class WorkoutSessionControllerTest {
 			)
 		)
 		.andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(MockMvcResultMatchers.jsonPath("$").exists());
+		.andExpect(MockMvcResultMatchers.jsonPath("$").exists())
+		.andExpect(MockMvcResultMatchers.jsonPath("$.attendants.length()", Matchers.greaterThan(0)))
+		.andExpect(MockMvcResultMatchers.jsonPath("$.exercises.length()", Matchers.greaterThan(0)));
 	}
 
 	@Test
@@ -148,12 +155,12 @@ class WorkoutSessionControllerTest {
 			MockMvcRequestBuilders.post(
 				endpointUri + "/" + validWorkoutSessionUuids.get("workout_session_uuid") + "/attendants"
 			).contentType(MediaType.APPLICATION_JSON)
-			.content(TestJsonHelper.stringify(validWorkoutSessionUserRequest))
+			.content(TestJsonHelper.stringify(validWorkoutSessionAttendantRequest))
 		).andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(
 			MockMvcResultMatchers.jsonPath(
 				"$.attendants[?(@.uuid == '%s')]",
-				validWorkoutSessionUserRequest.getUserUuid()
+				validWorkoutSessionAttendantRequest.getUserUuid()
 			).exists()
 		);
 	}
@@ -163,13 +170,13 @@ class WorkoutSessionControllerTest {
 		mockMvc.perform(
 			MockMvcRequestBuilders.post(endpointUri + "/" + UUID.randomUUID() + "/attendants")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.stringify(validWorkoutSessionUserRequest))
+				.content(TestJsonHelper.stringify(validWorkoutSessionAttendantRequest))
 		).andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 
 	@Test
 	void checkIfAddingNonExistingAttendantReturnsHttp404() throws Exception {
-		WorkoutSessionUserRequest invalidSessionUserRequest = new WorkoutSessionUserRequest(UUID.randomUUID());
+		WorkoutSessionAttendantRequest invalidSessionUserRequest = new WorkoutSessionAttendantRequest(UUID.randomUUID());
 		mockMvc.perform(
 			MockMvcRequestBuilders.post(
 				endpointUri + "/" + validWorkoutSessionUuids.get("workout_session_uuid") + "/attendants"
@@ -254,7 +261,7 @@ class WorkoutSessionControllerTest {
 		).andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(
 			MockMvcResultMatchers.jsonPath(
-				"$.exercises[?(@.uuid == '%s')]",
+				"$.exercises[?(@.exercise.uuid == '%s')]",
 				validWorkoutSessionExerciseRequest.getExerciseUuid()
 			).exists()
 		);
@@ -271,9 +278,11 @@ class WorkoutSessionControllerTest {
 
 	@Test
 	void checkIfAddingNonExistingExerciseReturnsHttp404() throws Exception {
-		WorkoutSessionExerciseRequest invalidSessionExerciseRequest = new WorkoutSessionExerciseRequest(
-			UUID.randomUUID()
-		);
+		WorkoutSessionExerciseRequest invalidSessionExerciseRequest = WorkoutSessionExerciseRequest.builder()
+			.exerciseUuid(UUID.randomUUID())
+			.exerciseOrder(1)
+			.reps(1)
+			.build();
 
 		mockMvc.perform(
 			MockMvcRequestBuilders.post(
@@ -303,7 +312,7 @@ class WorkoutSessionControllerTest {
 					+ "/"
 					+ validWorkoutSessionUuids.get("workout_session_uuid")
 					+ "/exercises/"
-					+ validWorkoutSessionUuids.get("exercise_uuid")
+					+ validWorkoutSessionUuids.get("workout_session_exercise_uuid")
 			)
 		).andExpect(MockMvcResultMatchers.status().isNoContent());
 
@@ -313,7 +322,7 @@ class WorkoutSessionControllerTest {
 			)
 		).andExpect(
 			MockMvcResultMatchers.jsonPath(
-				"$.exercises[?(@.uuid == '%s')]",
+				"$.exercises[?(@.exercise.uuid == '%s')]",
 				validWorkoutSessionUuids.get("exercise_uuid")
 			).doesNotExist()
 		);
