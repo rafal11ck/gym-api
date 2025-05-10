@@ -3,15 +3,16 @@ package xyz.cursedman.gym_api.services.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.*;
+import com.stripe.model.Price;
+import com.stripe.model.PriceCollection;
+import com.stripe.model.Product;
+import com.stripe.model.ProductCollection;
 import com.stripe.model.checkout.Session;
-import com.stripe.net.Webhook;
 import com.stripe.param.PriceCreateParams;
 import com.stripe.param.PriceListParams;
 import com.stripe.param.ProductCreateParams;
 import com.stripe.param.ProductListParams;
 import com.stripe.param.checkout.SessionCreateParams;
-import com.stripe.param.checkout.SessionRetrieveParams;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +24,14 @@ import xyz.cursedman.gym_api.config.StripeProperties;
 import xyz.cursedman.gym_api.domain.stripe.RegisteredStripeProduct;
 import xyz.cursedman.gym_api.domain.stripe.StripeProductCandidate;
 import xyz.cursedman.gym_api.services.StripeService;
+import xyz.cursedman.gym_api.services.UserService;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +40,8 @@ public class StripeServiceImpl implements StripeService {
 	private final ObjectMapper objectMapper;
 
 	private final StripeProperties stripeProperties;
+
+	private final UserService userService;
 
 	private static final Logger logger = LoggerFactory.getLogger(StripeServiceImpl.class);
 
@@ -47,18 +52,26 @@ public class StripeServiceImpl implements StripeService {
 	private void initializeStripe()  {
 		Stripe.apiKey = stripeProperties.getApiKey();
 		registerProducts();
+		registerCustomers();
+	}
+
+	private void registerCustomers() {
+		try {
+			userService.createCustomerProfilesForExistingUsers();
+		} catch (StripeException e) {
+			throw new RuntimeException("Error while creating customer profiles for existing users.", e);
+		}
 	}
 
 	private void registerProducts() {
 		List<StripeProductCandidate> products = loadProductsFromJson();
-
 		for (StripeProductCandidate product : products) {
 			Optional<Product> existingProduct = getProductByName(product.getName());
 			boolean productActive = existingProduct.map(Product::getActive).orElse(false);
 
 			if (productActive) {
 				registerExistingProduct(existingProduct.get());
-				logger.info("Product '{}' already exists in Stripe. Skipping.", product.getName());
+				logger.info("Product '{}' already exists in Stripe. Skipping creation.", product.getName());
 			} else {
 				registerNewProduct(product);
 				logger.info("Product '{}' created in Stripe.", product.getName());
@@ -107,8 +120,13 @@ public class StripeServiceImpl implements StripeService {
 
 			Product createdProduct = Product.create(productCreateParams);
 
+			PriceCreateParams.Recurring recurring = PriceCreateParams.Recurring.builder()
+				.setInterval(PriceCreateParams.Recurring.Interval.MONTH)
+				.build();
+
 			PriceCreateParams priceCreateParams = PriceCreateParams.builder()
 				.setCurrency("pln")
+				.setRecurring(recurring)
 				.setProduct(createdProduct.getId())
 				.setUnitAmount(product.getPrice())
 				.build();
@@ -121,33 +139,7 @@ public class StripeServiceImpl implements StripeService {
 		}
 	}
 
-	public void handleWebhook(String payload, String sigHeader) throws Exception {
-		try {
-			Event event = Webhook.constructEvent(payload, sigHeader, stripeProperties.getWebhookSecret());
-
-			if ("checkout.session.completed".equals(event.getType())
-				|| "checkout.session.async_payment_succeeded".equals(event.getType())
-			) {
-				Session sessionEvent = (Session) event.getDataObjectDeserializer().getObject().orElse(null);
-				if (sessionEvent != null) {
-					fulfillCheckout(sessionEvent.getId());
-				}
-			}
-		} catch (Exception e) {
-			logger.error("Error handling webhook", e);
-		}
-	}
-
-	private void fulfillCheckout(String sessionId) throws StripeException {
-		// TODO: Make this function safe to run multiple times, even concurrently, with the same session ID
-		// TODO: Make sure fulfillment hasn't already been performed for this Checkout Session
-
-		SessionRetrieveParams params = SessionRetrieveParams.builder().addExpand("line_items").build();
-		Session checkoutSession = Session.retrieve(sessionId, params, null);
-		logger.info("Checkout session OK");
-
-	}
-
+	@Override
 	public Optional<Product> getProductByName(String name) {
 		try {
 			ProductListParams params = ProductListParams.builder().build();
@@ -162,7 +154,8 @@ public class StripeServiceImpl implements StripeService {
 		}
 	}
 
-	public Optional<URI> getProductCheckoutUri(String productName) {
+	@Override
+	public Optional<URI> createCheckoutSession(String productName, UUID userId) {
 		Optional<Price> priceOptional = registeredProducts.stream()
 			.filter(product -> product.getProduct().getName().equalsIgnoreCase(productName))
 			.map(RegisteredStripeProduct::getPrice)
@@ -173,10 +166,12 @@ public class StripeServiceImpl implements StripeService {
 		}
 
 		Price price = priceOptional.get();
+		String customerId = userService.getUserByUuid(userId).getCustomerId();
 		SessionCreateParams params = SessionCreateParams.builder()
-			.setMode(SessionCreateParams.Mode.PAYMENT)
+			.setMode(SessionCreateParams.Mode.SUBSCRIPTION)
 			.setSuccessUrl(stripeProperties.getSuccessRedirectUrl())
 			.setCancelUrl(stripeProperties.getFailureRedirectUrl())
+			.setCustomer(customerId)
 			.addLineItem(
 				SessionCreateParams.LineItem.builder()
 					.setQuantity(1L)
@@ -189,7 +184,12 @@ public class StripeServiceImpl implements StripeService {
 			URI uri = URI.create(session.getUrl());
 			return Optional.of(uri);
 		} catch (StripeException e) {
-			logger.error("Error while creating stripe session for product '{}'.", price.getProduct(), e);
+			logger.error(
+				"Error while creating stripe session for user '{}' (product: '{}').",
+				userId,
+				price.getProduct(),
+				e
+			);
 			return Optional.empty();
 		}
 	}

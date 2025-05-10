@@ -15,6 +15,8 @@ public final class User {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;
 
+	String customerId;
+
 	@ManyToOne
 	UserRole role;
 

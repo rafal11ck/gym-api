@@ -43,7 +43,6 @@ services:
     networks:
       - keycloak_network
 
-
   gym-api-db:
     image: postgres:latest
     environment:
@@ -64,12 +63,6 @@ services:
       ADMINER_DEFAULT_DB_NAME: *dbname
       ADMINER_DEFAULT_DB_DRIVER: pgsql
       ADMINER_DEFAULT_SERVER: *dbserver
-
-  stripe-cli:
-    image: stripe/stripe-cli:latest
-    environment:
-      STRIPE_API_KEY: ${STRIPE_API_KEY}
-    command: listen --forward-to=http://host.docker.internal:8080/checkout-webhook
 
 volumes:
   postgres_data:
