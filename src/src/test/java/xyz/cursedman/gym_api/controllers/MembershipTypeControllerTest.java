@@ -29,7 +29,7 @@ class MembershipTypeControllerTest {
 
 	private final MembershipTypeRequest validMembershipTypeRequest = MembershipTypeRequest.builder()
 		.type("Example type")
-		.price(12.34f)
+		.price(2000L)
 		.build();
 
 	// GET

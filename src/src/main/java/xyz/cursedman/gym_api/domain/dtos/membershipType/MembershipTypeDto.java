@@ -14,5 +14,6 @@ import java.util.UUID;
 public class MembershipTypeDto {
 	private UUID uuid;
 	private String type;
-	private Float price;
+	private Long price;
+	private String productId;
 }

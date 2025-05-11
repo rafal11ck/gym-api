@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xyz.cursedman.gym_api.config.StripeProperties;
 import xyz.cursedman.gym_api.domain.dtos.chat.ChatDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
@@ -16,7 +17,6 @@ import xyz.cursedman.gym_api.services.UserService;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -26,7 +26,10 @@ public class UserController {
 	private final UserService userService;
 
 	private final ChatService chatService;
+
 	private final StripeService stripeService;
+
+	private final StripeProperties stripeProperties;
 
 	@GetMapping
 	public ResponseEntity<List<UserDto>> listUsers() {
@@ -78,18 +81,22 @@ public class UserController {
 
 	// payments
 
-	@GetMapping("/users/{userId}/subscriptions/{productName}/setup-subscription")
+	@GetMapping("/{userId}/subscriptions/{membershipTypeId}/setup-subscription")
 	public ResponseEntity<Void> checkoutMembership(
-		@Valid @PathVariable String productName,
-		@Valid @PathVariable UUID userId
+		@Valid @PathVariable UUID userId,
+		@Valid @PathVariable UUID membershipTypeId
 	) {
-		Optional<URI> checkoutUri = stripeService.createCheckoutSession(productName, userId);
-		if (checkoutUri.isPresent()) {
+		if (!stripeProperties.isStripeConfigurationValid()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		try {
+			URI checkoutUri = stripeService.createCheckoutSessionUri(membershipTypeId, userId);
 			return ResponseEntity
 				.status(HttpStatus.SEE_OTHER)
-				.location(checkoutUri.get())
+				.location(checkoutUri)
 				.build();
-		} else {
+		} catch (Exception e) {
 			return ResponseEntity.notFound().build();
 		}
 	}

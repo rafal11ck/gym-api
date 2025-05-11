@@ -15,5 +15,5 @@ public class MembershipTypeRequest {
 	private String type;
 
 	@NotNull
-	private Float price;
+	private Long price;
 }

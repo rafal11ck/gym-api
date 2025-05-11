@@ -27,8 +27,10 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
 	}
 
 	@Override
-	public MembershipType getMembershipTypeEntity(UUID id) {
-		return membershipTypeRepository.findById(id).orElse(null);
+	public MembershipType getMembershipTypeByUuid(UUID id) throws EntityNotFoundException {
+		return membershipTypeRepository.findById(id).orElseThrow(
+			() -> new EntityNotFoundException("Membership type with ID " + id + " not found")
+		);
 	}
 
 	@Override
@@ -40,7 +42,7 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
 	}
 
 	@Override
-	public MembershipTypeDto createMembershipType(MembershipTypeRequest request) {
+	public MembershipTypeDto createMembershipType(MembershipTypeRequest request) throws Exception {
 		MembershipType membershipType = membershipTypeMapper.toEntityFromRequest(request);
 		MembershipType result = membershipTypeRepository.save(membershipType);
 		return membershipTypeMapper.toDtoFromEntity(result);

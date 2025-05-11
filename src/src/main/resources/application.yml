@@ -10,8 +10,13 @@ spring:
     database: postgresql
     hibernate:
       ddl-auto: create
+
 springdoc:
   api-docs:
     path: '/api-docs'
   swagger-ui:
     path: '/swagger'
+
+development:
+  stripe:
+    testing-enabled: true

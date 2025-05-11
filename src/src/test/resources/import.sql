@@ -2,8 +2,8 @@
 -- insert line break inside sql to greet one kilometer long stack trace!
 -- (learned about it the hard way)
 
-INSERT INTO membership_type (price, uuid, type) VALUES (21.37, '9d4e894f-30e4-488e-9689-ad0fa32a69d1', 'Standard');
-INSERT INTO membership_type (price, uuid, type) VALUES (69.69, '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'Premium');
+INSERT INTO membership_type (price, uuid, type) VALUES (200, '9d4e894f-30e4-488e-9689-ad0fa32a69d1', 'Standard');
+INSERT INTO membership_type (price, uuid, type) VALUES (300, '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'Premium');
 
 INSERT INTO membership (valid_until, membership_type_uuid, uuid) VALUES ('2025-04-18 13:44:45.621014', '9d4e894f-30e4-488e-9689-ad0fa32a69d1', '06d25bae-8d09-4170-b566-fd17f2ee6a23');
 INSERT INTO membership (valid_until, membership_type_uuid, uuid) VALUES ('2025-04-18 13:45:04.293944', '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'bbac838e-4a2f-4ef8-b562-075d64d8493a');

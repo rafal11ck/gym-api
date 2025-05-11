@@ -20,6 +20,10 @@ public final class MembershipType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;
+
 	String type;
-	Float price;
+
+	Long price;
+
+	String productId;
 }

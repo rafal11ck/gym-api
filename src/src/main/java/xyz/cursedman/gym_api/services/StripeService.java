@@ -1,14 +1,15 @@
 package xyz.cursedman.gym_api.services;
 
 import com.stripe.model.Product;
+import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeRequest;
 
 import java.net.URI;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface StripeService {
+	Product createProductFromMembershipTypeRequest(MembershipTypeRequest request) throws Exception;
 
-	Optional<Product> getProductByName(String name);
+	URI createCheckoutSessionUri(UUID membershipTypeId, UUID userId) throws Exception;
 
-	Optional<URI> createCheckoutSession(String productName, UUID userId);
+	void handleWebhook(String payload, String sigHeader) throws Exception;
 }

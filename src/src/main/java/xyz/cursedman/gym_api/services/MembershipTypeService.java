@@ -13,7 +13,7 @@ public interface MembershipTypeService {
 
 	MembershipTypeDto getMembershipType(UUID id) throws EntityNotFoundException;
 
-	MembershipTypeDto createMembershipType(MembershipTypeRequest request);
+	MembershipTypeDto createMembershipType(MembershipTypeRequest request) throws Exception;
 
 	MembershipTypeDto patchMembershipType(
 		UUID membershipTypeId,
@@ -21,5 +21,5 @@ public interface MembershipTypeService {
 	) throws EntityNotFoundException;
 
 	// used by mapper
-	MembershipType getMembershipTypeEntity(UUID id);
+	MembershipType getMembershipTypeByUuid(UUID id) throws EntityNotFoundException;
 }

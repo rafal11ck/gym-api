@@ -64,6 +64,12 @@ services:
       ADMINER_DEFAULT_DB_DRIVER: pgsql
       ADMINER_DEFAULT_SERVER: *dbserver
 
+  stripe-cli:
+    image: stripe/stripe-cli:latest
+    environment:
+      STRIPE_API_KEY: ${STRIPE_API_KEY}
+    command: listen --forward-to=http://host.docker.internal:8080/stripe-webhook
+
 volumes:
   postgres_data:
     driver: local

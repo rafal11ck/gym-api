@@ -1,8 +1,6 @@
 package xyz.cursedman.gym_api.services;
 
-import com.stripe.exception.StripeException;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.dao.DataIntegrityViolationException;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
 import xyz.cursedman.gym_api.domain.entities.User;
@@ -16,12 +14,12 @@ public interface UserService {
 
 	UserDto getUser(UUID id) throws EntityNotFoundException;
 
-	UserDto createUser(UserRequest request) throws DataIntegrityViolationException;
+	UserDto createUser(UserRequest request);
 
 	UserDto patchUser(UUID id, UserRequest request) throws EntityNotFoundException;
 
 	// used by mapper
-	User getUserByUuid(UUID id);
+	User getUserByUuid(UUID id) throws EntityNotFoundException;
 
-	void createCustomerProfilesForExistingUsers() throws StripeException;
+	void updateUserCustomerId(User user, String newCustomerId);
 }
