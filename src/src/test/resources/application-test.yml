@@ -18,6 +18,7 @@ spring:
   sql:
     init:
       mode: always
+
 server:
   servlet:
     context-path: /api
@@ -26,4 +27,3 @@ springdoc:
     path: '/api-docs'
   swagger-ui:
     path: '/swagger'
-
