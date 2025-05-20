@@ -23,7 +23,7 @@ public class HallTypeServiceImpl implements HallTypeService {
 
 	@Override
 	public List<HallTypeDto> listHallTypes() {
-		return hallTypeRepository.findAll().stream().map(hallTypeMapper::toDtoFromEntity).toList();
+		return hallTypeRepository.findAll().stream().map(hallTypeMapper::toDto).toList();
 	}
 
 	@Override

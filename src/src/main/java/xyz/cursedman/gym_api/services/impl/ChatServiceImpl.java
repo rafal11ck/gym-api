@@ -52,6 +52,6 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public ChatDto createChat() throws EntityNotFoundException {
 		Chat createdChat = chatRepository.save(new Chat());
-		return chatMapper.toDtoFromEntity(createdChat);
+		return chatMapper.toDto(createdChat);
 	}
 }
