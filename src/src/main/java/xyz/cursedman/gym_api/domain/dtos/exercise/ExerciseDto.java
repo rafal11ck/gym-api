@@ -19,5 +19,6 @@ public final class ExerciseDto {
 	private UUID uuid;
 	private String name;
 
+	@Builder.Default
 	private Set<TargetMuscleDto> targetMuscles = new HashSet<>();
 }
