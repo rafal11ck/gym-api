@@ -25,7 +25,7 @@ public class PaymentStatusServiceImpl implements PaymentStatusService {
 		return paymentStatusRepository
 			.findAll()
 			.stream()
-			.map(paymentStatusMapper::toDto)
+			.map(paymentStatusMapper::toDtoFromEntity)
 			.toList();
 	}
 

@@ -1,9 +1,7 @@
 package xyz.cursedman.gym_api.mappers;
 
-import xyz.cursedman.gym_api.domain.entities.User;
-
 public interface EntityMapper<EntityT, DtoT> {
-	DtoT toDto(User entity);
+	DtoT toDtoFromEntity(EntityT entity);
 
 	EntityT toEntityFromDto(DtoT dto);
 }

@@ -22,7 +22,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 
 	@Override
 	public List<UserRoleDto> listUserRoles() {
-		return userRoleRepository.findAll().stream().map(userRoleMapper::toDto).toList();
+		return userRoleRepository.findAll().stream().map(userRoleMapper::toDtoFromEntity).toList();
 	}
 
 	@Override
