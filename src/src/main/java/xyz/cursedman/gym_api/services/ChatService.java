@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ChatService {
-	ChatDto getChat(UUID id) throws EntityNotFoundException;
+	ChatDto getChat(UUID id);
 
-	List<ChatDto> listUserChats(UUID userId) throws EntityNotFoundException;
+	List<ChatDto> listUserChats(UUID userId);
 
-	ChatDto createChat() throws EntityNotFoundException;
+	ChatDto createChat();
 }

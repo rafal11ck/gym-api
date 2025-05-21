@@ -10,15 +10,11 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface ChatParticipantService {
-	Set<ChatParticipantDto> getChatParticipantDtosByChatUuid(UUID chatUuid)
-		throws EntityNotFoundException;
+	Set<ChatParticipantDto> getChatParticipantDtosByChatUuid(UUID chatUuid);
 
-	Set<ChatParticipant> getChatParticipantsByUserUuid(UUID userId)
-		throws EntityNotFoundException;
+	Set<ChatParticipant> getChatParticipantsByUserUuid(UUID userId);
 
-	ChatParticipantDto addChatParticipant(UUID id, ChatParticipantCreateRequest request)
-		throws EntityNotFoundException;
+	ChatParticipantDto addChatParticipant(UUID id, ChatParticipantCreateRequest request);
 
-	ChatParticipantDto updateChatParticipant(UUID id, UUID userId, ChatParticipantPatchRequest request)
-		throws EntityNotFoundException;
+	ChatParticipantDto updateChatParticipant(UUID id, UUID userId, ChatParticipantPatchRequest request);
 }

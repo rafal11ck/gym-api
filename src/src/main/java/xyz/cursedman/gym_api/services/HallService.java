@@ -11,11 +11,11 @@ import java.util.UUID;
 public interface HallService {
 	List<HallDto> listHalls();
 
-	HallDto getHall(UUID id) throws EntityNotFoundException;
+	HallDto getHall(UUID id);
 
 	HallDto createHall(HallRequest cardToCreate);
 
-	HallDto patchHall(UUID id, HallRequest request) throws EntityNotFoundException;
+	HallDto patchHall(UUID id, HallRequest request);
 
 	// used by mapper
 	Hall findHallByUuid(UUID id);

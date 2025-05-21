@@ -10,11 +10,11 @@ import java.util.UUID;
 public interface MaintenanceTaskService {
 	List<MaintenanceTaskDto> listMaintenanceTasks();
 
-	MaintenanceTaskDto getMaintenanceTask(UUID id) throws EntityNotFoundException;
+	MaintenanceTaskDto getMaintenanceTask(UUID id) ;
 
 	MaintenanceTaskDto createMaintenanceTask(MaintenanceTaskRequest request);
 
-	MaintenanceTaskDto patchMaintenanceTask(UUID id, MaintenanceTaskRequest request) throws EntityNotFoundException;
+	MaintenanceTaskDto patchMaintenanceTask(UUID id, MaintenanceTaskRequest request) ;
 
-	void deleteMaintenanceTask(UUID id) throws EntityNotFoundException;
+	void deleteMaintenanceTask(UUID id) ;
 }

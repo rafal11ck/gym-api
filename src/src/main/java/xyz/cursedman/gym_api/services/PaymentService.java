@@ -10,9 +10,9 @@ import java.util.UUID;
 public interface PaymentService {
 	List<PaymentDto> listPayments();
 
-	PaymentDto getPayment(UUID id) throws EntityNotFoundException;
+	PaymentDto getPayment(UUID id);
 
 	PaymentDto createPayment(PaymentRequest request);
 
-	PaymentDto patchPayment(UUID id, PaymentRequest request) throws EntityNotFoundException;
+	PaymentDto patchPayment(UUID id, PaymentRequest request);
 }
