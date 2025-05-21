@@ -10,6 +10,8 @@ import java.util.UUID;
 public interface MembershipService {
 	List<MembershipDto> listMemberships();
 
+	MembershipDto getMembership(UUID id);
+
 	MembershipDto createMembership(MembershipRequest request);
 
 	MembershipDto patchMembership(UUID id, MembershipRequest request);

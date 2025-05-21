@@ -10,6 +10,8 @@ import java.util.UUID;
 public interface HallService {
 	List<HallDto> listHalls();
 
+	HallDto getHall(UUID id);
+
 	HallDto createHall(HallRequest cardToCreate);
 
 	HallDto patchHall(UUID id, HallRequest request);
