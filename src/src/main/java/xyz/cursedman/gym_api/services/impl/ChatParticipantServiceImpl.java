@@ -9,6 +9,7 @@ import xyz.cursedman.gym_api.domain.dtos.chatParticipant.ChatParticipantDto;
 import xyz.cursedman.gym_api.domain.dtos.chatParticipant.ChatParticipantPatchRequest;
 import xyz.cursedman.gym_api.domain.entities.Chat;
 import xyz.cursedman.gym_api.domain.entities.ChatParticipant;
+import xyz.cursedman.gym_api.exceptions.ChatParticipantNotFoundException;
 import xyz.cursedman.gym_api.mappers.ChatParticipantMapper;
 import xyz.cursedman.gym_api.repositories.ChatParticipantRepository;
 import xyz.cursedman.gym_api.repositories.ChatRepository;
@@ -33,9 +34,9 @@ public class ChatParticipantServiceImpl implements ChatParticipantService {
 	private final ChatRepository chatRepository;
 
 	@Override
-	public Set<ChatParticipantDto> getChatParticipantDtosByChatUuid(UUID chatUuid) throws EntityNotFoundException {
+	public Set<ChatParticipantDto> getChatParticipantDtosByChatUuid(UUID chatUuid) throws ChatParticipantNotFoundException {
 		if (!chatRepository.existsById(chatUuid)) {
-			throw new EntityNotFoundException();
+			throw new ChatParticipantNotFoundException();
 		}
 
 		return chatParticipantRepository.findByChat_Uuid(chatUuid)
