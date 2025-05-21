@@ -11,12 +11,9 @@ import java.util.UUID;
 public interface CardService {
 	List<CardDto> listCards();
 
-	CardDto getCard(UUID id);
-
 	CardDto createCard(CardRequest cardToCreate);
 
 	CardDto patchCard(UUID id, CardRequest request);
 
-	// used by mapper
 	Card getCardByUUID(UUID id);
 }
