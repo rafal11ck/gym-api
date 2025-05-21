@@ -10,8 +10,6 @@ import java.util.UUID;
 public interface UserService {
 	List<UserDto> listUsers();
 
-	UserDto getUser(UUID id);
-
 	UserDto createUser(UserRequest request);
 
 	UserDto patchUser(UUID id, UserRequest request);
