@@ -9,6 +9,7 @@ import xyz.cursedman.gym_api.domain.dtos.chatParticipant.ChatParticipantDto;
 import xyz.cursedman.gym_api.domain.dtos.chatParticipant.ChatParticipantPatchRequest;
 import xyz.cursedman.gym_api.domain.entities.Chat;
 import xyz.cursedman.gym_api.domain.entities.ChatParticipant;
+import xyz.cursedman.gym_api.exceptions.ChatNotFoundException;
 import xyz.cursedman.gym_api.exceptions.ChatParticipantNotFoundException;
 import xyz.cursedman.gym_api.mappers.ChatParticipantMapper;
 import xyz.cursedman.gym_api.repositories.ChatParticipantRepository;
@@ -33,10 +34,11 @@ public class ChatParticipantServiceImpl implements ChatParticipantService {
 
 	private final ChatRepository chatRepository;
 
+
 	@Override
-	public Set<ChatParticipantDto> getChatParticipantDtosByChatUuid(UUID chatUuid) throws ChatParticipantNotFoundException {
+	public Set<ChatParticipantDto> getChatParticipantDtosByChatUuid(UUID chatUuid) {
 		if (!chatRepository.existsById(chatUuid)) {
-			throw new ChatParticipantNotFoundException();
+			throw new ChatNotFoundException("Chat with uuid " + chatUuid + " not found");
 		}
 
 		return chatParticipantRepository.findByChat_Uuid(chatUuid)
@@ -46,9 +48,9 @@ public class ChatParticipantServiceImpl implements ChatParticipantService {
 	}
 
 	@Override
-	public Set<ChatParticipant> getChatParticipantsByUserUuid(UUID userId) throws EntityNotFoundException {
+	public Set<ChatParticipant> getChatParticipantsByUserUuid(UUID userId) {
 		if (!userRepository.existsById(userId)) {
-			throw new EntityNotFoundException();
+			throw new ChatParticipantNotFoundException();
 		}
 
 		return chatParticipantRepository.findByUser_Uuid(userId);
@@ -56,8 +58,7 @@ public class ChatParticipantServiceImpl implements ChatParticipantService {
 
 	@Override
 	public ChatParticipantDto addChatParticipant(UUID id, ChatParticipantCreateRequest request)
-		throws EntityNotFoundException
-	{
+		throws EntityNotFoundException {
 		Chat chat = chatRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 		Set<ChatParticipant> chatParticipants = chatParticipantRepository.findByChat_Uuid(id);
 		Optional<ChatParticipant> foundParticipant = chatParticipants.stream()
@@ -77,8 +78,7 @@ public class ChatParticipantServiceImpl implements ChatParticipantService {
 
 	@Override
 	public ChatParticipantDto updateChatParticipant(UUID id, UUID userId, ChatParticipantPatchRequest request)
-		throws EntityNotFoundException
-	{
+		throws EntityNotFoundException {
 		if (!chatRepository.existsById(id)) {
 			throw new EntityNotFoundException();
 		}
