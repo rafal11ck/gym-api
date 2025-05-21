@@ -1,6 +1,5 @@
 package xyz.cursedman.gym_api.services;
 
-import jakarta.persistence.EntityNotFoundException;
 import xyz.cursedman.gym_api.domain.dtos.hall.HallDto;
 import xyz.cursedman.gym_api.domain.dtos.hall.HallRequest;
 import xyz.cursedman.gym_api.domain.entities.Hall;

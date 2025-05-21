@@ -1,6 +1,5 @@
 package xyz.cursedman.gym_api.services;
 
-import jakarta.persistence.EntityNotFoundException;
 import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeDto;
 import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeRequest;
 import xyz.cursedman.gym_api.domain.entities.MembershipType;

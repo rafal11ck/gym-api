@@ -1,8 +1,7 @@
 package xyz.cursedman.gym_api.services;
 
-import jakarta.persistence.EntityNotFoundException;
-import xyz.cursedman.gym_api.domain.dtos.chatParticipant.ChatParticipantDto;
 import xyz.cursedman.gym_api.domain.dtos.chatParticipant.ChatParticipantCreateRequest;
+import xyz.cursedman.gym_api.domain.dtos.chatParticipant.ChatParticipantDto;
 import xyz.cursedman.gym_api.domain.dtos.chatParticipant.ChatParticipantPatchRequest;
 import xyz.cursedman.gym_api.domain.entities.ChatParticipant;
 
