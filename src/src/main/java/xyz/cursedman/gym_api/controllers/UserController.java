@@ -30,12 +30,8 @@ public class UserController {
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<UserDto> getUser(@Valid @PathVariable UUID id) {
-		try {
-			UserDto userDto = userService.getUser(id);
-			return ResponseEntity.ok(userDto);
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		UserDto userDto = userService.getUser(id);
+		return ResponseEntity.ok(userDto);
 	}
 
 	@PostMapping
@@ -49,21 +45,13 @@ public class UserController {
 		@Valid @PathVariable UUID id,
 		@RequestBody UserRequest request
 	) {
-		try {
-			return ResponseEntity.ok(userService.patchUser(id, request));
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(userService.patchUser(id, request));
 	}
 
 	// chats
 
 	@GetMapping("{id}/chats")
 	public ResponseEntity<List<ChatDto>> listChats(@PathVariable UUID id) {
-		try {
-			return ResponseEntity.ok(chatService.listUserChats(id));
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(chatService.listUserChats(id));
 	}
 }

@@ -26,12 +26,8 @@ public class MaintenanceTaskController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<MaintenanceTaskDto> getMaintenanceTask(@Valid @PathVariable UUID id) {
-		try {
-			MaintenanceTaskDto taskDto = maintenanceTaskService.getMaintenanceTask(id);
-			return ResponseEntity.ok(taskDto);
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		MaintenanceTaskDto taskDto = maintenanceTaskService.getMaintenanceTask(id);
+		return ResponseEntity.ok(taskDto);
 	}
 
 	@PostMapping
@@ -47,20 +43,12 @@ public class MaintenanceTaskController {
 		@Valid @PathVariable UUID id,
 		@RequestBody MaintenanceTaskRequest request
 	) {
-		try {
-			return ResponseEntity.ok(maintenanceTaskService.patchMaintenanceTask(id, request));
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(maintenanceTaskService.patchMaintenanceTask(id, request));
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteMaintenanceTask(@Valid @PathVariable UUID id) {
-		try {
-			maintenanceTaskService.deleteMaintenanceTask(id);
-			return ResponseEntity.noContent().build();
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		maintenanceTaskService.deleteMaintenanceTask(id);
+		return ResponseEntity.noContent().build();
 	}
 }
