@@ -12,6 +12,8 @@ public interface CardService {
 
 	CardDto createCard(CardRequest cardToCreate);
 
+	CardDto getCard(UUID id);
+
 	CardDto patchCard(UUID id, CardRequest request);
 
 	Card getCardByUUID(UUID id);

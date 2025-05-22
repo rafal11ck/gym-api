@@ -57,8 +57,7 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 
 	@Override
 	public WorkoutSessionDto patchWorkoutSession(UUID id, WorkoutSessionRequest request)
-		throws EntityNotFoundException
-	{
+		throws EntityNotFoundException {
 		WorkoutSession workoutSession = workoutSessionRepository
 			.findById(id)
 			.orElseThrow(EntityNotFoundException::new);
@@ -71,8 +70,7 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 
 	@Override
 	public WorkoutSessionDto addAttendantToWorkoutSession(UUID workoutSessionId, WorkoutSessionAttendantRequest request)
-		throws EntityNotFoundException
-	{
+		throws EntityNotFoundException {
 		WorkoutSession session = workoutSessionRepository.findById(workoutSessionId)
 			.orElseThrow(EntityNotFoundException::new);
 
@@ -86,8 +84,7 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 
 	@Override
 	public void deleteWorkoutSessionAttendant(UUID workoutSessionId, UUID userId)
-		throws EntityNotFoundException
-	{
+		throws EntityNotFoundException {
 		WorkoutSession session = workoutSessionRepository.findById(workoutSessionId)
 			.orElseThrow(EntityNotFoundException::new);
 
@@ -103,9 +100,8 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 
 	@Override
 	public WorkoutSessionDto addExerciseToWorkoutSession(UUID workoutSessionId, WorkoutSessionExerciseRequest request)
-		throws EntityNotFoundException
-	{
-		workoutSessionExerciseService.createWorkoutSessionExercise(request, getWorkoutSessionByUuid(workoutSessionId));
+		throws EntityNotFoundException {
+		workoutSessionExerciseService.createWorkoutSessionExercise(request, getWorkoutSessionEntity(workoutSessionId));
 		return getWorkoutSession(workoutSessionId);
 	}
 
@@ -119,7 +115,7 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 	}
 
 	@Override
-	public WorkoutSession getWorkoutSessionByUuid(UUID id) {
+	public WorkoutSession getWorkoutSessionEntity(UUID id) {
 		return workoutSessionRepository.findById(id).orElseThrow(
 			() -> new EntityNotFoundException("Workout session with ID " + id + " not found")
 		);

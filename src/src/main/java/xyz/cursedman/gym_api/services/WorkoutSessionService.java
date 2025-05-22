@@ -27,5 +27,5 @@ public interface WorkoutSessionService {
 	void deleteWorkoutSessionExercise(UUID workoutSessionId, UUID exerciseId);
 
 	// used by mapper
-	WorkoutSession getWorkoutSessionByUuid(UUID id);
+	WorkoutSession getWorkoutSessionEntity(UUID id);
 }

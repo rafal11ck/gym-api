@@ -3,5 +3,6 @@ package xyz.cursedman.gym_api.exceptions;
 import lombok.experimental.StandardException;
 
 @StandardException
-public class ExerciseException extends RuntimeException {
+public class NotFoundException extends RuntimeException {
+
 }
