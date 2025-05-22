@@ -18,7 +18,7 @@ public interface UserService {
 	UserDto patchUser(UUID id, UserRequest request);
 
 	// used by mapper
-	User getUserByUuid(UUID id) throws EntityNotFoundException;
+	User getUserByUuid(UUID id);
 
 	void updateUserCustomerId(User user, String newCustomerId);
 }

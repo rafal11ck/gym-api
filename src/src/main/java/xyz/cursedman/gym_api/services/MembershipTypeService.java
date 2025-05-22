@@ -20,5 +20,5 @@ public interface MembershipTypeService {
 	);
 
 	// used by mapper
-	MembershipType getMembershipTypeByUuid(UUID id) throws EntityNotFoundException;
+	MembershipType getMembershipTypeByUuid(UUID id);
 }
