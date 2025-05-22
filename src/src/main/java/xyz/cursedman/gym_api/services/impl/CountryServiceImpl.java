@@ -1,9 +1,9 @@
 package xyz.cursedman.gym_api.services.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.entities.Country;
+import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.CountryMapper;
 import xyz.cursedman.gym_api.repositories.CountryRepository;
 import xyz.cursedman.gym_api.services.CountryService;
@@ -25,6 +25,6 @@ public class CountryServiceImpl implements CountryService {
 	@Override
 	public Country getCountryByUuid(UUID id) {
 		return countryRepository.findById(id).orElseThrow(
-			() -> new EntityNotFoundException("Country with ID " + id + " not found"));
+			() -> new NotFoundException("Country with ID " + id + " not found"));
 		}
 }

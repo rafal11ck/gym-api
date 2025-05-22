@@ -24,20 +24,16 @@ import java.util.UUID;
 @ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class HallControllerTest {
-	@Autowired
-	private MockMvc mockMvc;
-
 	private final String endpointUri = "/halls";
-
 	private final String validHallUuid = "ce5f8d01-6fa8-4226-97fc-51d3e9cd91e5";
-
 	private final String validHallTypeUuid = "2a2fa2ba-2381-4cb6-86f4-282bdbf18e81";
-
 	private final HallRequest validHallRequest = HallRequest.builder()
 		.hallName("hall name")
 		.hallDescription("hall desc")
 		.hallTypeUuid(UUID.fromString(validHallTypeUuid))
 		.build();
+	@Autowired
+	private MockMvc mockMvc;
 
 	// GET
 
@@ -56,10 +52,9 @@ class HallControllerTest {
 	}
 
 	@Test
-	void checkIfGetNonExistingRecordReturns404AndEmptyBody() throws Exception {
+	void checkIfGetNonExistingRecordReturns404() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri + "/" + UUID.randomUUID()))
-			.andExpect(MockMvcResultMatchers.status().isNotFound())
-			.andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
+			.andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 
 	// POST
@@ -67,14 +62,14 @@ class HallControllerTest {
 	@Test
 	void checkIfCreateReturnsHttp201AndCreatedRecord() throws Exception {
 		mockMvc.perform(
-			MockMvcRequestBuilders.post(endpointUri)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.stringify(validHallRequest))
-		).andExpect(MockMvcResultMatchers.status().isCreated())
-		.andExpect(TestJsonHelper.contentEqualsJsonOf(validHallRequest, "hallTypeUuid"))
-		.andExpect(
-			MockMvcResultMatchers.jsonPath("$.hallType.uuid", Matchers.is(validHallTypeUuid))
-		);
+				MockMvcRequestBuilders.post(endpointUri)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestJsonHelper.stringify(validHallRequest))
+			).andExpect(MockMvcResultMatchers.status().isCreated())
+			.andExpect(TestJsonHelper.contentEqualsJsonOf(validHallRequest, "hallTypeUuid"))
+			.andExpect(
+				MockMvcResultMatchers.jsonPath("$.hallType.uuid", Matchers.is(validHallTypeUuid))
+			);
 	}
 
 	@Test
@@ -92,13 +87,13 @@ class HallControllerTest {
 	void checkIfPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
 		String hallTypeUuidToUpdate = "cc5f2a2a-1248-4e4f-aed9-5aab7c3f577a";
 		mockMvc.perform(
-			MockMvcRequestBuilders.patch(endpointUri + "/" + validHallUuid)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.toJSONField("hallTypeUuid", hallTypeUuidToUpdate))
-		).andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(
-			MockMvcResultMatchers.jsonPath("$.hallType.uuid", Matchers.is(hallTypeUuidToUpdate))
-		);
+				MockMvcRequestBuilders.patch(endpointUri + "/" + validHallUuid)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestJsonHelper.toJSONField("hallTypeUuid", hallTypeUuidToUpdate))
+			).andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(
+				MockMvcResultMatchers.jsonPath("$.hallType.uuid", Matchers.is(hallTypeUuidToUpdate))
+			);
 	}
 
 	@Test

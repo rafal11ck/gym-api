@@ -30,12 +30,8 @@ public class WorkoutSessionController {
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<WorkoutSessionDto> getWorkoutSession(@Valid @PathVariable UUID id) {
-		try {
-			WorkoutSessionDto sessionDto = workoutSessionService.getWorkoutSession(id);
-			return ResponseEntity.ok(sessionDto);
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		WorkoutSessionDto sessionDto = workoutSessionService.getWorkoutSession(id);
+		return ResponseEntity.ok(sessionDto);
 	}
 
 	@PostMapping
@@ -51,11 +47,7 @@ public class WorkoutSessionController {
 		@Valid @PathVariable UUID id,
 		@RequestBody WorkoutSessionRequest request
 	) {
-		try {
-			return ResponseEntity.ok(workoutSessionService.patchWorkoutSession(id, request));
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(workoutSessionService.patchWorkoutSession(id, request));
 	}
 
 	// session attendants
@@ -65,11 +57,7 @@ public class WorkoutSessionController {
 		@Valid @PathVariable UUID id,
 		@RequestBody @Valid WorkoutSessionAttendantRequest request
 	) {
-		try {
-			return ResponseEntity.ok(workoutSessionService.addAttendantToWorkoutSession(id, request));
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(workoutSessionService.addAttendantToWorkoutSession(id, request));
 	}
 
 	@DeleteMapping("/{id}/attendants/{userId}")
@@ -77,12 +65,8 @@ public class WorkoutSessionController {
 		@Valid @PathVariable UUID id,
 		@Valid @PathVariable UUID userId
 	) {
-		try {
-			workoutSessionService.deleteWorkoutSessionAttendant(id, userId);
-			return ResponseEntity.noContent().build();
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		workoutSessionService.deleteWorkoutSessionAttendant(id, userId);
+		return ResponseEntity.noContent().build();
 	}
 
 	// session exercises
@@ -92,11 +76,7 @@ public class WorkoutSessionController {
 		@Valid @PathVariable UUID id,
 		@RequestBody @Valid WorkoutSessionExerciseRequest request
 	) {
-		try {
-			return ResponseEntity.ok(workoutSessionService.addExerciseToWorkoutSession(id, request));
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(workoutSessionService.addExerciseToWorkoutSession(id, request));
 	}
 
 	@DeleteMapping("/{id}/exercises/{exerciseId}")
@@ -104,11 +84,7 @@ public class WorkoutSessionController {
 		@Valid @PathVariable UUID id,
 		@Valid @PathVariable UUID exerciseId
 	) {
-		try {
-			workoutSessionService.deleteWorkoutSessionExercise(id, exerciseId);
-			return ResponseEntity.noContent().build();
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		workoutSessionService.deleteWorkoutSessionExercise(id, exerciseId);
+		return ResponseEntity.noContent().build();
 	}
 }

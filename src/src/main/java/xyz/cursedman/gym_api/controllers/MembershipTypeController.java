@@ -31,12 +31,8 @@ public class MembershipTypeController {
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<MembershipTypeDto> getMembershipType(@Valid @PathVariable UUID id) {
-		try {
-			MembershipTypeDto membershipTypeDto = membershipTypeService.getMembershipType(id);
-			return ResponseEntity.ok(membershipTypeDto);
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		MembershipTypeDto membershipTypeDto = membershipTypeService.getMembershipType(id);
+		return ResponseEntity.ok(membershipTypeDto);
 	}
 
 	@PostMapping
@@ -58,10 +54,6 @@ public class MembershipTypeController {
 		@Valid @PathVariable UUID id,
 		@RequestBody MembershipTypeRequest request
 	) {
-		try {
-			return ResponseEntity.ok(membershipTypeService.patchMembershipType(id, request));
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(membershipTypeService.patchMembershipType(id, request));
 	}
 }

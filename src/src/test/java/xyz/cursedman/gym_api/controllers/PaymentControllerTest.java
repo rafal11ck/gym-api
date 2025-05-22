@@ -60,10 +60,9 @@ public class PaymentControllerTest {
 	}
 
 	@Test
-	void checkIfGetNonExistingRecordReturns404AndEmptyBody() throws Exception {
+	void checkIfGetNonExistingRecordReturns404() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri + "/" + UUID.randomUUID()))
-			.andExpect(MockMvcResultMatchers.status().isNotFound())
-			.andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
+			.andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 
 	// POST

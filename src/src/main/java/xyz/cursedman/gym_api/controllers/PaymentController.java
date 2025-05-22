@@ -26,12 +26,8 @@ public class PaymentController {
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<PaymentDto> getPayment(@Valid @PathVariable UUID id) {
-		try {
-			PaymentDto paymentDto = paymentService.getPayment(id);
-			return ResponseEntity.ok(paymentDto);
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		PaymentDto paymentDto = paymentService.getPayment(id);
+		return ResponseEntity.ok(paymentDto);
 	}
 
 	@PostMapping
@@ -45,10 +41,6 @@ public class PaymentController {
 		@Valid @PathVariable UUID id,
 		@RequestBody PaymentRequest request
 	) {
-		try {
-			return ResponseEntity.ok(paymentService.patchPayment(id, request));
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(paymentService.patchPayment(id, request));
 	}
 }

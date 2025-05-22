@@ -19,5 +19,6 @@ public final class CreateExerciseRequest {
 	/**
 	 * targetMuscles targeted by Exercise
 	 */
+	@Builder.Default
 	Set<UUID> targetMuscles = new HashSet<>();
 }

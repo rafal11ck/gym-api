@@ -1,11 +1,11 @@
 package xyz.cursedman.gym_api.services.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.card.CardDto;
 import xyz.cursedman.gym_api.domain.dtos.card.CardRequest;
 import xyz.cursedman.gym_api.domain.entities.Card;
+import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.CardMapper;
 import xyz.cursedman.gym_api.repositories.CardRepository;
 import xyz.cursedman.gym_api.services.CardService;
@@ -27,11 +27,9 @@ public class CardServiceImpl implements CardService {
 	}
 
 	@Override
-	public CardDto getCard(UUID id) throws EntityNotFoundException {
-		return cardRepository
-			.findById(id)
-			.map(cardMapper::toDtoFromEntity)
-			.orElseThrow(EntityNotFoundException::new);
+	public CardDto getCard(UUID id) {
+		return cardRepository.findById(id).map(cardMapper::toDtoFromEntity).orElseThrow(
+			() -> new NotFoundException("Card with uuid " + id + " not found"));
 	}
 
 	@Override
@@ -42,8 +40,8 @@ public class CardServiceImpl implements CardService {
 	}
 
 	@Override
-	public CardDto patchCard(UUID id, CardRequest request) throws EntityNotFoundException {
-		Card card = cardRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+	public CardDto patchCard(UUID id, CardRequest request) {
+		Card card = getCardByUUID(id);
 		cardMapper.updateFromRequest(request, card);
 
 		Card result = cardRepository.save(card);
@@ -53,7 +51,7 @@ public class CardServiceImpl implements CardService {
 	@Override
 	public Card getCardByUUID(UUID id) {
 		return cardRepository.findById(id).orElseThrow(
-			() -> new EntityNotFoundException("Card with ID " + id + " not found")
+			() -> new NotFoundException("Card with ID " + id + " not found")
 		);
 	}
 }

@@ -26,12 +26,8 @@ public class HallController {
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<HallDto> getHall(@Valid @PathVariable UUID id) {
-		try {
-			HallDto hallDto = hallService.getHall(id);
-			return ResponseEntity.ok(hallDto);
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		HallDto hallDto = hallService.getHall(id);
+		return ResponseEntity.ok(hallDto);
 	}
 
 	@PostMapping
@@ -45,10 +41,6 @@ public class HallController {
 		@Valid @PathVariable UUID id,
 		@RequestBody HallRequest request
 	) {
-		try {
-			return ResponseEntity.ok(hallService.patchHall(id, request));
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(hallService.patchHall(id, request));
 	}
 }

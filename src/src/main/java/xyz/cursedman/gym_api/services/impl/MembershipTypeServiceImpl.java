@@ -27,6 +27,9 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
 	}
 
 	@Override
+	public MembershipType getMembershipTypeEntity(UUID id) {
+		return membershipTypeRepository.findById(id)
+			.orElse(null);
 	public MembershipType getMembershipTypeByUuid(UUID id) throws EntityNotFoundException {
 		return membershipTypeRepository.findById(id).orElseThrow(
 			() -> new EntityNotFoundException("Membership type with ID " + id + " not found")
@@ -34,15 +37,15 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
 	}
 
 	@Override
-	public MembershipTypeDto getMembershipType(UUID id) throws EntityNotFoundException {
+	public MembershipTypeDto getMembershipType(UUID id) {
 		return membershipTypeRepository
 			.findById(id)
 			.map(membershipTypeMapper::toDtoFromEntity)
-			.orElseThrow(EntityNotFoundException::new);
+			.orElseThrow(() -> new NotFoundException("Membership type with id " + id + " not found"));
 	}
 
 	@Override
-	public MembershipTypeDto createMembershipType(MembershipTypeRequest request) throws Exception {
+	public MembershipTypeDto createMembershipType(MembershipTypeRequest request) {
 		MembershipType membershipType = membershipTypeMapper.toEntityFromRequest(request);
 		MembershipType result = membershipTypeRepository.save(membershipType);
 		return membershipTypeMapper.toDtoFromEntity(result);
@@ -52,11 +55,11 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
 	public MembershipTypeDto patchMembershipType(
 		UUID membershipTypeId,
 		MembershipTypeRequest request
-	) throws EntityNotFoundException {
+	)  {
 
 		MembershipType membershipType = membershipTypeRepository
 			.findById(membershipTypeId)
-			.orElseThrow(EntityNotFoundException::new);
+			.orElseThrow(() -> new NotFoundException("Membership type with id " + membershipTypeId + " not found"));
 
 		membershipTypeMapper.updateFromRequest(request, membershipType);
 		MembershipType result = membershipTypeRepository.save(membershipType);

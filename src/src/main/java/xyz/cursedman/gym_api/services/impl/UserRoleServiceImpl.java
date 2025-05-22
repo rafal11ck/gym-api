@@ -1,10 +1,10 @@
 package xyz.cursedman.gym_api.services.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.userRole.UserRoleDto;
 import xyz.cursedman.gym_api.domain.entities.UserRole;
+import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.UserRoleMapper;
 import xyz.cursedman.gym_api.repositories.UserRoleRepository;
 import xyz.cursedman.gym_api.services.UserRoleService;
@@ -28,7 +28,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 	@Override
 	public UserRole getUserRoleByUuid(UUID id) {
 		return userRoleRepository.findById(id).orElseThrow(
-			() -> new EntityNotFoundException("User role with ID " + id + " not found")
+			() -> new NotFoundException("User role with ID " + id + " not found")
 		);
 	}
 }

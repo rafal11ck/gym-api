@@ -158,8 +158,7 @@
                 </configuration>
             </plugin>
 
-
+<!-- never gonna let you go -->
         </plugins>
     </build>
-<!-- force release -->
 </project>
