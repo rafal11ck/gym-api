@@ -51,7 +51,7 @@ class MembershipTypeControllerTest {
 	@Test
 	void checkIfGetNonExistingRecordReturns404() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri + "/" + UUID.randomUUID()))
-			.andExpect(MockMvcResultMatchers.status().isNotFound())
+			.andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 
 	// POST

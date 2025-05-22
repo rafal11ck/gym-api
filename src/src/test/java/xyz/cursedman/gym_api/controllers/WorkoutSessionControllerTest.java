@@ -328,7 +328,7 @@ class WorkoutSessionControllerTest {
 	}
 
 	@Test
-	void checkIfDeletingExerciseOfNonExistingWorkoutSessionReturnsHttpNoContent() throws Exception {
+	void checkIfDeletingExerciseOfNonExistingWorkoutSessionReturnsHttpNotFound() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.delete(
 				endpointUri
@@ -337,7 +337,7 @@ class WorkoutSessionControllerTest {
 					+ "/exercises/"
 					+ validWorkoutSessionUuids.get("exercise_uuid")
 			)
-		).andExpect(MockMvcResultMatchers.status().isNoContent());
+		).andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 
 	@Test

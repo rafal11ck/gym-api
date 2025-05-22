@@ -70,7 +70,7 @@ class UserControllerTest {
 	@Test
 	void checkIfGetNonExistingUserRecordReturns404() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri + "/" + UUID.randomUUID()))
-			.andExpect(MockMvcResultMatchers.status().isNotFound())
+			.andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 
 	// POST
