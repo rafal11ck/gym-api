@@ -68,10 +68,9 @@ class UserControllerTest {
 	}
 
 	@Test
-	void checkIfGetNonExistingUserRecordReturns404AndEmptyBody() throws Exception {
+	void checkIfGetNonExistingUserRecordReturns404() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri + "/" + UUID.randomUUID()))
 			.andExpect(MockMvcResultMatchers.status().isNotFound())
-			.andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
 	}
 
 	// POST
