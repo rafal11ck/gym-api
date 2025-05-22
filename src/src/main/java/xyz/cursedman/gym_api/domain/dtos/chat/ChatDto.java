@@ -16,5 +16,7 @@ import java.util.UUID;
 @Builder
 public class ChatDto {
 	private UUID uuid;
+	
+	@Builder.Default
 	private Set<ChatParticipantDto> participants = new HashSet<>();
 }

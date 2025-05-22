@@ -7,6 +7,7 @@ import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionExerciseDt
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionExerciseRequest;
 import xyz.cursedman.gym_api.domain.entities.WorkoutSession;
 import xyz.cursedman.gym_api.domain.entities.WorkoutSessionExercise;
+import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.WorkoutSessionExerciseMapper;
 import xyz.cursedman.gym_api.repositories.WorkoutSessionExerciseRepository;
 import xyz.cursedman.gym_api.services.ExerciseService;
@@ -53,7 +54,7 @@ public class WorkoutSessionExerciseServiceImpl implements WorkoutSessionExercise
     @Override
     public void deleteWorkoutSessionExercise(UUID workoutSessionExerciseId) {
         if (!workoutSessionExerciseRepository.existsById(workoutSessionExerciseId)) {
-            throw new EntityNotFoundException();
+            throw new NotFoundException();
         }
 
         workoutSessionExerciseRepository.deleteById(workoutSessionExerciseId);

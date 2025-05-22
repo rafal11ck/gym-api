@@ -4,9 +4,9 @@ import org.mapstruct.*;
 import xyz.cursedman.gym_api.domain.dtos.card.CardDto;
 import xyz.cursedman.gym_api.domain.dtos.card.CardRequest;
 import xyz.cursedman.gym_api.domain.entities.Card;
-import xyz.cursedman.gym_api.services.CountryService;
+import xyz.cursedman.gym_api.services.impl.CountryServiceImpl;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = CountryService.class)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = CountryServiceImpl.class)
 public interface CardMapper extends EntityRequestMapper<Card, CardDto, CardRequest> {
 	@Override
 	@Mapping(target = "countryUuid", source = "country.uuid")

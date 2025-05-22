@@ -1,10 +1,10 @@
 package xyz.cursedman.gym_api.services.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.paymentStatus.PaymentStatusDto;
 import xyz.cursedman.gym_api.domain.entities.PaymentStatus;
+import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.PaymentStatusMapper;
 import xyz.cursedman.gym_api.repositories.PaymentStatusRepository;
 import xyz.cursedman.gym_api.services.PaymentStatusService;
@@ -32,7 +32,7 @@ public class PaymentStatusServiceImpl implements PaymentStatusService {
 	@Override
 	public PaymentStatus getPaymentStatusByUuid(UUID id) {
 		return paymentStatusRepository.findById(id).orElseThrow(
-			() -> new EntityNotFoundException("Payment status with ID " + id + " not found")
+			() -> new NotFoundException("Payment status with ID " + id + " not found")
 		);
 	}
 }

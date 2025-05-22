@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.chat.ChatDto;
 import xyz.cursedman.gym_api.domain.entities.Chat;
 import xyz.cursedman.gym_api.domain.entities.ChatParticipant;
+import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.ChatMapper;
 import xyz.cursedman.gym_api.repositories.ChatRepository;
 import xyz.cursedman.gym_api.services.ChatParticipantService;
@@ -25,8 +26,9 @@ public class ChatServiceImpl implements ChatService {
 	private final ChatMapper chatMapper;
 
 	@Override
-	public ChatDto getChat(UUID id) throws EntityNotFoundException {
-		Chat chat = chatRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+	public ChatDto getChat(UUID id) {
+		Chat chat = chatRepository.findById(id).orElseThrow(
+			() -> new NotFoundException("chat with id " + id + " not found"));
 		UUID chatUuid = chat.getUuid();
 
 		return ChatDto.builder()

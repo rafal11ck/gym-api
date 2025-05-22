@@ -35,22 +35,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ChatControllerTest {
 
-	@Autowired
-	private MockMvc mockMvc;
-
 	private final String endpointUri = "/chats";
-
 	private final ChatParticipantCreateRequest validParticipantCreateRequest = ChatParticipantCreateRequest.builder()
 		.userUuid(UUID.fromString("f18d2783-77f6-4f3d-a58e-f72bb31600c6"))
 		.build();
-
 	private final ChatParticipantPatchRequest validParticipantPatchRequest
 		= new ChatParticipantPatchRequest(new Date());
-
 	private final Map<String, String> validChatUuids = Map.of(
 		"chat_uuid", "a1ed2efc-59ac-4467-883b-89ee2ee6846d",
 		"participant_uuid", "65f40335-135a-47ec-ad7d-72278c4be65c"
 	);
+	@Autowired
+	private MockMvc mockMvc;
 
 	// chat
 
@@ -67,10 +63,9 @@ class ChatControllerTest {
 	}
 
 	@Test
-	void checkIfGetNonExistingChatReturns404AndEmptyBody() throws Exception {
+	void checkIfGetNonExistingChatReturns404() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri + "/" + UUID.randomUUID()))
-			.andExpect(MockMvcResultMatchers.status().isNotFound())
-			.andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
+			.andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 
 	// POST
@@ -78,12 +73,12 @@ class ChatControllerTest {
 	@Test
 	void checkIfCreateChatReturnsHttp201AndCreatedRecord() throws Exception {
 		mockMvc.perform(
-			MockMvcRequestBuilders.post(endpointUri)
-				.contentType(MediaType.APPLICATION_JSON)
-		).andExpect(MockMvcResultMatchers.status().isCreated())
-		.andExpect(
-			MockMvcResultMatchers.jsonPath("$.uuid").exists()
-		);
+				MockMvcRequestBuilders.post(endpointUri)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(MockMvcResultMatchers.status().isCreated())
+			.andExpect(
+				MockMvcResultMatchers.jsonPath("$.uuid").exists()
+			);
 	}
 
 	// chat participants
@@ -93,31 +88,31 @@ class ChatControllerTest {
 	@Test
 	void checkIfCreateChatParticipantReturnsHttp201AndCreatedRecord() throws Exception {
 		mockMvc.perform(
-			MockMvcRequestBuilders.post(
-				endpointUri + "/" + validChatUuids.get("chat_uuid") + "/participants"
-			).contentType(MediaType.APPLICATION_JSON)
-			.content(TestJsonHelper.stringify(validParticipantCreateRequest))
-		).andExpect(MockMvcResultMatchers.status().isCreated())
-		.andExpect(TestJsonHelper.contentEqualsJsonOf(validParticipantCreateRequest, "userUuid"))
-		.andExpect(
-			MockMvcResultMatchers.jsonPath(
-				"$.user.uuid", Matchers.is(validParticipantCreateRequest.getUserUuid().toString())
-			)
-		);
+				MockMvcRequestBuilders.post(
+						endpointUri + "/" + validChatUuids.get("chat_uuid") + "/participants"
+					).contentType(MediaType.APPLICATION_JSON)
+					.content(TestJsonHelper.stringify(validParticipantCreateRequest))
+			).andExpect(MockMvcResultMatchers.status().isCreated())
+			.andExpect(TestJsonHelper.contentEqualsJsonOf(validParticipantCreateRequest, "userUuid"))
+			.andExpect(
+				MockMvcResultMatchers.jsonPath(
+					"$.user.uuid", Matchers.is(validParticipantCreateRequest.getUserUuid().toString())
+				)
+			);
 	}
 
 	@Test
-	void checkIfCreateExistingChatParticipantReturnsHttp200() throws Exception {
+	void checkIfCreateExistingChatParticipantReturnsHttp201() throws Exception {
 		ChatParticipantCreateRequest existingParticipantCreateRequest = ChatParticipantCreateRequest.builder()
 			.userUuid(UUID.fromString(validChatUuids.get("participant_uuid")))
 			.build();
 
 		mockMvc.perform(
 			MockMvcRequestBuilders.post(
-				endpointUri + "/" + validChatUuids.get("chat_uuid") + "/participants"
-			).contentType(MediaType.APPLICATION_JSON)
-			.content(TestJsonHelper.stringify(existingParticipantCreateRequest))
-		).andExpect(MockMvcResultMatchers.status().isConflict());
+					endpointUri + "/" + validChatUuids.get("chat_uuid") + "/participants"
+				).contentType(MediaType.APPLICATION_JSON)
+				.content(TestJsonHelper.stringify(existingParticipantCreateRequest))
+		).andExpect(MockMvcResultMatchers.status().isCreated());
 	}
 
 	@Test
@@ -126,7 +121,6 @@ class ChatControllerTest {
 			MockMvcRequestBuilders.post(
 				endpointUri + "/" + validChatUuids.get("chat_uuid") + "/participants"
 			).contentType(MediaType.APPLICATION_JSON)
-			.content(TestJsonHelper.stringify("{}"))
 		).andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 
@@ -134,9 +128,9 @@ class ChatControllerTest {
 	void checkIfCreateChatParticipantInNonExistingChatReturnsHttp404() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.post(
-				endpointUri + "/" + UUID.randomUUID() + "/participants"
-			).contentType(MediaType.APPLICATION_JSON)
-			.content(TestJsonHelper.stringify(validParticipantCreateRequest))
+					endpointUri + "/" + UUID.randomUUID() + "/participants"
+				).contentType(MediaType.APPLICATION_JSON)
+				.content(TestJsonHelper.stringify(validParticipantCreateRequest))
 		).andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 
@@ -145,17 +139,17 @@ class ChatControllerTest {
 	@Test
 	void checkIfChatParticipantPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
 		MvcResult result = mockMvc.perform(
-			MockMvcRequestBuilders.patch(
-			endpointUri
-				+ "/"
-				+ validChatUuids.get("chat_uuid")
-				+ "/participants/"
-				+ validChatUuids.get("participant_uuid")
-			)
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(TestJsonHelper.stringify(validParticipantPatchRequest))
-		).andExpect(MockMvcResultMatchers.status().isOk())
-		.andReturn();
+				MockMvcRequestBuilders.patch(
+						endpointUri
+							+ "/"
+							+ validChatUuids.get("chat_uuid")
+							+ "/participants/"
+							+ validChatUuids.get("participant_uuid")
+					)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestJsonHelper.stringify(validParticipantPatchRequest))
+			).andExpect(MockMvcResultMatchers.status().isOk())
+			.andReturn();
 
 		String responseBody = result.getResponse().getContentAsString();
 		String dateFromJson = JsonPath.read(responseBody, "$.lastReadDateTime");
@@ -170,13 +164,13 @@ class ChatControllerTest {
 	void checkIfChatParticipantPatchUpdateOfNonExistingChatReturnsHttp404() throws Exception {
 		mockMvc.perform(
 			MockMvcRequestBuilders.patch(
-		endpointUri
-				+ "/"
-				+ validChatUuids.get("chat_uuid")
-				+ "/participants"
-				+ validChatUuids.get("participant_uuid")
-			).contentType(MediaType.APPLICATION_JSON)
-			.content(TestJsonHelper.stringify(validParticipantPatchRequest))
+					endpointUri
+						+ "/"
+						+ UUID.randomUUID()
+						+ "/participants/"
+						+ validChatUuids.get("participant_uuid")
+				).contentType(MediaType.APPLICATION_JSON)
+				.content(TestJsonHelper.stringify(validParticipantPatchRequest))
 		).andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 }

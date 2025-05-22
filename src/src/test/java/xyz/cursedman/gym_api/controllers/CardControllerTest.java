@@ -26,15 +26,9 @@ import java.util.UUID;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class CardControllerTest {
 
-	@Autowired
-	private MockMvc mockMvc;
-
 	private final String endpointUri = "/cards";
-
 	private final String validCardUuid = "5bd05494-155e-4bd1-b14c-61421d0caaae";
-
 	private final String validCountryUuid = "352ed7f1-8bb1-4baa-9ca7-88995ec58d8a";
-
 	private final CardRequest validCardRequest = CardRequest.builder()
 		.cardNumber("123")
 		.nameOnCard("John Doe")
@@ -43,6 +37,8 @@ class CardControllerTest {
 		.postalCode("21-370")
 		.countryUuid(UUID.fromString(validCountryUuid))
 		.build();
+	@Autowired
+	private MockMvc mockMvc;
 
 	// GET
 
@@ -61,10 +57,9 @@ class CardControllerTest {
 	}
 
 	@Test
-	void checkIfGetNonExistingRecordReturns404AndEmptyBody() throws Exception {
+	void checkIfGetNonExistingRecordReturns404() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri + "/" + UUID.randomUUID()))
-			.andExpect(MockMvcResultMatchers.status().isNotFound())
-			.andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
+			.andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 
 	// POST
@@ -72,14 +67,14 @@ class CardControllerTest {
 	@Test
 	void checkIfCreateReturnsHttp201AndCreatedRecord() throws Exception {
 		mockMvc.perform(
-			MockMvcRequestBuilders.post(endpointUri)
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(TestJsonHelper.stringify(validCardRequest))
-		).andExpect(MockMvcResultMatchers.status().isCreated())
-		.andExpect(TestJsonHelper.contentEqualsJsonOf(validCardRequest, "countryUuid"))
-		.andExpect(
-			MockMvcResultMatchers.jsonPath("$.country.uuid", Matchers.is(validCountryUuid))
-		);
+				MockMvcRequestBuilders.post(endpointUri)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestJsonHelper.stringify(validCardRequest))
+			).andExpect(MockMvcResultMatchers.status().isCreated())
+			.andExpect(TestJsonHelper.contentEqualsJsonOf(validCardRequest, "countryUuid"))
+			.andExpect(
+				MockMvcResultMatchers.jsonPath("$.country.uuid", Matchers.is(validCountryUuid))
+			);
 	}
 
 	@Test
@@ -97,13 +92,13 @@ class CardControllerTest {
 	void checkIfPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
 		String countryUuidToUpdate = "55fbb9f2-22ae-4195-a390-92a9d740d7cb";
 		mockMvc.perform(
-			MockMvcRequestBuilders.patch(endpointUri + "/" + validCardUuid)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.toJSONField("countryUuid", countryUuidToUpdate))
-		).andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(
-			MockMvcResultMatchers.jsonPath("$.country.uuid", Matchers.is(countryUuidToUpdate))
-		);
+				MockMvcRequestBuilders.patch(endpointUri + "/" + validCardUuid)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestJsonHelper.toJSONField("countryUuid", countryUuidToUpdate))
+			).andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(
+				MockMvcResultMatchers.jsonPath("$.country.uuid", Matchers.is(countryUuidToUpdate))
+			);
 	}
 
 	@Test

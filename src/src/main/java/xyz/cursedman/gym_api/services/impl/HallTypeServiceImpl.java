@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.hallType.HallTypeDto;
 import xyz.cursedman.gym_api.domain.entities.HallType;
+import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.HallTypeMapper;
 import xyz.cursedman.gym_api.repositories.HallTypeRepository;
 import xyz.cursedman.gym_api.services.HallTypeService;
@@ -28,7 +29,7 @@ public class HallTypeServiceImpl implements HallTypeService {
 	@Override
 	public HallType getHallTypeByUuid(UUID id) {
 		return hallTypeRepository.findById(id).orElseThrow(
-			() -> new EntityNotFoundException("Hall type with ID " + id + " not found")
+			() -> new NotFoundException("Hall type with ID " + id + " not found")
 		);
 	}
 }

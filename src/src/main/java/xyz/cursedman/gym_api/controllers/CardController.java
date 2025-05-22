@@ -26,12 +26,8 @@ public class CardController {
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<CardDto> getCard(@Valid @PathVariable UUID id) {
-		try {
-			CardDto cardDto = cardService.getCard(id);
-			return ResponseEntity.ok(cardDto);
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		CardDto cardDto = cardService.getCard(id);
+		return ResponseEntity.ok(cardDto);
 	}
 
 	@PostMapping
@@ -45,10 +41,6 @@ public class CardController {
 		@Valid @PathVariable UUID id,
 		@RequestBody CardRequest request
 	) {
-		try {
-			return ResponseEntity.ok(cardService.patchCard(id, request));
-		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(cardService.patchCard(id, request));
 	}
 }
