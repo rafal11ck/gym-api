@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.membership.MembershipDto;
 import xyz.cursedman.gym_api.domain.dtos.membership.MembershipRequest;
 import xyz.cursedman.gym_api.domain.entities.Membership;
+import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.MembershipMapper;
 import xyz.cursedman.gym_api.repositories.MembershipRepository;
 import xyz.cursedman.gym_api.services.MembershipService;
@@ -31,11 +32,11 @@ public class MembershipServiceImpl implements MembershipService  {
 	}
 
 	@Override
-	public MembershipDto getMembership(UUID id) throws EntityNotFoundException {
+	public MembershipDto getMembership(UUID id) {
 		return membershipRepository
 			.findById(id)
 			.map(membershipMapper::toDtoFromEntity)
-			.orElseThrow(EntityNotFoundException::new);
+			.orElseThrow(() -> new NotFoundException("Membership with id " + id + " not found"));
 	}
 
 	@Override
@@ -46,8 +47,9 @@ public class MembershipServiceImpl implements MembershipService  {
 	}
 
 	@Override
-	public MembershipDto patchMembership(UUID id, MembershipRequest request) throws EntityNotFoundException {
-		Membership membership = membershipRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+	public MembershipDto patchMembership(UUID id, MembershipRequest request) {
+		Membership membership = membershipRepository.findById(id).orElseThrow(
+			() -> new NotFoundException("Membership with id " + id + " not found"));
 		membershipMapper.updateFromRequest(request, membership);
 
 		Membership savedMembership = membershipRepository.save(membership);
@@ -57,7 +59,7 @@ public class MembershipServiceImpl implements MembershipService  {
 	@Override
 	public Membership getMembershipById(UUID id) {
 		return membershipRepository.findById(id).orElseThrow(
-			() -> new EntityNotFoundException("Membership with ID " + id + " not found")
+			() -> new NotFoundException("Membership with ID " + id + " not found")
 		);
 	}
 }

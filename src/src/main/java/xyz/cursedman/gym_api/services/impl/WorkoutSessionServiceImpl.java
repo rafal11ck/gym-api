@@ -9,6 +9,7 @@ import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionExerciseRe
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionRequest;
 import xyz.cursedman.gym_api.domain.entities.User;
 import xyz.cursedman.gym_api.domain.entities.WorkoutSession;
+import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.WorkoutSessionMapper;
 import xyz.cursedman.gym_api.repositories.WorkoutSessionRepository;
 import xyz.cursedman.gym_api.services.UserService;
@@ -41,11 +42,11 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 	}
 
 	@Override
-	public WorkoutSessionDto getWorkoutSession(UUID id) throws EntityNotFoundException {
+	public WorkoutSessionDto getWorkoutSession(UUID id) {
 		return workoutSessionRepository
 			.findById(id)
 			.map(workoutSessionMapper::toDtoFromEntity)
-			.orElseThrow(EntityNotFoundException::new);
+			.orElseThrow(() -> new NotFoundException("Workout session with id " + id + " not found"));
 	}
 
 	@Override
@@ -57,10 +58,10 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 
 	@Override
 	public WorkoutSessionDto patchWorkoutSession(UUID id, WorkoutSessionRequest request)
-		throws EntityNotFoundException {
+		 {
 		WorkoutSession workoutSession = workoutSessionRepository
 			.findById(id)
-			.orElseThrow(EntityNotFoundException::new);
+			.orElseThrow(() -> new NotFoundException("Workout session with id " + id + " not found"));
 
 		workoutSessionMapper.updateFromRequest(request, workoutSession);
 
@@ -69,10 +70,10 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 	}
 
 	@Override
-	public WorkoutSessionDto addAttendantToWorkoutSession(UUID workoutSessionId, WorkoutSessionAttendantRequest request)
-		throws EntityNotFoundException {
+	public WorkoutSessionDto addAttendantToWorkoutSession
+		(UUID workoutSessionId, WorkoutSessionAttendantRequest request) {
 		WorkoutSession session = workoutSessionRepository.findById(workoutSessionId)
-			.orElseThrow(EntityNotFoundException::new);
+			.orElseThrow(() -> new NotFoundException("Workout session with id " + workoutSessionId + " not found"));
 
 		User user = userService.getUserByUuid(request.getUserUuid());
 
@@ -83,24 +84,25 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 	}
 
 	@Override
-	public void deleteWorkoutSessionAttendant(UUID workoutSessionId, UUID userId)
-		throws EntityNotFoundException {
+	public void deleteWorkoutSessionAttendant(UUID workoutSessionId, UUID userId) {
 		WorkoutSession session = workoutSessionRepository.findById(workoutSessionId)
-			.orElseThrow(EntityNotFoundException::new);
+			.orElseThrow(() -> new NotFoundException("Workout session with id " + workoutSessionId + " not found"));
 
 		User user = userService.getUserByUuid(userId);
 
 		boolean deleted = session.getAttendants().remove(user);
 		if (!deleted) {
-			throw new EntityNotFoundException();
+			throw new NotFoundException("User with id " + userId + " not found");
 		}
 
 		workoutSessionRepository.save(session);
 	}
 
 	@Override
-	public WorkoutSessionDto addExerciseToWorkoutSession(UUID workoutSessionId, WorkoutSessionExerciseRequest request)
-		throws EntityNotFoundException {
+	public WorkoutSessionDto addExerciseToWorkoutSession(UUID workoutSessionId, WorkoutSessionExerciseRequest request) {
+		if(!workoutSessionRepository.existsById(workoutSessionId)) {
+			throw new NotFoundException("Workout session with id " + workoutSessionId + " not found");
+		}
 		workoutSessionExerciseService.createWorkoutSessionExercise(request, getWorkoutSessionEntity(workoutSessionId));
 		return getWorkoutSession(workoutSessionId);
 	}
@@ -108,7 +110,7 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 	@Override
 	public void deleteWorkoutSessionExercise(UUID workoutSessionId, UUID exerciseId) throws EntityNotFoundException {
 		if (!workoutSessionRepository.existsById(workoutSessionId)) {
-			throw new EntityNotFoundException();
+			throw new NotFoundException("Workout session with id " + workoutSessionId + " not found");
 		}
 
 		workoutSessionExerciseService.deleteWorkoutSessionExercise(exerciseId);

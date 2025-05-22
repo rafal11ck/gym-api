@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
 import xyz.cursedman.gym_api.domain.entities.User;
+import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.UserMapper;
 import xyz.cursedman.gym_api.repositories.UserRepository;
 import xyz.cursedman.gym_api.services.UserService;
@@ -27,11 +28,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDto getUser(UUID id) throws EntityNotFoundException {
+	public UserDto getUser(UUID id)  {
 		return userRepository
 			.findById(id)
 			.map(userMapper::toDtoFromEntity)
-			.orElseThrow(EntityNotFoundException::new);
+			.orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
 	}
 
 	@Override
@@ -42,8 +43,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDto patchUser(UUID id, UserRequest request) throws EntityNotFoundException {
-		User user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+	public UserDto patchUser(UUID id, UserRequest request) {
+		User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
 		userMapper.updateFromRequest(request, user);
 
 		User result = userRepository.save(user);
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserByUuid(UUID id) {
 		return userRepository.findById(id).orElseThrow(
-			() -> new EntityNotFoundException("User with ID " + id + " not found")
+			() -> new NotFoundException("User with ID " + id + " not found")
 		);
 	}
 }

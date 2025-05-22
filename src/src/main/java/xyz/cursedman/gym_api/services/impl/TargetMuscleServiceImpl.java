@@ -7,10 +7,7 @@ import xyz.cursedman.gym_api.domain.entities.TargetMuscle;
 import xyz.cursedman.gym_api.repositories.TargetMuscleRepository;
 import xyz.cursedman.gym_api.services.TargetMuscleService;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -26,12 +23,9 @@ public class TargetMuscleServiceImpl implements TargetMuscleService {
 	@Transactional
 	public TargetMuscle createTargetMuscle(TargetMuscle targetMuscle) {
 		String targetMuscleName = targetMuscle.getName();
-		if (targetMuscleRepository.existsByNameIgnoreCase(targetMuscleName)) {
-			throw new IllegalArgumentException("Target Muscle already exists with name "
-				+ targetMuscleName);
-		}
+		Optional<TargetMuscle> targetMuscleOptional = targetMuscleRepository.findByNameIgnoreCase(targetMuscleName);
+		return targetMuscleOptional.orElseGet(() -> targetMuscleRepository.save(targetMuscle));
 
-		return targetMuscleRepository.save(targetMuscle);
 	}
 
 	@Override
