@@ -9,6 +9,8 @@ import java.util.UUID;
 
 public interface UserService {
 	List<UserDto> listUsers();
+	
+	boolean existsUser(UUID uuid);
 
 	UserDto getUser(UUID id);
 

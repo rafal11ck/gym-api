@@ -9,6 +9,8 @@ import java.util.UUID;
 public interface UserRoleService {
 	List<UserRoleDto> listUserRoles();
 
+	UserRoleDto findByName(String name);
+
 	// used by mapper
 	UserRole getUserRoleByUuid(UUID id);
 }

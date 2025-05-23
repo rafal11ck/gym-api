@@ -1,6 +1,5 @@
 package xyz.cursedman.gym_api.services.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
@@ -28,7 +27,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDto getUser(UUID id)  {
+	public boolean existsUser(UUID uuid) {
+		return userRepository.existsById(uuid);
+	}
+
+
+	@Override
+	public UserDto getUser(UUID id) {
 		return userRepository
 			.findById(id)
 			.map(userMapper::toDtoFromEntity)

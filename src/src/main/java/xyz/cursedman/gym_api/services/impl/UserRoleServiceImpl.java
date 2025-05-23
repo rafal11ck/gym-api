@@ -10,6 +10,7 @@ import xyz.cursedman.gym_api.repositories.UserRoleRepository;
 import xyz.cursedman.gym_api.services.UserRoleService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -23,6 +24,17 @@ public class UserRoleServiceImpl implements UserRoleService {
 	@Override
 	public List<UserRoleDto> listUserRoles() {
 		return userRoleRepository.findAll().stream().map(userRoleMapper::toDtoFromEntity).toList();
+	}
+
+	@Override
+	public UserRoleDto findByName(String name) {
+		Optional<UserRole> userRole = userRoleRepository.findByRoleNameEqualsIgnoreCase(name);
+
+		if (userRole.isEmpty()) {
+			throw new NotFoundException("role " + name + " not found");
+		}
+
+		return userRoleMapper.toDtoFromEntity(userRole.get());
 	}
 
 	@Override

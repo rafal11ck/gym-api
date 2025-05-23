@@ -30,7 +30,6 @@ public final class User {
 	@NotNull
 	String lastName;
 
-	@NotNull
 	Date dateOfBirth;
 
 	String email;

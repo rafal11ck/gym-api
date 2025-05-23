@@ -11,7 +11,7 @@ import xyz.cursedman.gym_api.services.UserRoleService;
 @Mapper(
 	componentModel = "spring",
 	unmappedTargetPolicy = ReportingPolicy.IGNORE,
-	uses = { MembershipService.class, CardService.class, UserRoleService.class }
+	uses = {MembershipService.class, CardService.class, UserRoleService.class}
 )
 public interface UserMapper extends EntityRequestMapper<User, UserDto, UserRequest> {
 	@Override
@@ -21,9 +21,9 @@ public interface UserMapper extends EntityRequestMapper<User, UserDto, UserReque
 	UserRequest toRequestFromEntity(User entity);
 
 	@Override
-	@Mapping(target = "role", source = "roleUuid")
-	@Mapping(target = "card", source = "cardUuid")
-	@Mapping(target = "membership", source = "membershipUuid")
+//	@Mapping(target = "role", source = "roleUuid")
+//	@Mapping(target = "card", source = "cardUuid")
+//	@Mapping(target = "membership", source = "membershipUuid")
 	User toEntityFromRequest(UserRequest request);
 
 	@Override

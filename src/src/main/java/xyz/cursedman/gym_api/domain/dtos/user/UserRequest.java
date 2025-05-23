@@ -14,13 +14,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRequest {
-	@NotNull
 	private UUID roleUuid;
 
-	@NotNull
 	private UUID cardUuid;
 
-	@NotNull
 	private UUID membershipUuid;
 
 	@NotNull
@@ -29,15 +26,12 @@ public class UserRequest {
 	@NotNull
 	private String lastName;
 
-	@NotNull
 	private Date dateOfBirth;
 
 	@NotNull
 	private String email;
 
-	@NotNull
 	private String phoneNumber;
 
-	@NotNull
 	private String imageUrl;
 }
