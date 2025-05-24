@@ -1,5 +1,6 @@
 package xyz.cursedman.gym_api.services.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
@@ -53,6 +54,27 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
+	public UserDto createLinkedUser
+		(UserRequest request, String externalAuthorizationProviderName, String externalId) {
+		UserDto createdUser = createUser(request);
+		Optional<User> user = userRepository.findById(createdUser.getUuid());
+		if (user.isEmpty()) {
+			throw new RuntimeException("This should never happen");
+		}
+
+		UserAccountConnection userAccountConnection = new UserAccountConnection();
+		userAccountConnection.setUser(user.get());
+		userAccountConnection.setExternalAuthorizationUserId(externalId);
+		userAccountConnection.
+			setExternalAuthorizationProviderName(externalAuthorizationProviderName);
+
+		userAccountConnectionRepository.save(userAccountConnection);
+		return userMapper.toDtoFromEntity(user.get());
+	}
+
+
+	@Override
 	public UserDto patchUser(UUID id, UserRequest request) {
 		User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
 		userMapper.updateFromRequest(request, user);
@@ -77,6 +99,7 @@ public class UserServiceImpl implements UserService {
 		// Optional with User or empty
 		return user.flatMap(entity -> Optional.ofNullable(userMapper.toDtoFromEntity(entity)));
 	}
+
 
 	@Override
 	public User getUserByUuid(UUID id) {

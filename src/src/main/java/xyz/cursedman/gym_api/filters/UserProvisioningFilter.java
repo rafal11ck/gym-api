@@ -39,18 +39,28 @@ public class UserProvisioningFilter extends OncePerRequestFilter {
 			&& authentication.getPrincipal() instanceof Jwt jwt) {
 
 			UUID keycloakId = UUID.fromString(jwt.getSubject());
-			UserRequest userRequest = new UserRequest();
-			userRequest.setFirstName(jwt.getClaim("name"));
-			userRequest.setLastName(jwt.getClaim("family_name"));
-			userRequest.setEmail(jwt.getClaim("email"));
+
+			String externalAuthorizationProvider = "OIDC";
 
 			Optional<UserDto> user = userService.getUserByExternalAuthorizationId
-				("OIDC", keycloakId.toString());
+				(externalAuthorizationProvider, keycloakId.toString());
+
+			if (user.isEmpty()) {
+				System.out.println("Provisioning external user and linking with Provider: " +
+					externalAuthorizationProvider + " id:" + keycloakId);
+
+				UserRequest userRequest = new UserRequest();
+				userRequest.setFirstName(jwt.getClaim("name"));
+				userRequest.setLastName(jwt.getClaim("family_name"));
+				userRequest.setEmail(jwt.getClaim("email"));
+
+				userService.createUser(userRequest);
+			}
+
 
 // TODO here
 			if (!userService.existsUser(keycloakId)) {
-				System.out.println("Provisioning external user: " + keycloakId);
-				userService.createUser(userRequest);
+
 			} else {
 				// update existing user
 				userService.patchUser(keycloakId, userRequest);

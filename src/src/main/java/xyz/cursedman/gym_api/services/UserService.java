@@ -17,9 +17,13 @@ public interface UserService {
 
 	UserDto createUser(UserRequest request);
 
+	public UserDto createLinkedUser
+		(UserRequest request, String externalAuthorizationProviderName, String externalId);
+
 	UserDto patchUser(UUID id, UserRequest request);
 
 	Optional<UserDto> getUserByExternalAuthorizationId(String externalAuthorizationProviderName, String externalId);
+
 
 	// used by mapper
 	User getUserByUuid(UUID id);
