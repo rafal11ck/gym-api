@@ -23,6 +23,7 @@ public class ScurityConfig {
 				// allow all to docs
 				.requestMatchers("/swagger", "/swagger-ui/*", "/api-docs/*", "/api-docs")
 				.permitAll()
+	
 				// everything else authenticated
 				.anyRequest()
 				.authenticated()

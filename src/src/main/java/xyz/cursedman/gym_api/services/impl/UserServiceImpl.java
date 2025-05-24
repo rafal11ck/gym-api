@@ -5,12 +5,15 @@ import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
 import xyz.cursedman.gym_api.domain.entities.User;
+import xyz.cursedman.gym_api.domain.entities.UserAccountConnection;
 import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.UserMapper;
+import xyz.cursedman.gym_api.repositories.UserAccountConnectionRepository;
 import xyz.cursedman.gym_api.repositories.UserRepository;
 import xyz.cursedman.gym_api.services.UserService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -18,6 +21,8 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
+
+	private final UserAccountConnectionRepository userAccountConnectionRepository;
 
 	private final UserMapper userMapper;
 
@@ -54,6 +59,23 @@ public class UserServiceImpl implements UserService {
 
 		User result = userRepository.save(user);
 		return userMapper.toDtoFromEntity(result);
+	}
+
+	@Override
+	public Optional<UserDto> getUserByExternalAuthorizationId(String externalAuthorizationProviderName, String externalId) {
+		// Get connection if exists
+		Optional<UserAccountConnection> userAccountConnection = userAccountConnectionRepository
+			.findByExternalAuthorizationProviderNameEqualsAndExternalAuthorizationUserIdEquals
+				(externalAuthorizationProviderName, externalId);
+
+		Optional<User> user = Optional.empty();
+		// if found connection fetch user
+		if (userAccountConnection.isPresent()) {
+			user = Optional.ofNullable(userAccountConnection.get().getUser());
+		}
+
+		// Optional with User or empty
+		return user.flatMap(entity -> Optional.ofNullable(userMapper.toDtoFromEntity(entity)));
 	}
 
 	@Override
