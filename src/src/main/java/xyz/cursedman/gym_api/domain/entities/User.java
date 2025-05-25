@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -15,8 +17,8 @@ public final class User {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;
 
-	@ManyToOne
-	UserRole role;
+	@ManyToMany(fetch = FetchType.EAGER)
+	Set<UserRole> roles = new HashSet<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	Card card;

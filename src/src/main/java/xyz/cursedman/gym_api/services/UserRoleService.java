@@ -4,13 +4,13 @@ import xyz.cursedman.gym_api.domain.dtos.userRole.UserRoleDto;
 import xyz.cursedman.gym_api.domain.entities.UserRole;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 
 public interface UserRoleService {
 	List<UserRoleDto> listUserRoles();
 
 	UserRoleDto findByName(String name);
 
-	// used by mapper
-	UserRole getUserRoleByUuid(UUID id);
+	/// used by mapper
+	Set<UserRole> getUserRoles(Set<String> userRoleNames);
 }

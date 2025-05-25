@@ -73,6 +73,23 @@ public class UserServiceImpl implements UserService {
 		return userMapper.toDtoFromEntity(user.get());
 	}
 
+	@Transactional
+	@Override
+	public UserDto createOrUpdateLinkedUser
+		(UserRequest request, String externalAuthorizationProviderName, String externalId) {
+		Optional<UserDto> userDtoOptional =
+			this.getUserByExternalAuthorizationId(externalAuthorizationProviderName, externalId);
+		// if exists
+
+		UserDto result;
+		if (userDtoOptional.isPresent()) {
+			result = patchUser(userDtoOptional.get().getUuid(), request);
+		} else {
+			result = createLinkedUser(request, externalAuthorizationProviderName, externalId);
+		}
+		return result;
+	}
+
 
 	@Override
 	public UserDto patchUser(UUID id, UserRequest request) {

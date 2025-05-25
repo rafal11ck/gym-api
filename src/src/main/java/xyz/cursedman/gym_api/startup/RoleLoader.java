@@ -16,6 +16,7 @@ public class RoleLoader implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("Loading roles");
+
 		for (UserRoleEnum role : UserRoleEnum.values()) {
 			// check if role doesn't exist already
 			if (userRoleRepository.findByRoleNameEqualsIgnoreCase(role.name()).isEmpty()) {

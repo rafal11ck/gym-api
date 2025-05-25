@@ -20,6 +20,9 @@ public interface UserService {
 	public UserDto createLinkedUser
 		(UserRequest request, String externalAuthorizationProviderName, String externalId);
 
+	public UserDto createOrUpdateLinkedUser
+		(UserRequest request, String externalAuthorizationProviderName, String externalId);
+
 	UserDto patchUser(UUID id, UserRequest request);
 
 	Optional<UserDto> getUserByExternalAuthorizationId(String externalAuthorizationProviderName, String externalId);
