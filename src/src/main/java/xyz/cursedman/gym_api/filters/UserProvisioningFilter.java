@@ -34,7 +34,7 @@ public class UserProvisioningFilter extends OncePerRequestFilter {
 		userRequest.setFirstName(jwt.getClaim("name"));
 		userRequest.setLastName(jwt.getClaim("family_name"));
 		userRequest.setEmail(jwt.getClaim("email"));
-		userRequest.setRoles(new HashSet<String>(jwt.getClaim(userRolesClaimName)));
+//		userRequest.setRoles(new HashSet<String>(jwt.getClaim(userRolesClaimName)));
 
 		System.out.println(jwt.getClaims().toString());
 		return userRequest;
