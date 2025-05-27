@@ -16,6 +16,7 @@ spring:
         jwt:
           issuer-uri: http://localhost:8081/realms/gym
 
+
 springdoc:
   api-docs:
     path: '/api-docs'
