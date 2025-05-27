@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -23,19 +24,13 @@ import java.util.UUID;
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@WithMockUser(roles = {"CLIENT"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class MaintenanceTaskControllerTest {
-	@Autowired
-	private MockMvc mockMvc;
-
 	private final String endpointUri = "/maintenance-tasks";
-
 	private final String validMaintenanceTaskUuid = "596706d3-6095-44b8-9f0d-8fd30ab9b847";
-
 	private final String validMaintainerUuid = "1953df3d-9015-4c2e-b314-e4a5ef771e62";
-
 	private final String validMaintenanceHallUuid = "ce5f8d01-6fa8-4226-97fc-51d3e9cd91e5";
-
 	private final MaintenanceTaskRequest validMaintenanceTaskRequest = MaintenanceTaskRequest.builder()
 		.maintainerUuid(UUID.fromString(validMaintainerUuid))
 		.hallUuid(UUID.fromString(validMaintenanceHallUuid))
@@ -43,6 +38,8 @@ class MaintenanceTaskControllerTest {
 		.plannedEndDate(new Date())
 		.description("description")
 		.build();
+	@Autowired
+	private MockMvc mockMvc;
 
 	// GET
 
@@ -71,20 +68,20 @@ class MaintenanceTaskControllerTest {
 	@Test
 	void checkIfCreateReturnsHttp201AndCreatedRecord() throws Exception {
 		mockMvc.perform(
-			MockMvcRequestBuilders.post(endpointUri)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.stringify(validMaintenanceTaskRequest))
-		).andExpect(MockMvcResultMatchers.status().isCreated())
-		.andExpect(
-			TestJsonHelper.contentEqualsJsonOf(
-				validMaintenanceTaskRequest,
-				"maintainerUuid", "hallUuid"
-			)
-		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.maintainer.uuid", Matchers.is(validMaintainerUuid))
-		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.maintenanceHall.uuid", Matchers.is(validMaintenanceHallUuid))
-		);
+				MockMvcRequestBuilders.post(endpointUri)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestJsonHelper.stringify(validMaintenanceTaskRequest))
+			).andExpect(MockMvcResultMatchers.status().isCreated())
+			.andExpect(
+				TestJsonHelper.contentEqualsJsonOf(
+					validMaintenanceTaskRequest,
+					"maintainerUuid", "hallUuid"
+				)
+			).andExpect(
+				MockMvcResultMatchers.jsonPath("$.maintainer.uuid", Matchers.is(validMaintainerUuid))
+			).andExpect(
+				MockMvcResultMatchers.jsonPath("$.maintenanceHall.uuid", Matchers.is(validMaintenanceHallUuid))
+			);
 	}
 
 	@Test
@@ -102,13 +99,13 @@ class MaintenanceTaskControllerTest {
 	void checkIfPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
 		String maintainerUuidToUpdate = "f18d2783-77f6-4f3d-a58e-f72bb31600c6";
 		mockMvc.perform(
-			MockMvcRequestBuilders.patch(endpointUri + "/" + validMaintenanceTaskUuid)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.toJSONField("maintainerUuid", maintainerUuidToUpdate))
-		).andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(
-			MockMvcResultMatchers.jsonPath("$.maintainer.uuid", Matchers.is(maintainerUuidToUpdate))
-		);
+				MockMvcRequestBuilders.patch(endpointUri + "/" + validMaintenanceTaskUuid)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestJsonHelper.toJSONField("maintainerUuid", maintainerUuidToUpdate))
+			).andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(
+				MockMvcResultMatchers.jsonPath("$.maintainer.uuid", Matchers.is(maintainerUuidToUpdate))
+			);
 	}
 
 	@Test
@@ -125,9 +122,9 @@ class MaintenanceTaskControllerTest {
 	@Test
 	void checkIfDeleteReturnsHttp204AndEmptyBody() throws Exception {
 		mockMvc.perform(
-			MockMvcRequestBuilders.delete(endpointUri + "/" + validMaintenanceTaskUuid)
-		).andExpect(MockMvcResultMatchers.status().isNoContent())
-		.andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
+				MockMvcRequestBuilders.delete(endpointUri + "/" + validMaintenanceTaskUuid)
+			).andExpect(MockMvcResultMatchers.status().isNoContent())
+			.andExpect(MockMvcResultMatchers.jsonPath("$").doesNotExist());
 	}
 
 	@Test

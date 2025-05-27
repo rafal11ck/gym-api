@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -18,19 +19,17 @@ import java.util.UUID;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@WithMockUser(roles = {"CLIENT"})
 class MembershipTypeControllerTest {
 
-	@Autowired
-	private MockMvc mockMvc;
-
 	private final String endpointUri = "/membership-types";
-
 	private final String validMembershipTypeUuid = "9d4e894f-30e4-488e-9689-ad0fa32a69d1";
-
 	private final MembershipTypeRequest validMembershipTypeRequest = MembershipTypeRequest.builder()
 		.type("Example type")
 		.price(12.34f)
 		.build();
+	@Autowired
+	private MockMvc mockMvc;
 
 	// GET
 
@@ -81,11 +80,11 @@ class MembershipTypeControllerTest {
 	void checkIfPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
 		String typeNameToUpdate = "Example type updated";
 		mockMvc.perform(
-			MockMvcRequestBuilders.patch(endpointUri + "/" + validMembershipTypeUuid)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.toJSONField("type", typeNameToUpdate))
-		).andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(MockMvcResultMatchers.jsonPath("$.type").value(typeNameToUpdate));
+				MockMvcRequestBuilders.patch(endpointUri + "/" + validMembershipTypeUuid)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestJsonHelper.toJSONField("type", typeNameToUpdate))
+			).andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.type").value(typeNameToUpdate));
 	}
 
 	@Test
