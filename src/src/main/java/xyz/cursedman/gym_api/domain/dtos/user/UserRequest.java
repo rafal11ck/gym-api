@@ -17,6 +17,7 @@ import java.util.UUID;
 @Builder
 public class UserRequest {
 
+	@Builder.Default
 	private Set<String> roles = new HashSet<>();
 
 	private UUID cardUuid;
@@ -35,7 +36,7 @@ public class UserRequest {
 	private String email;
 
 	private String username;
-	
+
 	private String phoneNumber;
 
 	private String imageUrl;
