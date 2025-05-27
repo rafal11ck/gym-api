@@ -2,7 +2,7 @@ plugins:
   - '@semantic-release/commit-analyzer'
   - '@semantic-release/release-notes-generator'
   - - '@semantic-release/exec'
-    - verifyRelease: |-
+    - prepareCmd: |-
         printf "NEXT_VERSION=${nextRelease.version}" >> build.env 
         task build-release version=${nextRelease.version}
   - - '@semantic-release/github'
