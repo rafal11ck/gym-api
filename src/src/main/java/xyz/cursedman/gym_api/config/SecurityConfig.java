@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import xyz.cursedman.gym_api.filters.UserProvisioningFilter;
 import xyz.cursedman.gym_api.security.GymJwtAuthenticationConverter;
 
 @Configuration
@@ -19,8 +18,7 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(
-		HttpSecurity http,
-		UserProvisioningFilter userProvisioningFilter)
+		HttpSecurity http)
 		throws Exception {
 		http
 			.authorizeHttpRequests((authorize) -> authorize

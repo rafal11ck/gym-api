@@ -9,10 +9,7 @@ import xyz.cursedman.gym_api.mappers.UserRoleMapper;
 import xyz.cursedman.gym_api.repositories.UserRoleRepository;
 import xyz.cursedman.gym_api.services.UserRoleService;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,7 +37,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 	}
 
 	@Override
-	public Set<UserRole> getUserRoles(Set<String> userRoleNames) {
+	public Set<UserRole> getUserRoles(Collection<String> userRoleNames) {
 		return userRoleNames.stream()
 			.map(roleName ->
 				userRoleRepository.findByRoleNameEqualsIgnoreCase(roleName)

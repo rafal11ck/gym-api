@@ -42,5 +42,4 @@ public interface UserMapper extends EntityRequestMapper<User, UserDto, UserReque
 		if (roles == null) return null;
 		return roles.stream().map(UserRole::getRoleName).collect(Collectors.toSet());
 	}
-
 }
