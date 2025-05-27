@@ -9,9 +9,23 @@ spring:
   jpa:
     database: postgresql
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/gym
+
+
 springdoc:
   api-docs:
     path: '/api-docs'
   swagger-ui:
     path: '/swagger'
+    oauth:
+      use-pkce-with-authorization-code-grant: true
+      client-id: gym-app
+      client-secret: Er0LXqPeBzi6511ro5vlh6iOeXGUFTKB
+      app-name: gym-app
+#    oauth2-redirect-url: localhost:8080/swagger
+

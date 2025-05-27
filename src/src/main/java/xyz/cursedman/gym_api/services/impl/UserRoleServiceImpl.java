@@ -9,8 +9,8 @@ import xyz.cursedman.gym_api.mappers.UserRoleMapper;
 import xyz.cursedman.gym_api.repositories.UserRoleRepository;
 import xyz.cursedman.gym_api.services.UserRoleService;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -26,9 +26,24 @@ public class UserRoleServiceImpl implements UserRoleService {
 	}
 
 	@Override
-	public UserRole getUserRoleByUuid(UUID id) {
-		return userRoleRepository.findById(id).orElseThrow(
-			() -> new NotFoundException("User role with ID " + id + " not found")
-		);
+	public UserRoleDto findByName(String name) {
+		Optional<UserRole> userRole = userRoleRepository.findByRoleNameEqualsIgnoreCase(name);
+
+		if (userRole.isEmpty()) {
+			throw new NotFoundException("role " + name + " not found");
+		}
+
+		return userRoleMapper.toDtoFromEntity(userRole.get());
 	}
+
+	@Override
+	public Set<UserRole> getUserRoles(Collection<String> userRoleNames) {
+		return userRoleNames.stream()
+			.map(roleName ->
+				userRoleRepository.findByRoleNameEqualsIgnoreCase(roleName)
+					.orElse(null))
+			.filter(Objects::nonNull)
+			.collect(Collectors.toSet());
+	}
+
 }

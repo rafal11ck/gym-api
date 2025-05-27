@@ -4,14 +4,13 @@ services:
     ports:
       - 8081:8080
     command:
-      # # exporting 
       # - export
       # - --realm
       # - gym
       # - --users
       # - same_file
-      # - --file
-      # - /opt/keycloak/data/import/gym.json
+      # - --dir
+      # - /opt/keycloak/data/import
 
       - start
       - --import-realm
