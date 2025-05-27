@@ -44,5 +44,4 @@ public class SecurityConfig {
 //			.addFilterBefore(userProvisioningFilter, BearerTokenAuthenticationFilter.class);
 		return http.build();
 	}
-
 }

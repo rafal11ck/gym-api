@@ -8,6 +8,6 @@ plugins:
   - - '@semantic-release/github'
     - assets:
         - 'docs/api-spec/*'
-        - 'src/target/gym-api-${nextRelease.version}.jar'
+        - 'src/target/gym-api-*.jar'
 branches:
   - 'main'
