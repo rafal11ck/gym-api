@@ -25,10 +25,10 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests((authorize) -> authorize
 				// allow all to docs
-				.requestMatchers("/swagger", "/swagger-ui/*", "/api-docs/*", "/api-docs")
+				.requestMatchers("/swagger", "/swagger-ui/*", "/api-docs.yaml", "/api-docs")
 				.permitAll()
 
-				// everything else authenticated
+				// everything else authenticated 
 				.anyRequest()
 				.authenticated()
 			)
