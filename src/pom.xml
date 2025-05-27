@@ -10,7 +10,7 @@
     </parent>
     <groupId>xyz.cursedman</groupId>
     <artifactId>gym-api</artifactId>
-    <version>0.0.0</version> <!-- Will be updated by semantic-release -->
+    <version>v1.9.2</version> <!-- Will be updated by semantic-release -->
     <name>gym-api</name>
     <description>Gym-api</description>
     <url/>
@@ -104,6 +104,9 @@
     </dependencies>
 
     <build>
+        <finalName>
+            gym-api
+        </finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
