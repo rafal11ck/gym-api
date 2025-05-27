@@ -4,6 +4,7 @@ import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
 import xyz.cursedman.gym_api.domain.entities.User;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,6 +28,7 @@ public interface UserService {
 
 	Optional<UserDto> getUserByExternalAuthorizationId(String externalAuthorizationProviderName, String externalId);
 
+	Collection<String> getUserRoles(UUID userUuid);
 
 	// used by mapper
 	User getUserByUuid(UUID id);

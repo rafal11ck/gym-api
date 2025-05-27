@@ -7,15 +7,18 @@ import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
 import xyz.cursedman.gym_api.domain.entities.User;
 import xyz.cursedman.gym_api.domain.entities.UserAccountConnection;
+import xyz.cursedman.gym_api.domain.entities.UserRole;
 import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.UserMapper;
 import xyz.cursedman.gym_api.repositories.UserAccountConnectionRepository;
 import xyz.cursedman.gym_api.repositories.UserRepository;
 import xyz.cursedman.gym_api.services.UserService;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -115,6 +118,17 @@ public class UserServiceImpl implements UserService {
 
 		// Optional with User or empty
 		return user.flatMap(entity -> Optional.ofNullable(userMapper.toDtoFromEntity(entity)));
+	}
+
+	@Override
+	public Collection<String> getUserRoles(UUID userUuid) {
+		return
+			userRepository.findById(userUuid)
+				.map(
+					user -> user.getRoles().stream().map(UserRole::getRoleName)
+						.collect(Collectors.toSet())
+				)
+				.orElseThrow(() -> new NotFoundException("User with id " + userUuid + " not found"));
 	}
 
 

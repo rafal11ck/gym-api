@@ -34,6 +34,9 @@ public final class User {
 
 	Date dateOfBirth;
 
+	@Column(unique = true)
+	String username;
+
 	String email;
 
 	String phoneNumber;
