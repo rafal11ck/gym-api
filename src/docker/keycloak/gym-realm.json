@@ -576,35 +576,49 @@
     "enabled" : true,
     "alwaysDisplayInConsole" : false,
     "clientAuthenticatorType" : "client-secret",
-    "secret" : "IrDo6jaoAjflImfFhreCjAlqD0Z53QxV",
-    "redirectUris" : [ "http://localhost:8080", "*" ],
+    "secret" : "Er0LXqPeBzi6511ro5vlh6iOeXGUFTKB",
+    "redirectUris" : [ "http://localhost:8080/swagger-ui/oauth2-redirect.html", "http://localhost:8080", "http://localhost:8081" ],
     "webOrigins" : [ "", "*" ],
     "notBefore" : 0,
     "bearerOnly" : false,
     "consentRequired" : false,
     "standardFlowEnabled" : true,
     "implicitFlowEnabled" : false,
-    "directAccessGrantsEnabled" : true,
+    "directAccessGrantsEnabled" : false,
     "serviceAccountsEnabled" : false,
     "publicClient" : false,
     "frontchannelLogout" : true,
     "protocol" : "openid-connect",
     "attributes" : {
-      "realm_client" : "false",
-      "oidc.ciba.grant.enabled" : "false",
-      "client.secret.creation.time" : "1748240406",
-      "backchannel.logout.session.required" : "true",
+      "client.secret.creation.time" : "1747668195",
+      "request.object.signature.alg" : "any",
+      "request.object.encryption.alg" : "any",
+      "client.introspection.response.allow.jwt.claim.enabled" : "false",
       "frontchannel.logout.session.required" : "true",
       "post.logout.redirect.uris" : "http://localhost:8081",
-      "display.on.consent.screen" : "false",
       "oauth2.device.authorization.grant.enabled" : "false",
-      "backchannel.logout.revoke.offline.tokens" : "false"
+      "use.jwks.url" : "false",
+      "backchannel.logout.revoke.offline.tokens" : "false",
+      "use.refresh.tokens" : "true",
+      "realm_client" : "false",
+      "oidc.ciba.grant.enabled" : "false",
+      "client.use.lightweight.access.token.enabled" : "false",
+      "backchannel.logout.session.required" : "true",
+      "client_credentials.use_refresh_token" : "false",
+      "request.object.required" : "not required",
+      "acr.loa.map" : "{}",
+      "require.pushed.authorization.requests" : "false",
+      "tls.client.certificate.bound.access.tokens" : "false",
+      "display.on.consent.screen" : "false",
+      "request.object.encryption.enc" : "any",
+      "pkce.code.challenge.method" : "S256",
+      "token.response.type.bearer.lower-case" : "false"
     },
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : true,
     "nodeReRegistrationTimeout" : -1,
     "protocolMappers" : [ {
-      "id" : "f9707bb9-b863-454e-8f38-f3fbc88f5aa3",
+      "id" : "59053974-91d4-4f5b-a6a3-233bb12afec8",
       "name" : "client roles",
       "protocol" : "openid-connect",
       "protocolMapper" : "oidc-usermodel-client-role-mapper",
@@ -617,8 +631,8 @@
         "id.token.claim" : "false",
         "lightweight.claim" : "false",
         "access.token.claim" : "true",
-        "claim.name" : "resource_access.${client_id}.roles",
-        "jsonType.label" : "JSON",
+        "claim.name" : "roles",
+        "jsonType.label" : "String",
         "usermodel.clientRoleMapping.clientId" : "gym-app"
       }
     } ],
@@ -1338,7 +1352,7 @@
     "xFrameOptions" : "SAMEORIGIN",
     "contentSecurityPolicy" : "frame-src 'self'; frame-ancestors 'self'; object-src 'none';",
     "xXSSProtection" : "1; mode=block",
-    "strictTransportSecurity" : "max-age=31536000; includeSubDomains"
+    "strictTransportSecurity" : "max-age=0"
   },
   "smtpServer" : { },
   "eventsEnabled" : false,
@@ -1356,7 +1370,7 @@
       "subType" : "anonymous",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "oidc-usermodel-attribute-mapper", "saml-user-attribute-mapper", "saml-user-property-mapper", "saml-role-list-mapper", "oidc-address-mapper", "oidc-usermodel-property-mapper", "oidc-full-name-mapper", "oidc-sha256-pairwise-sub-mapper" ]
+        "allowed-protocol-mapper-types" : [ "oidc-usermodel-property-mapper", "oidc-usermodel-attribute-mapper", "oidc-sha256-pairwise-sub-mapper", "saml-user-attribute-mapper", "oidc-address-mapper", "saml-role-list-mapper", "oidc-full-name-mapper", "saml-user-property-mapper" ]
       }
     }, {
       "id" : "fc81a71a-572b-4005-9895-26134502da44",
@@ -1400,7 +1414,7 @@
       "subType" : "authenticated",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "oidc-usermodel-attribute-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-address-mapper", "saml-role-list-mapper", "saml-user-attribute-mapper", "saml-user-property-mapper", "oidc-full-name-mapper", "oidc-usermodel-property-mapper" ]
+        "allowed-protocol-mapper-types" : [ "saml-user-attribute-mapper", "saml-role-list-mapper", "oidc-usermodel-attribute-mapper", "saml-user-property-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-usermodel-property-mapper", "oidc-address-mapper", "oidc-full-name-mapper" ]
       }
     }, {
       "id" : "d2a41948-5efe-460e-a355-f8433778d2ce",
@@ -2090,17 +2104,22 @@
   "firstBrokerLoginFlow" : "first broker login",
   "attributes" : {
     "cibaBackchannelTokenDeliveryMode" : "poll",
-    "cibaExpiresIn" : "120",
     "cibaAuthRequestedUserHint" : "login_hint",
-    "oauth2DeviceCodeLifespan" : "600",
     "clientOfflineSessionMaxLifespan" : "0",
     "oauth2DevicePollingInterval" : "5",
     "clientSessionIdleTimeout" : "0",
+    "actionTokenGeneratedByUserLifespan.verify-email" : "",
+    "actionTokenGeneratedByUserLifespan.idp-verify-account-via-email" : "",
+    "clientOfflineSessionIdleTimeout" : "0",
+    "actionTokenGeneratedByUserLifespan.execute-actions" : "",
+    "cibaInterval" : "5",
+    "realmReusableOtpCode" : "false",
+    "cibaExpiresIn" : "120",
+    "oauth2DeviceCodeLifespan" : "600",
     "parRequestUriLifespan" : "60",
     "clientSessionMaxLifespan" : "0",
-    "clientOfflineSessionIdleTimeout" : "0",
-    "cibaInterval" : "5",
-    "realmReusableOtpCode" : "false"
+    "shortVerificationUri" : "",
+    "actionTokenGeneratedByUserLifespan.reset-credentials" : ""
   },
   "keycloakVersion" : "26.1.4",
   "userManagedAccessAllowed" : false,
