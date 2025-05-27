@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -24,6 +25,7 @@ public class OpenApiSpecGeneratorTest {
 		// Fetch the OpenAPI JSON
 		String json = mockMvc.perform(MockMvcRequestBuilders.get(
 				"/api-docs"))
+			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andReturn()
 			.getResponse()
 			.getContentAsString();
@@ -35,6 +37,7 @@ public class OpenApiSpecGeneratorTest {
 	void generateOpenApiSpecYaml() throws Exception {
 		// Fetch the OpenAPI Yaml
 		String json = mockMvc.perform(MockMvcRequestBuilders.get("/api-docs.yaml"))
+			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andReturn()
 			.getResponse()
 			.getContentAsString();
