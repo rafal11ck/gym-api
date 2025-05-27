@@ -28,7 +28,7 @@ public class SecurityConfig {
 				.requestMatchers("/swagger", "/swagger-ui/*", "/api-docs.yaml", "/api-docs")
 				.permitAll()
 
-				// everything else authenticated 
+				// everything else authenticated
 				.anyRequest()
 				.authenticated()
 			)
@@ -44,6 +44,5 @@ public class SecurityConfig {
 //			.addFilterBefore(userProvisioningFilter, BearerTokenAuthenticationFilter.class);
 		return http.build();
 	}
-
 
 }

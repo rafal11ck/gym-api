@@ -27,16 +27,16 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: nicknovitski/nix-develop@v1
-
-      - run: task semrel-ci
-        env:  
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - run: task api-spec
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: release'
           file_pattern: |
             docs/*
+
+      - run: task semrel-ci
+        env:  
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
       
