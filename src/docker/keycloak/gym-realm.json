@@ -586,7 +586,7 @@
     "implicitFlowEnabled" : false,
     "directAccessGrantsEnabled" : false,
     "serviceAccountsEnabled" : false,
-    "publicClient" : false,
+    "publicClient" : true,
     "frontchannelLogout" : true,
     "protocol" : "openid-connect",
     "attributes" : {
