@@ -594,7 +594,7 @@
       "request.object.encryption.alg" : "any",
       "client.introspection.response.allow.jwt.claim.enabled" : "false",
       "frontchannel.logout.session.required" : "true",
-      "post.logout.redirect.uris" : "http://localhost:8081",
+      "post.logout.redirect.uris" : "http://localhost:8081##http://localhost:5173/*",
       "oauth2.device.authorization.grant.enabled" : "false",
       "use.jwks.url" : "false",
       "backchannel.logout.revoke.offline.tokens" : "false",
