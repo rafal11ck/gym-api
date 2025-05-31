@@ -3,6 +3,10 @@
 Gym app api
 
 
+> [!CAUTION]
+> Do not use this with default shipped properties and oauth config. Those values are suitable for development and SHALL NOT be used in production.
+
+
 ## Frontend
 
 https://github.com/filip-stepien/gym-frontend
@@ -50,7 +54,6 @@ Prerequisites:
 ### Manually generating documetation
 
 `task docs`
-
 
 # FAQ
 

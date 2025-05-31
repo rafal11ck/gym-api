@@ -20,5 +20,5 @@ public final class UserRole {
 	UUID uuid;
 
 	@Column(nullable = false, unique = true)
-	String role;
+	String roleName;
 }

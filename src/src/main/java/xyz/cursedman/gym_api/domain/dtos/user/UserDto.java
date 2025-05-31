@@ -1,14 +1,13 @@
 package xyz.cursedman.gym_api.domain.dtos.user;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import xyz.cursedman.gym_api.domain.entities.Card;
 import xyz.cursedman.gym_api.domain.entities.Membership;
-import xyz.cursedman.gym_api.domain.entities.UserRole;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,7 +18,7 @@ import java.util.UUID;
 public class UserDto {
 	private UUID uuid;
 
-	private UserRole role;
+	private Collection<String> roles;
 
 	private Card card;
 
@@ -32,6 +31,8 @@ public class UserDto {
 	private Date dateOfBirth;
 
 	private String email;
+
+	private String username;
 
 	private String phoneNumber;
 

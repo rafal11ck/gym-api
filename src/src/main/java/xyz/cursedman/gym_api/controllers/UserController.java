@@ -1,21 +1,17 @@
 package xyz.cursedman.gym_api.controllers;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import xyz.cursedman.gym_api.config.StripeProperties;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import xyz.cursedman.gym_api.domain.dtos.chat.ChatDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
-import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
 import xyz.cursedman.gym_api.services.ChatService;
-import xyz.cursedman.gym_api.services.StripeService;
 import xyz.cursedman.gym_api.services.UserService;
 
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,10 +22,6 @@ public class UserController {
 	private final UserService userService;
 
 	private final ChatService chatService;
-
-	private final StripeService stripeService;
-
-	private final StripeProperties stripeProperties;
 
 	@GetMapping
 	public ResponseEntity<List<UserDto>> listUsers() {
@@ -42,50 +34,10 @@ public class UserController {
 		return ResponseEntity.ok(userDto);
 	}
 
-	@PostMapping
-	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserRequest request) {
-		try {
-			UserDto createdUser = userService.createUser(request);
-			return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-		} catch (DataIntegrityViolationException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
-	}
-
-	@PatchMapping(path = "/{id}")
-	public ResponseEntity<UserDto> updateUser(
-		@Valid @PathVariable UUID id,
-		@RequestBody UserRequest request
-	) {
-		return ResponseEntity.ok(userService.patchUser(id, request));
-	}
-
 	// chats
 
 	@GetMapping("{id}/chats")
 	public ResponseEntity<List<ChatDto>> listChats(@PathVariable UUID id) {
 		return ResponseEntity.ok(chatService.listUserChats(id));
-	}
-
-	// payments
-
-	@GetMapping("/{userId}/subscriptions/{membershipTypeId}/setup-subscription")
-	public ResponseEntity<Void> checkoutMembership(
-		@Valid @PathVariable UUID userId,
-		@Valid @PathVariable UUID membershipTypeId
-	) {
-		if (!stripeProperties.isStripeConfigurationValid()) {
-			return ResponseEntity.notFound().build();
-		}
-
-		try {
-			URI checkoutUri = stripeService.createCheckoutSessionUri(membershipTypeId, userId);
-			return ResponseEntity
-				.status(HttpStatus.SEE_OTHER)
-				.location(checkoutUri)
-				.build();
-		} catch (Exception e) {
-			return ResponseEntity.notFound().build();
-		}
 	}
 }

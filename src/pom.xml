@@ -10,7 +10,7 @@
     </parent>
     <groupId>xyz.cursedman</groupId>
     <artifactId>gym-api</artifactId>
-    <version>0.0.0</version> <!-- Will be updated by semantic-release -->
+    <version>v1.9.2</version> <!-- Will be updated by semantic-release -->
     <name>gym-api</name>
     <description>Gym-api</description>
     <url/>
@@ -74,6 +74,14 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
@@ -82,6 +90,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -94,8 +107,10 @@
             <version>29.1.0</version>
         </dependency>
     </dependencies>
-
     <build>
+        <finalName>
+            gym-api
+        </finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -158,7 +173,7 @@
                 </configuration>
             </plugin>
 
-<!-- never gonna let you go -->
+            <!-- never gonna let you go -->
         </plugins>
     </build>
 </project>

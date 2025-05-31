@@ -5,6 +5,8 @@ info:
 servers:
 - url: http://localhost
   description: Generated server url
+security:
+- OAuth2: []
 paths:
   /workout-sessions:
     get:
@@ -87,37 +89,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/WorkoutSessionDto"
-  /users:
-    get:
-      tags:
-      - user-controller
-      operationId: listUsers
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UserDto"
-    post:
-      tags:
-      - user-controller
-      operationId: createUser
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/UserDto"
   /target-muscles:
     get:
       tags:
@@ -446,49 +417,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/WorkoutSessionDto"
-  /users/{id}:
-    get:
-      tags:
-      - user-controller
-      operationId: getUser
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/UserDto"
-    patch:
-      tags:
-      - user-controller
-      operationId: updateUser
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/UserDto"
   /payments/{id}:
     get:
       tags:
@@ -792,6 +720,39 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/CardDto"
+  /users:
+    get:
+      tags:
+      - user-controller
+      operationId: listUsers
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserDto"
+  /users/{id}:
+    get:
+      tags:
+      - user-controller
+      operationId: getUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
   /users/{id}/chats:
     get:
       tags:
@@ -1091,8 +1052,11 @@ components:
         uuid:
           type: string
           format: uuid
-        role:
-          $ref: "#/components/schemas/UserRole"
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserRole"
+          uniqueItems: true
         card:
           $ref: "#/components/schemas/Card"
         membership:
@@ -1104,6 +1068,8 @@ components:
         dateOfBirth:
           type: string
           format: date-time
+        username:
+          type: string
         email:
           type: string
         phoneNumber:
@@ -1111,7 +1077,6 @@ components:
         imageUrl:
           type: string
       required:
-      - dateOfBirth
       - firstName
       - lastName
     UserRole:
@@ -1120,7 +1085,7 @@ components:
         uuid:
           type: string
           format: uuid
-        role:
+        roleName:
           type: string
     WorkoutSessionDto:
       type: object
@@ -1186,66 +1151,6 @@ components:
           format: uuid
       required:
       - userUuid
-    UserRequest:
-      type: object
-      properties:
-        roleUuid:
-          type: string
-          format: uuid
-        cardUuid:
-          type: string
-          format: uuid
-        membershipUuid:
-          type: string
-          format: uuid
-        firstName:
-          type: string
-        lastName:
-          type: string
-        dateOfBirth:
-          type: string
-          format: date-time
-        email:
-          type: string
-        phoneNumber:
-          type: string
-        imageUrl:
-          type: string
-      required:
-      - cardUuid
-      - dateOfBirth
-      - email
-      - firstName
-      - imageUrl
-      - lastName
-      - membershipUuid
-      - phoneNumber
-      - roleUuid
-    UserDto:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        role:
-          $ref: "#/components/schemas/UserRole"
-        card:
-          $ref: "#/components/schemas/Card"
-        membership:
-          $ref: "#/components/schemas/Membership"
-        firstName:
-          type: string
-        lastName:
-          type: string
-        dateOfBirth:
-          type: string
-          format: date-time
-        email:
-          type: string
-        phoneNumber:
-          type: string
-        imageUrl:
-          type: string
     CreateTargetMuscleRequest:
       type: object
       properties:
@@ -1523,6 +1428,35 @@ components:
           format: date-time
       required:
       - lastReadDateTime
+    UserDto:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        roles:
+          type: array
+          items:
+            type: string
+        card:
+          $ref: "#/components/schemas/Card"
+        membership:
+          $ref: "#/components/schemas/Membership"
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date-time
+        email:
+          type: string
+        username:
+          type: string
+        phoneNumber:
+          type: string
+        imageUrl:
+          type: string
     UserRoleDto:
       type: object
       properties:
@@ -1555,3 +1489,12 @@ components:
           format: uuid
         countryName:
           type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: http://localhost:8081/realms/gym/protocol/openid-connect/auth
+          tokenUrl: http://localhost:8081/realms/gym/protocol/openid-connect/token
+          refreshUrl: http://localhost:8081/realms/gym/protocol/openid-connect/token
+          scopes: {}

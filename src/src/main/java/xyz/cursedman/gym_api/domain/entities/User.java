@@ -2,29 +2,24 @@ package xyz.cursedman.gym_api.domain.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Table(name = "users")
 public final class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;
 
-	String customerId;
-
-	@ManyToOne
-	UserRole role;
+	@ManyToMany(fetch = FetchType.EAGER)
+	Set<UserRole> roles = new HashSet<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	Card card;
@@ -38,8 +33,10 @@ public final class User {
 	@NotNull
 	String lastName;
 
-	@NotNull
 	Date dateOfBirth;
+
+	@Column(unique = true)
+	String username;
 
 	String email;
 

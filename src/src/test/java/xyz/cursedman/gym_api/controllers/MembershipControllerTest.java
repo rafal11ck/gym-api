@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -19,21 +20,18 @@ import java.util.UUID;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@WithMockUser(roles = {"CLIENT"})
 class MembershipControllerTest {
-	@Autowired
-	private MockMvc mockMvc;
-
 	private final String endpointUri = "/memberships";
-
 	private final String validMembershipUuid = "bbac838e-4a2f-4ef8-b562-075d64d8493a";
-
 	private final String validMembershipTypeUuid = "9d4e894f-30e4-488e-9689-ad0fa32a69d1";
-
 	private final MembershipRequest validMembershipRequest = MembershipRequest.builder()
 		.membershipTypeUuid(UUID.fromString(validMembershipTypeUuid))
 		.purchaseDate(new Date())
 		.validUntil(new Date())
 		.build();
+	@Autowired
+	private MockMvc mockMvc;
 
 	// GET
 
@@ -62,14 +60,14 @@ class MembershipControllerTest {
 	@Test
 	void checkIfCreateReturnsHttp201AndCreatedRecord() throws Exception {
 		mockMvc.perform(
-			MockMvcRequestBuilders.post(endpointUri)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.stringify(validMembershipRequest))
-		).andExpect(MockMvcResultMatchers.status().isCreated())
-		.andExpect(TestJsonHelper.contentEqualsJsonOf(validMembershipRequest, "membershipTypeUuid"))
-		.andExpect(
-			MockMvcResultMatchers.jsonPath("$.membershipType.uuid", Matchers.is(validMembershipTypeUuid))
-		);
+				MockMvcRequestBuilders.post(endpointUri)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestJsonHelper.stringify(validMembershipRequest))
+			).andExpect(MockMvcResultMatchers.status().isCreated())
+			.andExpect(TestJsonHelper.contentEqualsJsonOf(validMembershipRequest, "membershipTypeUuid"))
+			.andExpect(
+				MockMvcResultMatchers.jsonPath("$.membershipType.uuid", Matchers.is(validMembershipTypeUuid))
+			);
 	}
 
 	@Test
@@ -87,13 +85,13 @@ class MembershipControllerTest {
 	void checkIfPatchUpdateReturnsHttp200AndUpdatedRecord() throws Exception {
 		String membershipTypeUuidToUpdate = "38dc2c0f-566f-48c7-a147-95fd0f0632ee";
 		mockMvc.perform(
-			MockMvcRequestBuilders.patch(endpointUri + "/" + validMembershipUuid)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.toJSONField("membershipTypeUuid", membershipTypeUuidToUpdate))
-		).andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(
-			MockMvcResultMatchers.jsonPath("$.membershipType.uuid", Matchers.is(membershipTypeUuidToUpdate))
-		);
+				MockMvcRequestBuilders.patch(endpointUri + "/" + validMembershipUuid)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(TestJsonHelper.toJSONField("membershipTypeUuid", membershipTypeUuidToUpdate))
+			).andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(
+				MockMvcResultMatchers.jsonPath("$.membershipType.uuid", Matchers.is(membershipTypeUuidToUpdate))
+			);
 	}
 
 	@Test

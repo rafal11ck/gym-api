@@ -7,20 +7,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserRequest {
-	@NotNull
-	private UUID roleUuid;
 
-	@NotNull
+	@Builder.Default
+	private Set<String> roles = new HashSet<>();
+
 	private UUID cardUuid;
 
-	@NotNull
 	private UUID membershipUuid;
 
 	@NotNull
@@ -29,15 +30,14 @@ public class UserRequest {
 	@NotNull
 	private String lastName;
 
-	@NotNull
 	private Date dateOfBirth;
 
 	@NotNull
 	private String email;
 
-	@NotNull
+	private String username;
+
 	private String phoneNumber;
 
-	@NotNull
 	private String imageUrl;
 }
