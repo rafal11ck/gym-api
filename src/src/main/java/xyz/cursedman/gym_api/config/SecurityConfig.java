@@ -17,15 +17,18 @@ public class SecurityConfig {
 
 	private final GymJwtAuthenticationConverter jwtAuthenticationConverter;
 
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(
 		HttpSecurity http)
 		throws Exception {
+
 		http
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests((authorize) -> authorize
 				// allow all to docs
-				.requestMatchers("/swagger", "/swagger-ui/*", "/api-docs.yaml", "/api-docs")
+
+				.requestMatchers("/swagger", "/swagger-ui/*", "/api-docs.yaml", "/api-docs/**")
 				.permitAll()
 
 				// everything else authenticated
