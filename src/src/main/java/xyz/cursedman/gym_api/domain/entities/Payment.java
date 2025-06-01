@@ -14,13 +14,7 @@ public final class Payment {
 	UUID uuid;
 
 	@ManyToOne
-	Card card;
-
-	@ManyToOne
 	PaymentStatus status;
-
-	@ManyToOne
-	Membership membership;
-
-//     TODO payment things
+	
+	// TODO payment things
 }

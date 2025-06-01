@@ -20,6 +20,9 @@ public final class Membership {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;
 
+	@ManyToOne()
+	User owner;
+
 	Date purchaseDate;
 
 	Date validUntil;

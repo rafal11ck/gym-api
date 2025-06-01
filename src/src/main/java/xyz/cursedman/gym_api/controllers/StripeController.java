@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import xyz.cursedman.gym_api.config.StripeProperties;
-import xyz.cursedman.gym_api.services.StripeService;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,8 +30,7 @@ public class StripeController {
 	@PostMapping("/stripe-webhook")
 	public ResponseEntity<Void> getCheckoutDataWebhook(
 		@RequestBody String payload,
-		@RequestHeader("Stripe-Signature") String sigHeader)
-	{
+		@RequestHeader("Stripe-Signature") String sigHeader) {
 		if (!stripeProperties.isStripeConfigurationValid()) {
 			return ResponseEntity.notFound().build();
 		}

@@ -24,8 +24,6 @@ public final class User {
 	@ManyToOne(fetch = FetchType.LAZY)
 	Card card;
 
-	@OneToOne
-	Membership membership;
 
 	@NotNull
 	String firstName;

@@ -1,11 +1,11 @@
 package xyz.cursedman.gym_api.services.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeDto;
 import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeRequest;
 import xyz.cursedman.gym_api.domain.entities.MembershipType;
+import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.MembershipTypeMapper;
 import xyz.cursedman.gym_api.repositories.MembershipTypeRepository;
 import xyz.cursedman.gym_api.services.MembershipTypeService;
@@ -26,15 +26,6 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
 		return membershipTypeRepository.findAll().stream().map(membershipTypeMapper::toDtoFromEntity).toList();
 	}
 
-	@Override
-	public MembershipType getMembershipTypeEntity(UUID id) {
-		return membershipTypeRepository.findById(id)
-			.orElse(null);
-	public MembershipType getMembershipTypeByUuid(UUID id) throws EntityNotFoundException {
-		return membershipTypeRepository.findById(id).orElseThrow(
-			() -> new EntityNotFoundException("Membership type with ID " + id + " not found")
-		);
-	}
 
 	@Override
 	public MembershipTypeDto getMembershipType(UUID id) {
@@ -55,7 +46,7 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
 	public MembershipTypeDto patchMembershipType(
 		UUID membershipTypeId,
 		MembershipTypeRequest request
-	)  {
+	) {
 
 		MembershipType membershipType = membershipTypeRepository
 			.findById(membershipTypeId)

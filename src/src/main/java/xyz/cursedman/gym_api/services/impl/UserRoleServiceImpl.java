@@ -9,8 +9,8 @@ import xyz.cursedman.gym_api.mappers.UserRoleMapper;
 import xyz.cursedman.gym_api.repositories.UserRoleRepository;
 import xyz.cursedman.gym_api.services.UserRoleService;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -36,14 +36,19 @@ public class UserRoleServiceImpl implements UserRoleService {
 		return userRoleMapper.toDtoFromEntity(userRole.get());
 	}
 
+
 	@Override
-	public Set<UserRole> getUserRoles(Collection<String> userRoleNames) {
-		return userRoleNames.stream()
-			.map(roleName ->
-				userRoleRepository.findByRoleNameEqualsIgnoreCase(roleName)
-					.orElse(null))
-			.filter(Objects::nonNull)
-			.collect(Collectors.toSet());
+	public UserRoleDto createUserRole(String roleName) {
+		// check if role doesn't exist already
+		Optional<UserRole> userRole = userRoleRepository.findByRoleNameEqualsIgnoreCase(roleName);
+		if (userRole.isEmpty()) {
+			UserRole userRoleEntity = new UserRole();
+			// if it does not exist provision it
+			userRoleEntity.setRoleName(roleName);
+			UserRole saved = userRoleRepository.save(userRoleEntity);
+			userRole = Optional.of(saved);
+		}
+		return userRoleMapper.toDtoFromEntity(userRole.get());
 	}
 
 }

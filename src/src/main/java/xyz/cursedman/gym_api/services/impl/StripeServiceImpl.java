@@ -18,7 +18,6 @@ import xyz.cursedman.gym_api.domain.entities.MembershipType;
 import xyz.cursedman.gym_api.domain.entities.User;
 import xyz.cursedman.gym_api.repositories.StripeRepository;
 import xyz.cursedman.gym_api.services.MembershipTypeService;
-import xyz.cursedman.gym_api.services.StripeService;
 import xyz.cursedman.gym_api.services.UserService;
 
 import java.net.URI;
@@ -27,7 +26,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class StripeServiceImpl implements StripeService {
+public class StripeServiceImpl {
 
 	private final StripeProperties stripeProperties;
 
@@ -38,11 +37,10 @@ public class StripeServiceImpl implements StripeService {
 	private final MembershipTypeService membershipTypeService;
 
 	@PostConstruct
-	private void initializeStripe()  {
+	private void initializeStripe() {
 		Stripe.apiKey = stripeProperties.getApiKey();
 	}
 
-	@Override
 	public Product createProductFromMembershipTypeRequest(MembershipTypeRequest request) throws Exception {
 		ProductCreateParams productCreateParams = ProductCreateParams.builder()
 			.setName(request.getType())
@@ -64,7 +62,6 @@ public class StripeServiceImpl implements StripeService {
 		return createdProduct;
 	}
 
-	@Override
 	public URI createCheckoutSessionUri(UUID membershipTypeId, UUID userId) throws Exception {
 		MembershipType membershipType = membershipTypeService.getMembershipTypeByUuid(membershipTypeId);
 
@@ -99,7 +96,6 @@ public class StripeServiceImpl implements StripeService {
 		return URI.create(savedSession.getUrl());
 	}
 
-	@Override
 	public void handleWebhook(String payload, String sigHeader) throws Exception {
 		Event event = Webhook.constructEvent(payload, sigHeader, stripeProperties.getWebhookSecret());
 

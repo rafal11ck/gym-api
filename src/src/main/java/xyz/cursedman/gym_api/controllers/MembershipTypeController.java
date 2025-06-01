@@ -1,6 +1,5 @@
 package xyz.cursedman.gym_api.controllers;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import xyz.cursedman.gym_api.config.StripeProperties;
 import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeDto;
 import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeRequest;
 import xyz.cursedman.gym_api.services.MembershipTypeService;
-import xyz.cursedman.gym_api.services.StripeService;
 
 import java.util.List;
 import java.util.UUID;

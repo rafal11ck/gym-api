@@ -15,7 +15,6 @@ import xyz.cursedman.gym_api.mappers.MembershipTypeMapper;
 import xyz.cursedman.gym_api.repositories.MembershipTypeRepository;
 import xyz.cursedman.gym_api.repositories.StripeRepository;
 import xyz.cursedman.gym_api.repositories.UserRepository;
-import xyz.cursedman.gym_api.services.StripeService;
 
 import java.util.Date;
 import java.util.Optional;

@@ -10,6 +10,7 @@ import xyz.cursedman.gym_api.repositories.PaymentStatusRepository;
 import xyz.cursedman.gym_api.services.PaymentStatusService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,6 +28,20 @@ public class PaymentStatusServiceImpl implements PaymentStatusService {
 			.stream()
 			.map(paymentStatusMapper::toDtoFromEntity)
 			.toList();
+	}
+
+	@Override
+	public PaymentStatusDto createPaymentStatus(String paymentStatusName) {
+		Optional<PaymentStatus> paymentStatus =
+			Optional.ofNullable(paymentStatusRepository.findByStatusEqualsIgnoreCase(paymentStatusName).getFirst());
+
+		// if not found existing status
+		if (paymentStatus.isEmpty()) {
+			PaymentStatus newPaymentStatus = new PaymentStatus();
+			newPaymentStatus.setStatus(paymentStatusName);
+			paymentStatus = Optional.of(paymentStatusRepository.save(newPaymentStatus));
+		}
+		return paymentStatusMapper.toDtoFromEntity(paymentStatus.get());
 	}
 
 	@Override

@@ -6,5 +6,6 @@ import xyz.cursedman.gym_api.domain.dtos.userRole.UserRoleDto;
 import xyz.cursedman.gym_api.domain.entities.UserRole;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface UserRoleMapper extends EntityMapper<UserRole, UserRoleDto> {
+public abstract class UserRoleMapper implements EntityMapper<UserRole, UserRoleDto> {
+
 }

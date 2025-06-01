@@ -9,6 +9,8 @@ import java.util.UUID;
 public interface PaymentStatusService {
 	List<PaymentStatusDto> listPaymentStatuses();
 
+	PaymentStatusDto createPaymentStatus(String paymentStatusName);
+
 	// used by mapper
 	PaymentStatus getPaymentStatusByUuid(UUID id);
 }

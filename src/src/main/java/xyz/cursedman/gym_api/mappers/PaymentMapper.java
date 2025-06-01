@@ -11,11 +11,10 @@ import xyz.cursedman.gym_api.services.PaymentStatusService;
 @Mapper(
 	componentModel = "spring",
 	unmappedTargetPolicy = ReportingPolicy.IGNORE,
-	uses = { CardService.class, PaymentStatusService.class, MembershipService.class }
+	uses = {CardService.class, PaymentStatusService.class, MembershipService.class}
 )
 public interface PaymentMapper extends EntityRequestMapper<Payment, PaymentDto, PaymentRequest> {
 	@Override
-	@Mapping(target = "cardUuid", source = "card.uuid")
 	@Mapping(target = "statusUuid", source = "status.uuid")
 	@Mapping(target = "membershipUuid", source = "membership.uuid")
 	PaymentRequest toRequestFromEntity(Payment entity);
