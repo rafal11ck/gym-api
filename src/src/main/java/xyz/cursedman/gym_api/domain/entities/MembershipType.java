@@ -16,10 +16,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public final class MembershipType {
+public final class MembershipType extends Payment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;
 	String type;
-	Float price;
+
+
 }

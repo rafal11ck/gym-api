@@ -1,6 +1,5 @@
 package xyz.cursedman.gym_api.services.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.membership.MembershipDto;
@@ -16,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class MembershipServiceImpl implements MembershipService  {
+public class MembershipServiceImpl implements MembershipService {
 
 	private final MembershipRepository membershipRepository;
 
@@ -62,4 +61,6 @@ public class MembershipServiceImpl implements MembershipService  {
 			() -> new NotFoundException("Membership with ID " + id + " not found")
 		);
 	}
+
+
 }

@@ -16,6 +16,9 @@ public interface MembershipService {
 
 	MembershipDto patchMembership(UUID id, MembershipRequest request);
 
+	MembershipDto updateMembership(UUID id, MembershipRequest request);
+
+
 	// used by mapper
 	Membership getMembershipById(UUID id);
 }

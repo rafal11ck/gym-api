@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -20,10 +20,11 @@ public final class Membership {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;
 
-	Date purchaseDate;
+	LocalDateTime validFrom;
 
-	Date validUntil;
+	LocalDateTime validUntil;
 
 	@ManyToOne
 	MembershipType membershipType;
+
 }
