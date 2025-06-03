@@ -10,6 +10,11 @@ spring:
     database: postgresql
     hibernate:
       ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        hbm2ddl:
+          import_files_sql_extractor: org.hibernate.tool.schema.internal.script.MultiLineSqlScriptExtractor
   security:
     oauth2:
       resourceserver:
