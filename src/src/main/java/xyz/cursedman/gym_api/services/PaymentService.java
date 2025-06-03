@@ -13,24 +13,29 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+/**
+ * Service that handles bussiness logic of payments, not payment handling itself
+ * @see PaymentProvider
+ * @see PaymentCoordinator
+ */
 public class PaymentService {
 
-    private final PaymentRepository paymentRepository;
-    private final List<PaymentStatusHandler> handlers;
+	private final PaymentRepository paymentRepository;
+	private final List<PaymentStatusHandler> handlers;
 
-    @Transactional
-    public void paymentStatusChange(UUID paymentId, PaymentStatusEnum newStatus) {
-        Payment payment = paymentRepository.findById(paymentId)
-                .orElseThrow(() -> new NotFoundException("Payment not found"));
+	@Transactional
+	public void paymentStatusChange(UUID paymentId, PaymentStatusEnum newStatus) {
+		Payment payment = paymentRepository.findById(paymentId)
+			.orElseThrow(() -> new NotFoundException("Payment not found"));
 
-        payment.setStatus(newStatus);
-        paymentRepository.save(payment);
+		payment.setStatus(newStatus);
+		paymentRepository.save(payment);
 
-        // Delegate to all handlers that support this payment
-        for (PaymentStatusHandler handler : handlers) {
-            if (handler.supports(payment)) {
-                handler.handle(payment, newStatus);
-            }
-        }
-    }
+		// Delegate to all handlers that support this payment
+		for (PaymentStatusHandler handler : handlers) {
+			if (handler.supports(payment)) {
+				handler.handle(payment, newStatus);
+			}
+		}
+	}
 }
