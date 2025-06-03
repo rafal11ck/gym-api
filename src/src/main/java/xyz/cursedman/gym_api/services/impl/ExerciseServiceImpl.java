@@ -1,9 +1,13 @@
 package xyz.cursedman.gym_api.services.impl;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import xyz.cursedman.gym_api.domain.dtos.exercise.CreateExerciseRequest;
+import xyz.cursedman.gym_api.domain.dtos.exercise.ExerciseDto;
 import xyz.cursedman.gym_api.domain.entities.Exercise;
 import xyz.cursedman.gym_api.exceptions.NotFoundException;
+import xyz.cursedman.gym_api.mappers.ExerciseMapper;
 import xyz.cursedman.gym_api.repositories.ExerciseRepository;
 import xyz.cursedman.gym_api.services.ExerciseService;
 
@@ -16,9 +20,11 @@ public class ExerciseServiceImpl implements ExerciseService {
 
 	private final ExerciseRepository exerciseRepository;
 
+	private final ExerciseMapper exerciseMapper;
+
 	@Override
-	public List<Exercise> listExercises() {
-		return exerciseRepository.findAll();
+	public List<ExerciseDto> listExercises() {
+		return exerciseRepository.findAll().stream().map(exerciseMapper::toDto).toList();
 	}
 
 	@Override
@@ -27,8 +33,10 @@ public class ExerciseServiceImpl implements ExerciseService {
 	}
 
 	@Override
-	public Exercise createExercise(Exercise exercise) {
-		return exerciseRepository.save(exercise);
+	public ExerciseDto createExercise(CreateExerciseRequest request) {
+		Exercise exercise = exerciseMapper.toEntity(request);
+		Exercise savedExercise = exerciseRepository.save(exercise);
+		return exerciseMapper.toDto(savedExercise);
 	}
 
 	@Override

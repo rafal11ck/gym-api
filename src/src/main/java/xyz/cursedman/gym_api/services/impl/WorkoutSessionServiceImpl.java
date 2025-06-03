@@ -18,6 +18,7 @@ import xyz.cursedman.gym_api.services.WorkoutSessionService;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,16 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 	public List<WorkoutSessionDto> listWorkoutSessions() {
 		return workoutSessionRepository
 			.findAll()
+			.stream()
+			.map(workoutSessionMapper::toDtoFromEntity)
+			.toList();
+	}
+
+	@Override
+	public List<WorkoutSessionDto> listUserWorkoutSessions(UUID userId) {
+		User user = userService.getUserByUuid(userId);
+		return workoutSessionRepository
+			.findWorkoutSessionsByAttendantsContains(user)
 			.stream()
 			.map(workoutSessionMapper::toDtoFromEntity)
 			.toList();

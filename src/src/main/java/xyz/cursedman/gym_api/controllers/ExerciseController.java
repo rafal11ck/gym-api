@@ -2,6 +2,7 @@ package xyz.cursedman.gym_api.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.cursedman.gym_api.domain.dtos.exercise.CreateExerciseRequest;
@@ -20,14 +21,10 @@ import java.util.UUID;
 public class ExerciseController {
 
 	private final ExerciseService exerciseService;
-	private final ExerciseMapper exerciseMapper;
 
 	@GetMapping
 	public ResponseEntity<List<ExerciseDto>> listExercises() {
-		List<ExerciseDto> exercises = exerciseService.listExercises()
-			.stream().map(exerciseMapper::toDto).toList();
-
-		return ResponseEntity.ok(exercises);
+		return ResponseEntity.ok(exerciseService.listExercises());
 	}
 
 	@DeleteMapping(path = "/{id}")
@@ -38,9 +35,6 @@ public class ExerciseController {
 
 	@PostMapping
 	public ResponseEntity<ExerciseDto> createExercise(@Valid @RequestBody CreateExerciseRequest request) {
-		Exercise exercise = exerciseMapper.toEntity(request);
-		Exercise savedExercise = exerciseService.createExercise(exercise);
-		return ResponseEntity.ok(exerciseMapper.toDto(savedExercise));
+		return ResponseEntity.status(HttpStatus.CREATED).body(exerciseService.createExercise(request));
 	}
-
 }

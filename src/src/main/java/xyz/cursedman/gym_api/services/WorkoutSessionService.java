@@ -12,6 +12,8 @@ import java.util.UUID;
 public interface WorkoutSessionService {
 	List<WorkoutSessionDto> listWorkoutSessions();
 
+	List<WorkoutSessionDto> listUserWorkoutSessions(UUID userId);
+
 	WorkoutSessionDto getWorkoutSession(UUID id);
 
 	WorkoutSessionDto createWorkoutSession(WorkoutSessionRequest request);
