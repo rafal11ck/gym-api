@@ -3,7 +3,7 @@ package xyz.cursedman.gym_api.domain.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -22,7 +22,7 @@ public final class WorkoutSession {
 	@ManyToOne(fetch = FetchType.LAZY)
 	Hall hall;
 
-	Date date;
+	LocalDate date;
 
 	String title;
 

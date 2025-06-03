@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.cursedman.gym_api.domain.dtos.chat.ChatDto;
-import xyz.cursedman.gym_api.domain.dtos.exercise.ExerciseDto;
+import xyz.cursedman.gym_api.domain.dtos.progressStatistics.ProgressOverviewDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionDto;
 import xyz.cursedman.gym_api.services.ChatService;
+import xyz.cursedman.gym_api.services.ProgressStatisticsService;
 import xyz.cursedman.gym_api.services.UserService;
 import xyz.cursedman.gym_api.services.WorkoutSessionService;
 
@@ -26,6 +27,7 @@ public class UserController {
 
 	private final ChatService chatService;
 	private final WorkoutSessionService workoutSessionService;
+	private final ProgressStatisticsService progressStatisticsService;
 
 	@GetMapping
 	public ResponseEntity<List<UserDto>> listUsers() {
@@ -38,6 +40,13 @@ public class UserController {
 		return ResponseEntity.ok(userDto);
 	}
 
+	// stats
+
+	@GetMapping("{id}/progress-statistics/overview")
+	public ResponseEntity<ProgressOverviewDto> getUserStatistics(@PathVariable UUID id) {
+		return ResponseEntity.ok(progressStatisticsService.getUserProgressOverview(id));
+	}
+
 	// chats
 
 	@GetMapping("{id}/chats")
@@ -45,7 +54,7 @@ public class UserController {
 		return ResponseEntity.ok(chatService.listUserChats(id));
 	}
 
-	@GetMapping("{id}/exercises")
+	@GetMapping("{id}/workout-sessions")
 	public ResponseEntity<List<WorkoutSessionDto>> listExercises(@Valid @PathVariable UUID id) {
 		return ResponseEntity.ok(workoutSessionService.listUserWorkoutSessions(id));
 	}

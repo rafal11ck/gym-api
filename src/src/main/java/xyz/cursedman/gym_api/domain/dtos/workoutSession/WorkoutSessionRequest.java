@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class WorkoutSessionRequest {
 	private UUID hallUuid;
 
 	@NotNull
-	private Date date;
+	private LocalDate date;
 
 	@NotNull
 	private String title;

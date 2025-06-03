@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -14,6 +15,8 @@ public class TestJsonHelper {
 	static ObjectMapper objectMapper = new ObjectMapper()
 		// prevent making timestamps from dates
 		.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+		// enable LocalDate type parsing
+		.registerModule(new JavaTimeModule())
 		.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
 
 	public static String stringify(Object object) throws Exception {
@@ -26,7 +29,8 @@ public class TestJsonHelper {
 	}
 
 	public static ResultMatcher contentEqualsJsonOf(Object object, String... fieldsToIgnore) throws Exception {
-		Map<String, Object> jsonMap = objectMapper.convertValue(object, new TypeReference<>() {});
+		Map<String, Object> jsonMap = objectMapper.convertValue(object, new TypeReference<>() {
+		});
 
 		for (String field : fieldsToIgnore) {
 			jsonMap.remove(field);

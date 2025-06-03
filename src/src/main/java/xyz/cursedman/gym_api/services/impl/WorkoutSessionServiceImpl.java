@@ -128,6 +128,13 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 	}
 
 	@Override
+	public List<WorkoutSession> findWorkoutSessionsByAttendantUuid(UUID userId) {
+		return workoutSessionRepository.findWorkoutSessionsByAttendantsContains(
+			userService.getUserByUuid(userId)
+		);
+	}
+
+	@Override
 	public WorkoutSession getWorkoutSessionEntity(UUID id) {
 		return workoutSessionRepository.findById(id).orElseThrow(
 			() -> new EntityNotFoundException("Workout session with ID " + id + " not found")

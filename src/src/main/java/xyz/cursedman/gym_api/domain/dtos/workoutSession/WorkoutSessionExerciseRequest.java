@@ -20,5 +20,8 @@ public class WorkoutSessionExerciseRequest {
 	private Integer reps;
 
 	@NotNull
+	private Float weight;
+
+	@NotNull
 	private Integer exerciseOrder;
 }

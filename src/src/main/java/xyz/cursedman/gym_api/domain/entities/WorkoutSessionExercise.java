@@ -27,5 +27,7 @@ public class WorkoutSessionExercise {
 
 	Integer reps;
 
+	Float weight;
+
 	Integer exerciseOrder;
 }

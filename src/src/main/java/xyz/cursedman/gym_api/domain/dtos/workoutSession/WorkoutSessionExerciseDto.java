@@ -19,5 +19,7 @@ public class WorkoutSessionExerciseDto {
 
 	private Integer reps;
 
+	private Float weight;
+
 	private Integer exerciseOrder;
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import xyz.cursedman.gym_api.domain.entities.Hall;
 import xyz.cursedman.gym_api.domain.entities.User;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +24,7 @@ public class WorkoutSessionDto {
 
 	private Hall hall;
 
-	private Date date;
+	private LocalDate date;
 
 	private String title;
 

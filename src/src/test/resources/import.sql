@@ -95,12 +95,12 @@ VALUES ('2025-04-23 20:07:43.095829', '2025-04-23 20:07:43.095829', '1953df3d-90
         'fc704e91-8e33-450f-9413-14ad12a444f9', '596706d3-6095-44b8-9f0d-8fd30ab9b847', 'Annual maintenance.');
 
 INSERT INTO workout_session (date, coach_uuid, hall_uuid, uuid, description, title)
-VALUES ('2025-04-23 20:10:53.023375', '55ad45d7-fb36-4090-81cb-dc062cfb619d', 'ce5f8d01-6fa8-4226-97fc-51d3e9cd91e5',
+VALUES ('2025-06-01', '55ad45d7-fb36-4090-81cb-dc062cfb619d', 'ce5f8d01-6fa8-4226-97fc-51d3e9cd91e5',
         '8d64dca2-87dc-479f-bcb5-9f91b16d870c',
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sapien urna, molestie in consequat lacinia, dictum blandit ex.',
         'Powerlifting session');
 INSERT INTO workout_session (date, coach_uuid, hall_uuid, uuid, description, title)
-VALUES ('2025-04-23 20:11:51.464867', '55ad45d7-fb36-4090-81cb-dc062cfb619d', '9256b9cb-40a6-4d17-b987-180e4e6596e0',
+VALUES ('2025-06-03', '55ad45d7-fb36-4090-81cb-dc062cfb619d', '9256b9cb-40a6-4d17-b987-180e4e6596e0',
         '9a9c531a-e4a7-4c6b-b4f6-eea79009ddae',
         'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Integer sit amet nisl scelerisque, auctor dui quis, cursus massa.',
         'Second powerlifting session');
@@ -109,6 +109,8 @@ INSERT INTO workout_session_attendants (attendants_uuid, workout_session_uuid)
 VALUES ('65f40335-135a-47ec-ad7d-72278c4be65c', '8d64dca2-87dc-479f-bcb5-9f91b16d870c');
 INSERT INTO workout_session_attendants (attendants_uuid, workout_session_uuid)
 VALUES ('4a3e70f9-bd65-45c4-a47a-eaae0a0d3d56', '8d64dca2-87dc-479f-bcb5-9f91b16d870c');
+INSERT INTO workout_session_attendants (attendants_uuid, workout_session_uuid)
+VALUES ('65f40335-135a-47ec-ad7d-72278c4be65c', '9a9c531a-e4a7-4c6b-b4f6-eea79009ddae');
 INSERT INTO workout_session_attendants (attendants_uuid, workout_session_uuid)
 VALUES ('4a3e70f9-bd65-45c4-a47a-eaae0a0d3d56', '9a9c531a-e4a7-4c6b-b4f6-eea79009ddae');
 
@@ -139,21 +141,21 @@ VALUES ('45053820-d688-46ec-b37d-899d26792a30', 'f9b481c4-31ce-43c0-93a3-0b57fe3
 INSERT INTO exercise_target_muscle (exercise_uuid, target_muscle_uuid)
 VALUES ('45053820-d688-46ec-b37d-899d26792a30', '283ef0f5-0bc9-4201-a6ca-8496ae2bef06');
 
-INSERT INTO workout_session_exercise (uuid, exercise_uuid, workout_session_uuid, reps, exercise_order)
+INSERT INTO workout_session_exercise (uuid, exercise_uuid, workout_session_uuid, reps, weight, exercise_order)
 VALUES ('0713a057-a183-4f13-be9d-9fe3985db31e', 'ee371adf-3ac7-4a0a-a6c2-254990c1c80f',
-        '8d64dca2-87dc-479f-bcb5-9f91b16d870c', 3, 1);
-INSERT INTO workout_session_exercise (uuid, exercise_uuid, workout_session_uuid, reps, exercise_order)
+        '8d64dca2-87dc-479f-bcb5-9f91b16d870c', 3, 30, 1);
+INSERT INTO workout_session_exercise (uuid, exercise_uuid, workout_session_uuid, reps, weight, exercise_order)
 VALUES ('70eb7aea-c056-42ab-bd08-f8e78caf4ea7', 'c5c07bb9-424a-4b9c-866d-6240ae0732d5',
-        '8d64dca2-87dc-479f-bcb5-9f91b16d870c', 3, 2);
-INSERT INTO workout_session_exercise (uuid, exercise_uuid, workout_session_uuid, reps, exercise_order)
+        '8d64dca2-87dc-479f-bcb5-9f91b16d870c', 3, 35, 2);
+INSERT INTO workout_session_exercise (uuid, exercise_uuid, workout_session_uuid, reps, weight, exercise_order)
 VALUES ('4a287342-c608-446b-a8d3-575531edc12e', 'ee371adf-3ac7-4a0a-a6c2-254990c1c80f',
-        '9a9c531a-e4a7-4c6b-b4f6-eea79009ddae', 3, 1);
-INSERT INTO workout_session_exercise (uuid, exercise_uuid, workout_session_uuid, reps, exercise_order)
+        '9a9c531a-e4a7-4c6b-b4f6-eea79009ddae', 3, 50, 1);
+INSERT INTO workout_session_exercise (uuid, exercise_uuid, workout_session_uuid, reps, weight, exercise_order)
 VALUES ('5cf75834-ffff-491a-aaa7-309e88ce2c7c', 'c5c07bb9-424a-4b9c-866d-6240ae0732d5',
-        '9a9c531a-e4a7-4c6b-b4f6-eea79009ddae', 3, 2);
-INSERT INTO workout_session_exercise (uuid, exercise_uuid, workout_session_uuid, reps, exercise_order)
+        '9a9c531a-e4a7-4c6b-b4f6-eea79009ddae', 3, 60, 2);
+INSERT INTO workout_session_exercise (uuid, exercise_uuid, workout_session_uuid, reps, weight, exercise_order)
 VALUES ('747a511e-ec5c-431e-8135-1f89b629b83c', '45053820-d688-46ec-b37d-899d26792a30',
-        '9a9c531a-e4a7-4c6b-b4f6-eea79009ddae', 3, 3);
+        '9a9c531a-e4a7-4c6b-b4f6-eea79009ddae', 3, 70, 3);
 
 INSERT INTO chat (uuid)
 VALUES ('a1ed2efc-59ac-4467-883b-89ee2ee6846d');

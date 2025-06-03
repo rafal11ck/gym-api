@@ -6,6 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
@@ -17,6 +20,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
 import xyz.cursedman.gym_api.helpers.TestJsonHelper;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
 
@@ -45,6 +51,16 @@ class UserControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	@TestConfiguration
+	static class TestClockConfig {
+		@Bean
+		@Primary
+		public Clock testClock() {
+			LocalDate fixedDate = LocalDate.of(2025, 6, 3);
+			return Clock.fixed(fixedDate.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+		}
+	}
+
 	// GET
 
 	@Test
@@ -67,7 +83,31 @@ class UserControllerTest {
 			.andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 
-	
+	// stats
+
+	// GET
+
+	@Test
+	void checkIfGetUserStatisticsReturnsHttp200AndCorrectStatistics() throws Exception {
+		int correctWeeklyTotalSetsValue = 3;
+		int correctWeeklyTotalSetsTrend = 50;
+		int correctWeeklySessionVolumeValue = 540;
+		int correctWeeklySessionVolumeTrend = 177;
+
+		mockMvc.perform(MockMvcRequestBuilders.get(
+			endpointUri + "/" + validUserUuid + "/progress-statistics/overview"
+		)).andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(
+			MockMvcResultMatchers.jsonPath("$.weeklyTotalSets.value").value(correctWeeklyTotalSetsValue)
+		).andExpect(
+			MockMvcResultMatchers.jsonPath("$.weeklyTotalSets.trend").value(correctWeeklyTotalSetsTrend)
+		).andExpect(
+			MockMvcResultMatchers.jsonPath("$.weeklySessionVolume.value").value(correctWeeklySessionVolumeValue)
+		).andExpect(
+			MockMvcResultMatchers.jsonPath("$.weeklySessionVolume.trend").value(correctWeeklySessionVolumeTrend)
+		);
+	}
+
 	// chat
 
 	// GET

@@ -13,6 +13,7 @@ import xyz.cursedman.gym_api.repositories.WorkoutSessionExerciseRepository;
 import xyz.cursedman.gym_api.services.ExerciseService;
 import xyz.cursedman.gym_api.services.WorkoutSessionExerciseService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +24,7 @@ public class WorkoutSessionExerciseServiceImpl implements WorkoutSessionExercise
     private final WorkoutSessionExerciseRepository workoutSessionExerciseRepository;
 
     private final ExerciseService exerciseService;
+
     private final WorkoutSessionExerciseMapper workoutSessionExerciseMapper;
 
     @Override
@@ -34,7 +36,24 @@ public class WorkoutSessionExerciseServiceImpl implements WorkoutSessionExercise
             .toList();
     }
 
-    @Override
+	@Override
+	public List<WorkoutSessionExercise> getExercisesFromSessionsInDateRange(
+		List<WorkoutSession> sessions,
+		LocalDate from,
+		LocalDate to
+	) {
+		List<WorkoutSession> filteredSessions = sessions.stream()
+			.filter(session -> {
+				LocalDate date = session.getDate();
+				return date != null && !date.isBefore(from) && !date.isAfter(to);
+			})
+			.toList();
+
+		return workoutSessionExerciseRepository
+			.findByWorkoutSessionIn(filteredSessions);
+	}
+
+	@Override
     public WorkoutSessionExerciseDto createWorkoutSessionExercise(
             WorkoutSessionExerciseRequest request,
             WorkoutSession workoutSession

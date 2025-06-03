@@ -19,6 +19,7 @@ import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionExerciseRe
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionRequest;
 import xyz.cursedman.gym_api.helpers.TestJsonHelper;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -42,7 +43,7 @@ class WorkoutSessionControllerTest {
 	private final WorkoutSessionRequest validWorkoutSessionRequest = WorkoutSessionRequest.builder()
 		.title("title")
 		.description("description")
-		.date(new Date())
+		.date(LocalDate.now())
 		.hallUuid(UUID.fromString(validHallUuid))
 		.coachUuid(UUID.fromString(validCoachUuid))
 		.build();
@@ -53,6 +54,7 @@ class WorkoutSessionControllerTest {
 		.exerciseUuid(UUID.fromString("ee371adf-3ac7-4a0a-a6c2-254990c1c80f"))
 		.exerciseOrder(1)
 		.reps(1)
+		.weight(1f)
 		.build();
 	@Autowired
 	private MockMvc mockMvc;
@@ -276,6 +278,7 @@ class WorkoutSessionControllerTest {
 			.exerciseUuid(UUID.randomUUID())
 			.exerciseOrder(1)
 			.reps(1)
+			.weight(1f)
 			.build();
 
 		mockMvc.perform(
