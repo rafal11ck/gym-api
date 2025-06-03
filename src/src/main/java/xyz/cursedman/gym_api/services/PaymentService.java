@@ -11,13 +11,14 @@ import xyz.cursedman.gym_api.repositories.PaymentRepository;
 import java.util.List;
 import java.util.UUID;
 
-@Service
-@RequiredArgsConstructor
 /**
- * Service that handles bussiness logic of payments, not payment handling itself
+ * Service that handles business logic of payments, not payment handling itself
+ *
  * @see PaymentProvider
  * @see PaymentCoordinator
  */
+@Service
+@RequiredArgsConstructor
 public class PaymentService {
 
 	private final PaymentRepository paymentRepository;
