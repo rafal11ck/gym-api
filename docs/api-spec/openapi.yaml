@@ -753,6 +753,98 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/UserDto"
+  /users/{id}/workout-sessions:
+    get:
+      tags:
+      - user-controller
+      operationId: listExercises_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WorkoutSessionDto"
+  /users/{id}/progress/overview:
+    get:
+      tags:
+      - user-controller
+      operationId: getUserProgressOverview
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProgressOverviewDto"
+  /users/{id}/progress/charts/total-effort:
+    get:
+      tags:
+      - user-controller
+      operationId: getUserTotalChartData
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: numberOfWeeks
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 12
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ChartDto"
+  /users/{id}/progress/charts/exercise-heaviest-weight:
+    get:
+      tags:
+      - user-controller
+      operationId: getUserExerciseChartData
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: numberOfWeeks
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 12
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ChartDto"
   /users/{id}/chats:
     get:
       tags:
@@ -934,7 +1026,7 @@ components:
           format: uuid
         date:
           type: string
-          format: date-time
+          format: date
         title:
           type: string
         description:
@@ -1099,7 +1191,7 @@ components:
           $ref: "#/components/schemas/Hall"
         date:
           type: string
-          format: date-time
+          format: date
         title:
           type: string
         description:
@@ -1124,6 +1216,9 @@ components:
         reps:
           type: integer
           format: int32
+        weight:
+          type: number
+          format: float
         exerciseOrder:
           type: integer
           format: int32
@@ -1136,6 +1231,9 @@ components:
         reps:
           type: integer
           format: int32
+        weight:
+          type: number
+          format: float
         exerciseOrder:
           type: integer
           format: int32
@@ -1143,6 +1241,7 @@ components:
       - exerciseOrder
       - exerciseUuid
       - reps
+      - weight
     WorkoutSessionAttendantRequest:
       type: object
       properties:
@@ -1457,6 +1556,50 @@ components:
           type: string
         imageUrl:
           type: string
+    ProgressOverviewDto:
+      type: object
+      properties:
+        weeklyTotalSets:
+          $ref: "#/components/schemas/ProgressOverviewStatisticDto"
+        weeklySessionVolume:
+          $ref: "#/components/schemas/ProgressOverviewStatisticDto"
+    ProgressOverviewStatisticDto:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int32
+        trend:
+          type: integer
+          format: int32
+    ChartDataDto:
+      type: object
+      properties:
+        title:
+          type: string
+        timeSeries:
+          $ref: "#/components/schemas/TimeSeriesDto"
+    ChartDto:
+      type: object
+      properties:
+        description:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChartDataDto"
+    TimeSeriesDto:
+      type: object
+      properties:
+        labels:
+          type: array
+          items:
+            type: string
+        values:
+          type: array
+          items:
+            type: number
+            format: float
     UserRoleDto:
       type: object
       properties:
