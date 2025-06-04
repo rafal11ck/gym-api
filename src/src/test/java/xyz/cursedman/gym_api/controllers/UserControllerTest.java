@@ -27,8 +27,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 @SpringBootTest
@@ -58,13 +58,29 @@ class UserControllerTest {
 		.membershipUuid(UUID.fromString(validMembershipUuid))
 		.build();
 
-	int correctThisWeekTotalSets = 3;
+	private final String expectedThisWeekLabel = "06.02";
 
-	int correctLastWeekTotalSets = 2;
+	private final String expectedLastWeekLabel = "05.26";
 
-	int correctThisWeekTotalVolume = 540;
+	private final int expectedThisWeekTotalSets = 3;
 
-	int correctLastWeekTotalVolume = 195;
+	private final int expectedLastWeekTotalSets = 2;
+
+	private final int expectedThisWeekTotalVolume = 540;
+
+	private final int expectedLastWeekTotalVolume = 195;
+
+	private final int expectedDefaultNumberOfWeeks = 12;
+
+	private final int requestedNumberOfWeeks = 6;
+
+	private final int defaultWeeksThisWeekDataIndex = expectedDefaultNumberOfWeeks - 1;
+
+	private final int defaultWeeksLastWeekDataIndex = expectedDefaultNumberOfWeeks - 2;
+
+	private final int requestedWeeksThisWeekDataIndex = requestedNumberOfWeeks - 1;
+
+	private final int requestedWeeksLastWeekDataIndex = requestedNumberOfWeeks - 2;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -110,65 +126,71 @@ class UserControllerTest {
 
 	@Test
 	void checkIfGetUserOverviewStatisticsReturnsHttp200AndCorrectStatistics() throws Exception {
-		float correctWeeklyTotalSetsTrend = (correctLastWeekTotalSets != 0) ?
-			((correctThisWeekTotalSets - correctLastWeekTotalSets) / (float) correctLastWeekTotalSets * 100) : 0f;
+		float expectedWeeklyTotalSetsTrend = (
+			(expectedThisWeekTotalSets - expectedLastWeekTotalSets) / (float) expectedLastWeekTotalSets * 100
+		);
 
-		float correctWeeklySessionVolumeTrend = (correctLastWeekTotalVolume != 0) ?
-			((correctThisWeekTotalVolume - correctLastWeekTotalVolume) / (float) correctLastWeekTotalVolume * 100) : 0f;
+		float expectedWeeklySessionVolumeTrend = (
+			(expectedThisWeekTotalVolume - expectedLastWeekTotalVolume) / (float) expectedLastWeekTotalVolume * 100
+		);
 
 		mockMvc.perform(MockMvcRequestBuilders.get(
 				endpointUri + "/" + validUserUuid + "/progress/overview"
 			)).andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(
 				MockMvcResultMatchers
-					.jsonPath("$.weeklyTotalSets.value")
-					.value(correctThisWeekTotalSets)
+					.jsonPath("$.weeklyTotalSets.value").value(expectedThisWeekTotalSets)
 			).andExpect(
 				MockMvcResultMatchers
-					.jsonPath("$.weeklyTotalSets.trend")
-					.value(Math.round(correctWeeklyTotalSetsTrend))
+					.jsonPath("$.weeklyTotalSets.trend").value(Math.round(expectedWeeklyTotalSetsTrend))
 			).andExpect(
 				MockMvcResultMatchers
-					.jsonPath("$.weeklySessionVolume.value")
-					.value(correctThisWeekTotalVolume)
+					.jsonPath("$.weeklySessionVolume.value").value(expectedThisWeekTotalVolume)
 			).andExpect(
 				MockMvcResultMatchers
-					.jsonPath("$.weeklySessionVolume.trend")
-					.value(Math.round(correctWeeklySessionVolumeTrend))
+					.jsonPath("$.weeklySessionVolume.trend").value(Math.round(expectedWeeklySessionVolumeTrend))
 			);
 	}
 
 	@Test
 	void checkIfGetUserTotalChartDataReturnsHttp200AndCorrectData() throws Exception {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM.dd");
-		LocalDate today = LocalDate.now(clock);
-		LocalDate startOfThisWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-		LocalDate startOfLastWeek = startOfThisWeek.minusWeeks(1);
-		String thisWeekLabel = startOfThisWeek.format(formatter);
-		String lastWeekLabel = startOfLastWeek.format(formatter);
-		int requestedNumberOfWeeks = 6;
-
 		// with default request param
 		mockMvc.perform(
 			MockMvcRequestBuilders.get(endpointUri + "/" + validUserUuid + "/progress/charts/total-effort")
 		).andExpect(
 			MockMvcResultMatchers.status().isOk()
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[0].timeSeries.labels[10]").value(lastWeekLabel)
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.labels[" + defaultWeeksLastWeekDataIndex + "]")
+				.value(expectedLastWeekLabel)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[0].timeSeries.labels[11]").value(thisWeekLabel)
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.labels[" + defaultWeeksThisWeekDataIndex + "]")
+				.value(expectedThisWeekLabel)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[0].timeSeries.values[10]").value(correctLastWeekTotalVolume)
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.values[" + defaultWeeksLastWeekDataIndex + "]")
+				.value(expectedLastWeekTotalVolume)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[0].timeSeries.values[11]").value(correctThisWeekTotalVolume)
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.values[" + defaultWeeksThisWeekDataIndex + "]")
+				.value(expectedThisWeekTotalVolume)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[1].timeSeries.labels[10]").value(lastWeekLabel)
+			MockMvcResultMatchers
+				.jsonPath("$.data[1].timeSeries.labels[" + defaultWeeksLastWeekDataIndex + "]")
+				.value(expectedLastWeekLabel)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[1].timeSeries.labels[11]").value(thisWeekLabel)
+			MockMvcResultMatchers
+				.jsonPath("$.data[1].timeSeries.labels[" + defaultWeeksThisWeekDataIndex + "]")
+				.value(expectedThisWeekLabel)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[1].timeSeries.values[10]").value(correctLastWeekTotalSets)
+			MockMvcResultMatchers
+				.jsonPath("$.data[1].timeSeries.values[" + defaultWeeksLastWeekDataIndex + "]")
+				.value(expectedLastWeekTotalSets)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[1].timeSeries.values[11]").value(correctThisWeekTotalSets)
+			MockMvcResultMatchers
+				.jsonPath("$.data[1].timeSeries.values[" + defaultWeeksThisWeekDataIndex + "]")
+				.value(expectedThisWeekTotalSets)
 		);
 
 		// with request param provided
@@ -183,27 +205,129 @@ class UserControllerTest {
 		).andExpect(
 			MockMvcResultMatchers.status().isOk()
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[0].timeSeries.labels.length()").value(requestedNumberOfWeeks)
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.labels.length()").value(requestedNumberOfWeeks)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[0].timeSeries.values.length()").value(requestedNumberOfWeeks)
+			MockMvcResultMatchers.
+				jsonPath("$.data[0].timeSeries.values.length()").value(requestedNumberOfWeeks)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[0].timeSeries.labels[5]").value(thisWeekLabel)
+			MockMvcResultMatchers.
+				jsonPath("$.data[0].timeSeries.labels[" + requestedWeeksLastWeekDataIndex + "]")
+				.value(expectedLastWeekLabel)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[0].timeSeries.values[4]").value(correctLastWeekTotalVolume)
+			MockMvcResultMatchers.
+				jsonPath("$.data[0].timeSeries.labels[" + requestedWeeksThisWeekDataIndex + "]")
+				.value(expectedThisWeekLabel)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[0].timeSeries.values[5]").value(correctThisWeekTotalVolume)
+			MockMvcResultMatchers.
+				jsonPath("$.data[0].timeSeries.values[" + requestedWeeksLastWeekDataIndex + "]")
+				.value(expectedLastWeekTotalVolume)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[1].timeSeries.labels.length()").value(requestedNumberOfWeeks)
+			MockMvcResultMatchers.
+				jsonPath("$.data[0].timeSeries.values[" + requestedWeeksThisWeekDataIndex + "]")
+				.value(expectedThisWeekTotalVolume)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[1].timeSeries.values.length()").value(requestedNumberOfWeeks)
+			MockMvcResultMatchers.
+				jsonPath("$.data[1].timeSeries.labels.length()")
+				.value(requestedNumberOfWeeks)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[1].timeSeries.labels[4]").value(lastWeekLabel)
+			MockMvcResultMatchers.
+				jsonPath("$.data[1].timeSeries.values.length()")
+				.value(requestedNumberOfWeeks)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[1].timeSeries.labels[5]").value(thisWeekLabel)
+			MockMvcResultMatchers.
+				jsonPath("$.data[1].timeSeries.labels[" + requestedWeeksLastWeekDataIndex + "]")
+				.value(expectedLastWeekLabel)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[1].timeSeries.values[4]").value(correctLastWeekTotalSets)
+			MockMvcResultMatchers.
+				jsonPath("$.data[1].timeSeries.labels[" + requestedWeeksThisWeekDataIndex + "]")
+				.value(expectedThisWeekLabel)
 		).andExpect(
-			MockMvcResultMatchers.jsonPath("$.data[1].timeSeries.values[5]").value(correctThisWeekTotalSets)
+			MockMvcResultMatchers.
+				jsonPath("$.data[1].timeSeries.values[" + requestedWeeksLastWeekDataIndex + "]")
+				.value(expectedLastWeekTotalSets)
+		).andExpect(
+			MockMvcResultMatchers.
+				jsonPath("$.data[1].timeSeries.values[" + requestedWeeksThisWeekDataIndex + "]")
+				.value(expectedThisWeekTotalSets)
+		);
+	}
+
+	@Test
+	void checkIfGetUserExerciseChartDataReturnsHttp200AndCorrectData() throws Exception {
+		int expectedNumberOfExercises = 3;
+		float expectedLastWeekWeight = 30;
+		float expectedThisWeekWeight = 50;
+
+		// with default request param
+		mockMvc.perform(
+			MockMvcRequestBuilders.get(
+				endpointUri
+					+ "/"
+					+ validUserUuid
+					+ "/progress/charts/exercise-heaviest-weight"
+			)
+		).andExpect(
+			MockMvcResultMatchers.status().isOk()
+		).andExpect(
+			MockMvcResultMatchers
+				.jsonPath("$.data.length()").value(expectedNumberOfExercises)
+		).andExpect(
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.labels[" + defaultWeeksLastWeekDataIndex + "]")
+				.value(expectedLastWeekLabel)
+		).andExpect(
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.labels[" + defaultWeeksThisWeekDataIndex + "]")
+				.value(expectedThisWeekLabel)
+		).andExpect(
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.values[" + defaultWeeksLastWeekDataIndex + "]")
+				.value(expectedLastWeekWeight)
+		).andExpect(
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.values[" + defaultWeeksThisWeekDataIndex + "]")
+				.value(expectedThisWeekWeight)
+		);
+
+		// with request param provided
+		mockMvc.perform(
+			MockMvcRequestBuilders.get(
+				endpointUri
+					+ "/"
+					+ validUserUuid
+					+ "/progress/charts/exercise-heaviest-weight?numberOfWeeks="
+					+ requestedNumberOfWeeks
+			)
+		).andExpect(
+			MockMvcResultMatchers.status().isOk()
+		).andExpect(
+			MockMvcResultMatchers
+				.jsonPath("$.data.length()").value(expectedNumberOfExercises)
+		).andExpect(
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.labels.length()")
+				.value(requestedNumberOfWeeks)
+		).andExpect(
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.values.length()")
+				.value(requestedNumberOfWeeks)
+		).andExpect(
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.labels[" + requestedWeeksLastWeekDataIndex + "]")
+				.value(expectedLastWeekLabel)
+		).andExpect(
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.labels[" + requestedWeeksThisWeekDataIndex + "]")
+				.value(expectedThisWeekLabel)
+		).andExpect(
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.values[" + requestedWeeksLastWeekDataIndex + "]")
+				.value(expectedLastWeekWeight)
+		).andExpect(
+			MockMvcResultMatchers
+				.jsonPath("$.data[0].timeSeries.values[" + requestedWeeksThisWeekDataIndex + "]")
+				.value(expectedThisWeekWeight)
 		);
 	}
 

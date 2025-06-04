@@ -15,26 +15,27 @@ import xyz.cursedman.gym_api.services.WorkoutSessionExerciseService;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class WorkoutSessionExerciseServiceImpl implements WorkoutSessionExerciseService {
 
-    private final WorkoutSessionExerciseRepository workoutSessionExerciseRepository;
+	private final WorkoutSessionExerciseRepository workoutSessionExerciseRepository;
 
-    private final ExerciseService exerciseService;
+	private final ExerciseService exerciseService;
 
-    private final WorkoutSessionExerciseMapper workoutSessionExerciseMapper;
+	private final WorkoutSessionExerciseMapper workoutSessionExerciseMapper;
 
-    @Override
-    public List<WorkoutSessionExerciseDto> listExercisesForWorkoutSession(UUID workoutSessionId) {
-        return workoutSessionExerciseRepository
-            .findByWorkoutSession_Uuid(workoutSessionId)
-            .stream()
-            .map(workoutSessionExerciseMapper::toDtoFromEntity)
-            .toList();
-    }
+	@Override
+	public List<WorkoutSessionExerciseDto> listExercisesForWorkoutSession(UUID workoutSessionId) {
+		return workoutSessionExerciseRepository
+			.findByWorkoutSession_Uuid(workoutSessionId)
+			.stream()
+			.map(workoutSessionExerciseMapper::toDtoFromEntity)
+			.toList();
+	}
 
 	@Override
 	public List<WorkoutSessionExercise> getExercisesFromSessionsInDateRange(
@@ -54,28 +55,45 @@ public class WorkoutSessionExerciseServiceImpl implements WorkoutSessionExercise
 	}
 
 	@Override
-    public WorkoutSessionExerciseDto createWorkoutSessionExercise(
-            WorkoutSessionExerciseRequest request,
-            WorkoutSession workoutSession
-    ) {
-        WorkoutSessionExercise exercise = WorkoutSessionExercise.builder()
-            .workoutSession(workoutSession)
-            .exercise(exerciseService.getExerciseByUuid(request.getExerciseUuid()))
-            .reps(request.getReps())
-            .exerciseOrder(request.getExerciseOrder())
-            .build();
+	public Float getExerciseMaxWeightFromSessionsInDateRange(
+		UUID exerciseId,
+		List<WorkoutSession> sessions,
+		LocalDate from,
+		LocalDate to
+	) {
+		List<WorkoutSessionExercise> exercises = getExercisesFromSessionsInDateRange(sessions, from, to);
+		return exercises.stream()
+			.filter(
+				e -> e.getExercise() != null && exerciseId.equals(e.getExercise().getUuid())
+			).map(WorkoutSessionExercise::getWeight)
+			.filter(Objects::nonNull)
+			.max(Float::compareTo)
+			.orElse(0f);
+	}
 
-        WorkoutSessionExercise savedExercise = workoutSessionExerciseRepository.save(exercise);
+	@Override
+	public WorkoutSessionExerciseDto createWorkoutSessionExercise(
+		WorkoutSessionExerciseRequest request,
+		WorkoutSession workoutSession
+	) {
+		WorkoutSessionExercise exercise = WorkoutSessionExercise.builder()
+			.workoutSession(workoutSession)
+			.exercise(exerciseService.getExerciseByUuid(request.getExerciseUuid()))
+			.reps(request.getReps())
+			.exerciseOrder(request.getExerciseOrder())
+			.build();
 
-        return workoutSessionExerciseMapper.toDtoFromEntity(savedExercise);
-    }
+		WorkoutSessionExercise savedExercise = workoutSessionExerciseRepository.save(exercise);
 
-    @Override
-    public void deleteWorkoutSessionExercise(UUID workoutSessionExerciseId) {
-        if (!workoutSessionExerciseRepository.existsById(workoutSessionExerciseId)) {
-            throw new NotFoundException();
-        }
+		return workoutSessionExerciseMapper.toDtoFromEntity(savedExercise);
+	}
 
-        workoutSessionExerciseRepository.deleteById(workoutSessionExerciseId);
-    }
+	@Override
+	public void deleteWorkoutSessionExercise(UUID workoutSessionExerciseId) {
+		if (!workoutSessionExerciseRepository.existsById(workoutSessionExerciseId)) {
+			throw new NotFoundException();
+		}
+
+		workoutSessionExerciseRepository.deleteById(workoutSessionExerciseId);
+	}
 }

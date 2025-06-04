@@ -115,7 +115,7 @@ INSERT INTO workout_session_attendants (attendants_uuid, workout_session_uuid)
 VALUES ('4a3e70f9-bd65-45c4-a47a-eaae0a0d3d56', '9a9c531a-e4a7-4c6b-b4f6-eea79009ddae');
 
 INSERT INTO exercise (uuid, name)
-VALUES ('ee371adf-3ac7-4a0a-a6c2-254990c1c80f', 'Bench Press');
+VALUES ('ee371adf-3ac7-4a0a-a6c2-254990c1c80f', 'Bench press');
 INSERT INTO exercise (uuid, name)
 VALUES ('c5c07bb9-424a-4b9c-866d-6240ae0732d5', 'Push up');
 INSERT INTO exercise (uuid, name)
@@ -146,7 +146,7 @@ VALUES ('0713a057-a183-4f13-be9d-9fe3985db31e', 'ee371adf-3ac7-4a0a-a6c2-254990c
         '8d64dca2-87dc-479f-bcb5-9f91b16d870c', 3, 30, 1);
 INSERT INTO workout_session_exercise (uuid, exercise_uuid, workout_session_uuid, reps, weight, exercise_order)
 VALUES ('70eb7aea-c056-42ab-bd08-f8e78caf4ea7', 'c5c07bb9-424a-4b9c-866d-6240ae0732d5',
-        '8d64dca2-87dc-479f-bcb5-9f91b16d870c', 3, 35, 2);
+        '8d64dca2-87dc-479f-bcb5-9f91b16d870c', 3, 37.5, 2);
 INSERT INTO workout_session_exercise (uuid, exercise_uuid, workout_session_uuid, reps, weight, exercise_order)
 VALUES ('4a287342-c608-446b-a8d3-575531edc12e', 'ee371adf-3ac7-4a0a-a6c2-254990c1c80f',
         '9a9c531a-e4a7-4c6b-b4f6-eea79009ddae', 3, 50, 1);

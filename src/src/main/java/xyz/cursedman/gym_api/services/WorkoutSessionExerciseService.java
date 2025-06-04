@@ -10,18 +10,25 @@ import java.util.List;
 import java.util.UUID;
 
 public interface WorkoutSessionExerciseService {
-    List<WorkoutSessionExerciseDto> listExercisesForWorkoutSession(UUID workoutSessionId);
+	List<WorkoutSessionExerciseDto> listExercisesForWorkoutSession(UUID workoutSessionId);
 
-		List<WorkoutSessionExercise> getExercisesFromSessionsInDateRange(
-			List<WorkoutSession> sessions,
-			LocalDate from,
-			LocalDate to
-		);
+	List<WorkoutSessionExercise> getExercisesFromSessionsInDateRange(
+		List<WorkoutSession> sessions,
+		LocalDate from,
+		LocalDate to
+	);
 
-    WorkoutSessionExerciseDto createWorkoutSessionExercise(
-        WorkoutSessionExerciseRequest request,
-        WorkoutSession workoutSession
-    );
+	Float getExerciseMaxWeightFromSessionsInDateRange(
+		UUID exerciseId,
+		List<WorkoutSession> sessions,
+		LocalDate from,
+		LocalDate to
+	);
 
-    void deleteWorkoutSessionExercise(UUID workoutSessionExerciseId);
+	WorkoutSessionExerciseDto createWorkoutSessionExercise(
+		WorkoutSessionExerciseRequest request,
+		WorkoutSession workoutSession
+	);
+
+	void deleteWorkoutSessionExercise(UUID workoutSessionExerciseId);
 }

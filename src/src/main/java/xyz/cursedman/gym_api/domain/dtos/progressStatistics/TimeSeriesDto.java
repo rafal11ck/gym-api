@@ -13,5 +13,5 @@ import java.util.List;
 @Builder
 public class TimeSeriesDto {
 	private List<String> labels;
-	private List<Integer> values;
+	private List<Float> values;
 }
