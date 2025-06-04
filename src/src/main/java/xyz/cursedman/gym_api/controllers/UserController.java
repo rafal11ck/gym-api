@@ -3,11 +3,9 @@ package xyz.cursedman.gym_api.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import xyz.cursedman.gym_api.domain.dtos.chat.ChatDto;
+import xyz.cursedman.gym_api.domain.dtos.progressStatistics.ChartDto;
 import xyz.cursedman.gym_api.domain.dtos.progressStatistics.ProgressOverviewDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionDto;
@@ -42,9 +40,26 @@ public class UserController {
 
 	// stats
 
-	@GetMapping("{id}/progress-statistics/overview")
-	public ResponseEntity<ProgressOverviewDto> getUserStatistics(@PathVariable UUID id) {
+	@GetMapping("{id}/progress/overview")
+	public ResponseEntity<ProgressOverviewDto> getUserProgressOverview(@Valid @PathVariable UUID id) {
 		return ResponseEntity.ok(progressStatisticsService.getUserProgressOverview(id));
+	}
+
+	@GetMapping("/{id}/progress/charts/total-effort")
+	public ResponseEntity<ChartDto> getUserTotalChartData(
+		@Valid @PathVariable UUID id,
+		@RequestParam(defaultValue = "12") Integer numberOfWeeks
+	) {
+		return ResponseEntity.ok(progressStatisticsService.getUserTotalChartData(id, numberOfWeeks));
+	}
+
+
+	@GetMapping("{id}/progress/charts/exercise-heaviest-weight")
+	public ResponseEntity<ChartDto> getUserExerciseChartData(
+		@Valid @PathVariable UUID id,
+		@RequestParam(defaultValue = "12") Integer numberOfWeeks
+	) {
+		return ResponseEntity.ok(progressStatisticsService.getUserExerciseChartData(id, numberOfWeeks));
 	}
 
 	// chats
