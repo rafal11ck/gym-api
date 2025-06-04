@@ -25,6 +25,6 @@ public final class Membership {
 	LocalDateTime validUntil;
 
 	@ManyToOne
+	@JoinColumn(nullable = false)
 	MembershipType membershipType;
-
 }

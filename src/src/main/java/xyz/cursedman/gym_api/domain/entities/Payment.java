@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.UUID;
 
+@Table
 @Entity
 @Data
 public class Payment {
@@ -20,6 +21,7 @@ public class Payment {
 	@NotNull
 	BigDecimal price;
 
+	@Enumerated(EnumType.STRING)
 	PaymentType paymentType;
 
 	@Enumerated(EnumType.STRING)

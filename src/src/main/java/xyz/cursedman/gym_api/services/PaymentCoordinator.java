@@ -1,5 +1,6 @@
 package xyz.cursedman.gym_api.services;
 
+import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.entities.Payment;
 import xyz.cursedman.gym_api.domain.entities.PaymentStatusEnum;
 import xyz.cursedman.gym_api.mappers.PaymentMapper;
@@ -14,16 +15,17 @@ import java.util.UUID;
  * @see PaymentService
  * @see PaymentProvider
  */
+@Service
 public class PaymentCoordinator {
 	PaymentProvider paymentProvider;
 	PaymentService paymentService;
 	PaymentMapper paymentMapper;
 
-	URI getPaymentUri(Payment payment) {
-		return paymentProvider.getPaymentUri(paymentMapper.toPaymentDto(payment));
+	public void notifyPaymentStatusChange(UUID paymentId, PaymentStatusEnum newStatus) {
+		paymentService.paymentStatusChange(paymentId, newStatus);
 	}
 
-	void notifyPaymentStatusChange(UUID paymentId, PaymentStatusEnum newStatus) {
-		paymentService.paymentStatusChange(paymentId, newStatus);
+	public URI getPaymentUri(Payment payment) {
+		return paymentProvider.getPaymentUri(paymentMapper.toPaymentDto(payment));
 	}
 }

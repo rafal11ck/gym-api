@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.entities.Payment;
 import xyz.cursedman.gym_api.domain.entities.PaymentStatusEnum;
 import xyz.cursedman.gym_api.exceptions.NotFoundException;
+import xyz.cursedman.gym_api.repositories.MembershipRepository;
 import xyz.cursedman.gym_api.repositories.PaymentRepository;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.UUID;
 public class PaymentService {
 
 	private final PaymentRepository paymentRepository;
+	private final MembershipRepository membershipRepository;
 	private final List<PaymentStatusHandler> handlers;
 
 	@Transactional
@@ -39,4 +41,6 @@ public class PaymentService {
 			}
 		}
 	}
+
+
 }
