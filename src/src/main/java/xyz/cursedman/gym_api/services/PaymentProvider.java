@@ -3,6 +3,7 @@ package xyz.cursedman.gym_api.services;
 import xyz.cursedman.gym_api.domain.dtos.payment.PaymentDto;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Interface used by payment implementation

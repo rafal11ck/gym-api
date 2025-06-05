@@ -28,5 +28,4 @@ public interface MembershipService {
 
 	Collection<PaymentDto> getMembershipPayments(UUID id);
 
-	URI getPaymentURIFor(@Valid UUID id);
 }

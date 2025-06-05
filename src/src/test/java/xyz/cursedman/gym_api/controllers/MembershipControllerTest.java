@@ -2,9 +2,11 @@ package xyz.cursedman.gym_api.controllers;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
@@ -13,9 +15,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import xyz.cursedman.gym_api.domain.dtos.membership.MembershipRequest;
 import xyz.cursedman.gym_api.helpers.TestJsonHelper;
+import xyz.cursedman.gym_api.services.PaymentProvider;
 
+import java.net.URI;
 import java.util.Date;
 import java.util.UUID;
+
+import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,6 +36,9 @@ class MembershipControllerTest {
 		.build();
 	@Autowired
 	private MockMvc mockMvc;
+
+	@MockBean
+	private PaymentProvider paymentProvider;
 
 	// GET
 
@@ -107,5 +116,19 @@ class MembershipControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(TestJsonHelper.stringify(validMembershipRequest))
 		).andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	@Test
+	void checkIfGettingPaymentWorks() throws Exception {
+		given(paymentProvider.getPaymentUri(Mockito.any()))
+			.willReturn(URI.create("https://mocked-payment.com"));
+
+		mockMvc.perform(
+			MockMvcRequestBuilders.post(endpointUri + "/" + validMembershipUuid + "/payments")
+				.contentType(MediaType.APPLICATION_JSON)
+
+		).andExpect(
+			MockMvcResultMatchers.status().isCreated()
+		);
 	}
 }

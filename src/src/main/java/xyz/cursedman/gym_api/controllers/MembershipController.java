@@ -9,6 +9,7 @@ import xyz.cursedman.gym_api.domain.dtos.membership.MembershipDto;
 import xyz.cursedman.gym_api.domain.dtos.membership.MembershipRequest;
 import xyz.cursedman.gym_api.domain.dtos.payment.PaymentDto;
 import xyz.cursedman.gym_api.services.MembershipService;
+import xyz.cursedman.gym_api.services.impl.MembershipPaymentFacade;
 
 import java.net.URI;
 import java.util.Collection;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class MembershipController {
 	private final MembershipService membershipService;
+	private final MembershipPaymentFacade membershipPaymentFacade;
 
 	@GetMapping
 	public ResponseEntity<List<MembershipDto>> listMemberships() {
@@ -39,7 +41,7 @@ public class MembershipController {
 
 	@PostMapping("/{id}/payments")
 	public ResponseEntity<URI> getPaymentURI(@Valid @PathVariable UUID id) {
-		return ResponseEntity.ok(membershipService.getPaymentURIFor(id));
+		return ResponseEntity.status(HttpStatus.CREATED).body(membershipPaymentFacade.getPaymentURIFor(id));
 	}
 
 	@PostMapping

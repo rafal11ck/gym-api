@@ -15,13 +15,6 @@ VALUES ('2025-04-18 13:45:04.293944', '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'b
 INSERT INTO membership (valid_until, membership_type_uuid, uuid)
 VALUES ('2025-04-18 13:45:04.393944', '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'ddd5f2a7-157e-4bf1-b11c-fa46e0d6bad1');
 
-INSERT INTO payment_status (uuid, status)
-VALUES ('dbc10aab-cce9-4813-b8b1-cb0ff763b0b1', 'Success');
-INSERT INTO payment_status (uuid, status)
-VALUES ('6cc7d83c-cfb3-46d5-a6cb-d16b5f1ef246', 'Pending');
-INSERT INTO payment_status (uuid, status)
-VALUES ('0ebfdd32-7faf-48f1-8921-d59155acb756', 'Error');
-
 INSERT INTO country (uuid, country_name)
 VALUES ('352ed7f1-8bb1-4baa-9ca7-88995ec58d8a', 'Poland');
 INSERT INTO country (uuid, country_name)

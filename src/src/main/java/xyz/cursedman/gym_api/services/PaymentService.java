@@ -23,7 +23,6 @@ import java.util.UUID;
 public class PaymentService {
 
 	private final PaymentRepository paymentRepository;
-	private final MembershipRepository membershipRepository;
 	private final List<PaymentStatusHandler> handlers;
 
 	@Transactional
