@@ -24,7 +24,7 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
 
 	@Override
 	public List<MembershipTypeDto> listMembershipTypes() {
-		return membershipTypeRepository.findAll().stream().map(membershipTypeMapper::toDtoFromEntity).toList();
+		return membershipTypeRepository.findAll().stream().map(membershipTypeMapper::toDto).toList();
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
 	public MembershipTypeDto getMembershipType(UUID id) {
 		return membershipTypeRepository
 			.findById(id)
-			.map(membershipTypeMapper::toDtoFromEntity)
+			.map(membershipTypeMapper::toDto)
 			.orElseThrow(() -> new NotFoundException("Membership type with id " + id + " not found"));
 	}
 
@@ -45,7 +45,7 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
 	public MembershipTypeDto createMembershipType(MembershipTypeRequest request) {
 		MembershipType membershipType = membershipTypeMapper.toEntityFromRequest(request);
 		MembershipType result = membershipTypeRepository.save(membershipType);
-		return membershipTypeMapper.toDtoFromEntity(result);
+		return membershipTypeMapper.toDto(result);
 	}
 
 	@Override
@@ -61,6 +61,6 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
 		membershipTypeMapper.updateFromRequest(request, membershipType);
 		MembershipType result = membershipTypeRepository.save(membershipType);
 
-		return membershipTypeMapper.toDtoFromEntity(result);
+		return membershipTypeMapper.toDto(result);
 	}
 }

@@ -15,11 +15,5 @@ import java.util.UUID;
 @Builder
 public class MembershipRequest {
 	@NotNull
-	private Date purchaseDate;
-
-	@NotNull
-	private Date validUntil;
-
-	@NotNull
 	private UUID membershipTypeUuid;
 }

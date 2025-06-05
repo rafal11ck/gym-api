@@ -6,6 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Currency;
+
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -15,5 +20,8 @@ public class MembershipTypeRequest {
 	private String type;
 
 	@NotNull
-	private Float price;
+	private BigDecimal price;
+
+	@NotNull
+	private String currencyCode;
 }

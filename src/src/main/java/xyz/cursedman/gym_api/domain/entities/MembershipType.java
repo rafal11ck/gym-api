@@ -19,8 +19,11 @@ public final class MembershipType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;
+
+	@Column(nullable = false)
 	String type;
 
+	@Column(nullable = false)
 	Currency currency;
 
 	@Column(nullable = false)

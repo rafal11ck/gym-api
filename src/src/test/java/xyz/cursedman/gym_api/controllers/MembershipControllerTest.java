@@ -27,8 +27,6 @@ class MembershipControllerTest {
 	private final String validMembershipTypeUuid = "9d4e894f-30e4-488e-9689-ad0fa32a69d1";
 	private final MembershipRequest validMembershipRequest = MembershipRequest.builder()
 		.membershipTypeUuid(UUID.fromString(validMembershipTypeUuid))
-		.purchaseDate(new Date())
-		.validUntil(new Date())
 		.build();
 	@Autowired
 	private MockMvc mockMvc;
@@ -63,8 +61,20 @@ class MembershipControllerTest {
 			MockMvcRequestBuilders.post(endpointUri)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(TestJsonHelper.stringify(validMembershipRequest))
+		).andExpect(MockMvcResultMatchers.status().isCreated());
+	}
+
+
+	@Test
+	void checkIfGetPaymentReturnsURI() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.post(endpointUri)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(TestJsonHelper.stringify(validMembershipRequest))
 		).andReturn();
 	}
+
+
 
 	@Test
 	void checkIfInvalidCreateBodyReturnsHttp400() throws Exception {

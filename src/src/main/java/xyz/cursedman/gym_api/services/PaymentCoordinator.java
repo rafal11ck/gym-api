@@ -1,5 +1,6 @@
 package xyz.cursedman.gym_api.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.entities.Payment;
 import xyz.cursedman.gym_api.domain.entities.PaymentStatusEnum;
@@ -16,6 +17,7 @@ import java.util.UUID;
  * @see PaymentProvider
  */
 @Service
+@RequiredArgsConstructor
 public class PaymentCoordinator {
 	PaymentProvider paymentProvider;
 	PaymentService paymentService;

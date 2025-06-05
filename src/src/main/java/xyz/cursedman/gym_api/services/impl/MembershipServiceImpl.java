@@ -88,7 +88,7 @@ public class MembershipServiceImpl implements MembershipService {
 
 	@Override
 	public URI getPaymentURIFor(UUID id) {
-		Membership membership = membershipRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+		Membership membership = membershipRepository.findById(id).orElseThrow(NotFoundException::new);
 
 		Payment payment = new Payment();
 		payment.setExternalRefId(id);

@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeRequest;
 import xyz.cursedman.gym_api.helpers.TestJsonHelper;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @SpringBootTest
@@ -26,7 +27,7 @@ class MembershipTypeControllerTest {
 	private final String validMembershipTypeUuid = "9d4e894f-30e4-488e-9689-ad0fa32a69d1";
 	private final MembershipTypeRequest validMembershipTypeRequest = MembershipTypeRequest.builder()
 		.type("Example type")
-		.price(12.34f)
+		.price(BigDecimal.valueOf(12.34))
 		.build();
 	@Autowired
 	private MockMvc mockMvc;
