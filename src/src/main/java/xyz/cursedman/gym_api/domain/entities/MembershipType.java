@@ -1,14 +1,13 @@
 package xyz.cursedman.gym_api.domain.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.UUID;
 
 @Entity
@@ -20,6 +19,13 @@ public final class MembershipType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;
+
+	@Column(nullable = false)
 	String type;
-	Float price;
+
+	@Column(nullable = false)
+	Currency currency;
+
+	@Column(nullable = false)
+	BigDecimal price;
 }

@@ -1,25 +1,20 @@
 package xyz.cursedman.gym_api.domain.dtos.payment;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import xyz.cursedman.gym_api.domain.entities.Card;
-import xyz.cursedman.gym_api.domain.entities.Membership;
-import xyz.cursedman.gym_api.domain.entities.PaymentStatus;
+import xyz.cursedman.gym_api.domain.entities.PaymentStatusEnum;
+import xyz.cursedman.gym_api.domain.entities.PaymentType;
 
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.UUID;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class PaymentDto {
-	private UUID uuid;
+	UUID paymentId;
 
-	private Card card;
+	Currency currency;
 
-	private PaymentStatus status;
+	BigDecimal amount;
 
-	private Membership membership;
+	PaymentType paymentType;
+
+	PaymentStatusEnum status;
 }

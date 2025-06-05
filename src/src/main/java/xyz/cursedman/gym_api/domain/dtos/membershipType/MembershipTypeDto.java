@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -14,5 +15,6 @@ import java.util.UUID;
 public class MembershipTypeDto {
 	private UUID uuid;
 	private String type;
-	private Float price;
+	private BigDecimal price;
+	private String currency;
 }

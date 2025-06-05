@@ -1,6 +1,5 @@
 package xyz.cursedman.gym_api.controllers;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,8 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.cursedman.gym_api.domain.dtos.membership.MembershipDto;
 import xyz.cursedman.gym_api.domain.dtos.membership.MembershipRequest;
+import xyz.cursedman.gym_api.domain.dtos.payment.PaymentDto;
 import xyz.cursedman.gym_api.services.MembershipService;
+import xyz.cursedman.gym_api.services.impl.MembershipPaymentFacade;
 
+import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,6 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class MembershipController {
 	private final MembershipService membershipService;
+	private final MembershipPaymentFacade membershipPaymentFacade;
 
 	@GetMapping
 	public ResponseEntity<List<MembershipDto>> listMemberships() {
@@ -27,6 +31,17 @@ public class MembershipController {
 	@GetMapping("/{id}")
 	public ResponseEntity<MembershipDto> getMembership(@Valid @PathVariable UUID id) {
 		return ResponseEntity.ok(membershipService.getMembership(id));
+	}
+
+
+	@GetMapping("/{id}/payments")
+	public ResponseEntity<Collection<PaymentDto>> getMembershipPayments(@Valid @PathVariable UUID id) {
+		return ResponseEntity.ok(membershipService.getMembershipPayments(id));
+	}
+
+	@PostMapping("/{id}/payments")
+	public ResponseEntity<URI> getPaymentURI(@Valid @PathVariable UUID id) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(membershipPaymentFacade.getPaymentURIFor(id));
 	}
 
 	@PostMapping

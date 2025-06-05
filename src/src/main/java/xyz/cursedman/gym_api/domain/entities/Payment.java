@@ -1,26 +1,34 @@
 package xyz.cursedman.gym_api.domain.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.UUID;
 
+@Table
 @Entity
-@Table(name = "payment")
 @Data
-public final class Payment {
+public class Payment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	UUID uuid;
+	UUID paymentId;
 
-	@ManyToOne
-	Card card;
+	@NotNull
+	Currency currency;
+	@NotNull
+	BigDecimal price;
 
-	@ManyToOne
-	PaymentStatus status;
+	@Enumerated(EnumType.STRING)
+	PaymentType paymentType;
 
-	@ManyToOne
-	Membership membership;
+	@Enumerated(EnumType.STRING)
+	PaymentStatusEnum status;
 
-//     TODO payment things
+	UUID externalRefId;
+
+	@Enumerated(EnumType.STRING)
+	PaymentExternalRefType externalRefType;
 }
