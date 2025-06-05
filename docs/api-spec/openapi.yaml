@@ -723,7 +723,7 @@ paths:
     get:
       tags:
       - user-controller
-      operationId: listExercises_1
+      operationId: listUserWorkoutSessions
       parameters:
       - name: id
         in: path
@@ -811,6 +811,25 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/ChartDto"
+  /users/{id}/last-workout-session:
+    get:
+      tags:
+      - user-controller
+      operationId: getUserLastWorkoutSession
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/WorkoutSessionDto"
   /users/{id}/chats:
     get:
       tags:
