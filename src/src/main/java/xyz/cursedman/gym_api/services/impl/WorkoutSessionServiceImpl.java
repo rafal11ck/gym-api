@@ -61,6 +61,17 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 	}
 
 	@Override
+	public WorkoutSessionDto getUserLastWorkoutSession(UUID userId) {
+		User user = userService.getUserByUuid(userId);
+		return workoutSessionRepository
+			.findWorkoutSessionsByAttendantsContainsOrderByDateDesc(user)
+			.stream()
+			.findFirst()
+			.map(workoutSessionMapper::toDtoFromEntity)
+			.orElseThrow(() -> new NotFoundException("No workout sessions found for user " + userId));
+	}
+
+	@Override
 	public WorkoutSessionDto createWorkoutSession(WorkoutSessionRequest request) {
 		WorkoutSession workoutSession = workoutSessionMapper.toEntityFromRequest(request);
 		WorkoutSession result = workoutSessionRepository.save(workoutSession);
@@ -68,8 +79,7 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 	}
 
 	@Override
-	public WorkoutSessionDto patchWorkoutSession(UUID id, WorkoutSessionRequest request)
-		 {
+	public WorkoutSessionDto patchWorkoutSession(UUID id, WorkoutSessionRequest request) {
 		WorkoutSession workoutSession = workoutSessionRepository
 			.findById(id)
 			.orElseThrow(() -> new NotFoundException("Workout session with id " + id + " not found"));
@@ -111,7 +121,7 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 
 	@Override
 	public WorkoutSessionDto addExerciseToWorkoutSession(UUID workoutSessionId, WorkoutSessionExerciseRequest request) {
-		if(!workoutSessionRepository.existsById(workoutSessionId)) {
+		if (!workoutSessionRepository.existsById(workoutSessionId)) {
 			throw new NotFoundException("Workout session with id " + workoutSessionId + " not found");
 		}
 		workoutSessionExerciseService.createWorkoutSessionExercise(request, getWorkoutSessionEntity(workoutSessionId));

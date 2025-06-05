@@ -16,6 +16,8 @@ public interface WorkoutSessionService {
 
 	WorkoutSessionDto getWorkoutSession(UUID id);
 
+	WorkoutSessionDto getUserLastWorkoutSession(UUID userId);
+
 	WorkoutSessionDto createWorkoutSession(WorkoutSessionRequest request);
 
 	WorkoutSessionDto patchWorkoutSession(UUID id, WorkoutSessionRequest request);

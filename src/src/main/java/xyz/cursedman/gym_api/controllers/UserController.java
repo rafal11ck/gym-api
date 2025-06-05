@@ -70,7 +70,12 @@ public class UserController {
 	}
 
 	@GetMapping("{id}/workout-sessions")
-	public ResponseEntity<List<WorkoutSessionDto>> listExercises(@Valid @PathVariable UUID id) {
+	public ResponseEntity<List<WorkoutSessionDto>> listUserWorkoutSessions(@Valid @PathVariable UUID id) {
 		return ResponseEntity.ok(workoutSessionService.listUserWorkoutSessions(id));
+	}
+
+	@GetMapping("{id}/last-workout-session")
+	public ResponseEntity<WorkoutSessionDto> getUserLastWorkoutSession(@Valid @PathVariable UUID id) {
+		return ResponseEntity.ok(workoutSessionService.getUserLastWorkoutSession(id));
 	}
 }

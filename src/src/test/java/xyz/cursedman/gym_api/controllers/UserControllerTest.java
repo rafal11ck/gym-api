@@ -84,6 +84,7 @@ class UserControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
 	@Qualifier("testClock")
 	@Autowired
 	private Clock clock;
@@ -331,6 +332,16 @@ class UserControllerTest {
 		);
 	}
 
+	@Test
+	void checkIfGetUserLastWorkoutSessionReturnsHttp200AndCorrectData() throws Exception {
+		String expectedLastSessionDate = LocalDate
+			.of(2025, 6, 3)
+			.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri + "/" + validUserUuid + "/last-workout-session"))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.date").value(expectedLastSessionDate));
+	}
 	// chat
 
 	// GET

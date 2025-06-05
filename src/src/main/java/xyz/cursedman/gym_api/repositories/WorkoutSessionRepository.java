@@ -10,4 +10,6 @@ import java.util.UUID;
 
 public interface WorkoutSessionRepository extends JpaRepository<WorkoutSession, UUID> {
 	List<WorkoutSession> findWorkoutSessionsByAttendantsContains(User user);
+
+	List<WorkoutSession> findWorkoutSessionsByAttendantsContainsOrderByDateDesc(User user);
 }
