@@ -10,6 +10,5 @@ import xyz.cursedman.gym_api.domain.entities.Payment;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public interface PaymentMapper {
-	@Mapping(target = "externalRefType", source = "externalRefType")
 	PaymentDto toPaymentDto(Payment payment);
 }

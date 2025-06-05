@@ -15,8 +15,6 @@ public class StripeConfig {
 
 	private String webhookSecret;
 
-	private String metadataKey = "refId";
-
 	private String paymentTitle = "Membership";
 
 	private String successRedirectUrl = "http://localhost:8080/success";

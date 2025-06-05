@@ -32,8 +32,7 @@ public class MembershipController {
 	public ResponseEntity<MembershipDto> getMembership(@Valid @PathVariable UUID id) {
 		return ResponseEntity.ok(membershipService.getMembership(id));
 	}
-
-
+	
 	@GetMapping("/{id}/payments")
 	public ResponseEntity<Collection<PaymentDto>> getMembershipPayments(@Valid @PathVariable UUID id) {
 		return ResponseEntity.ok(membershipService.getMembershipPayments(id));

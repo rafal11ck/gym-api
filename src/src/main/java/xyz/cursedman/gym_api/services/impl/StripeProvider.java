@@ -2,12 +2,15 @@ package xyz.cursedman.gym_api.services.impl;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
+import com.stripe.model.Event;
 import com.stripe.model.MetadataStore;
 import com.stripe.model.Price;
 import com.stripe.model.Product;
 import com.stripe.model.checkout.Session;
+import com.stripe.net.Webhook;
 import com.stripe.param.*;
 import com.stripe.param.checkout.SessionCreateParams;
+import com.stripe.param.checkout.SessionRetrieveParams;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,8 +22,6 @@ import xyz.cursedman.gym_api.services.PaymentProvider;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,60 +34,7 @@ public class StripeProvider implements PaymentProvider {
 		Stripe.apiKey = stripeConfig.getApiKey();
 	}
 
-	public record StripeMetadata(String key, String value) {
-		public <T extends MetadataStore<T>> boolean matches(MetadataStore<T> store) {
-			return value.equals(store.getMetadata().get(key));
-		}
-	}
-
-	private boolean retrieveProductAndCheckActive(String productId) {
-		try {
-			return Product.retrieve(productId).getActive().equals(true);
-		} catch (StripeException e) {
-			throw new ExternalProviderException("Error while trying to retrieve Stripe product.", e);
-		}
-	}
-
-	private Optional<Price> findPriceByMetadata(StripeMetadata metadata) {
-		try {
-			List<Price> prices = Price.list(PriceListParams.builder().build()).getData();
-			return prices.stream()
-				.filter(price -> price.getActive().equals(true))
-				.filter(price -> retrieveProductAndCheckActive(price.getProduct()))
-				.filter(metadata::matches)
-				.findFirst();
-		} catch (StripeException e) {
-			throw new ExternalProviderException("Error while trying to get Stripe prices.", e);
-		}
-	}
-
-	private Optional<Product> findProductByMetadata(StripeMetadata metadata) {
-		try {
-			List<Product> products = Product.list(ProductListParams.builder().build()).getData();
-			return products.stream()
-				.filter(product -> product.getActive().equals(true))
-				.filter(metadata::matches)
-				.findFirst();
-		} catch (StripeException e) {
-			throw new ExternalProviderException("Error while trying to get Stripe products.", e);
-		}
-	}
-
-	private Product createProductWithMetadata(String name, StripeMetadata metadata) {
-		try {
-			ProductCreateParams createParams = ProductCreateParams.builder()
-				.setName(name)
-				.putMetadata(metadata.key(), metadata.value())
-				.build();
-
-			return Product.create(createParams);
-		} catch (StripeException e) {
-			throw new ExternalProviderException(
-				"Error while trying to create Stripe product \"" + metadata.value() + "\"", e);
-		}
-	}
-
-	private Price createProductPriceForPayment(Product product, PaymentDto payment, StripeMetadata metadata) {
+	private String getPaymentPriceId(PaymentDto payment) {
 		try {
 			long amountInMinorUnits = payment.getPrice()
 				.multiply(BigDecimal.valueOf(100))
@@ -95,35 +43,36 @@ public class StripeProvider implements PaymentProvider {
 
 			PriceCreateParams createParams = PriceCreateParams.builder()
 				.setCurrency(payment.getCurrency().toString().toLowerCase())
-				.setProduct(product.getId())
+				.setProductData(PriceCreateParams.ProductData.builder().setName(stripeConfig.getPaymentTitle()).build())
 				.setUnitAmount(amountInMinorUnits)
-				.putMetadata(metadata.key(), metadata.value())
 				.build();
 
-			return Price.create(createParams);
+			return Price.create(createParams).getId();
 		} catch (StripeException e) {
 			throw new ExternalProviderException("Error while trying to create Stripe price.", e);
 		}
 	}
 
-	private Price createPriceForPaymentWithExistingOrNewProduct(PaymentDto payment, StripeMetadata metadata) {
-		return findProductByMetadata(metadata)
-			.map(product -> createProductPriceForPayment(product, payment, metadata))
-			.orElseGet(() -> {
-				Product createdProduct = createProductWithMetadata(payment.getExternalRefType().toString(), metadata);
-				return createProductPriceForPayment(createdProduct, payment, metadata);
-			});
+	private void fulfillCheckout(String sessionId) throws StripeException {
+		SessionRetrieveParams params = SessionRetrieveParams.builder().addExpand("line_items").build();
+		Session checkoutSession = Session.retrieve(sessionId, params, null);
 	}
 
-	private String getPaymentPriceId(PaymentDto payment) {
-		StripeMetadata metadata = new StripeMetadata(
-			stripeConfig.getMetadataKey(),
-			payment.getExternalRefId().toString()
-		);
+	public void handleWebhook(String payload, String sigHeader) {
+		try {
+			Event event = Webhook.constructEvent(payload, sigHeader, stripeConfig.getWebhookSecret());
 
-		return findPriceByMetadata(metadata)
-			.map(Price::getId)
-			.orElseGet(() -> createPriceForPaymentWithExistingOrNewProduct(payment, metadata).getId());
+			if ("checkout.session.completed".equals(event.getType())
+				|| "checkout.session.async_payment_succeeded".equals(event.getType())
+			) {
+				Session sessionEvent = (Session) event.getDataObjectDeserializer().getObject().orElse(null);
+				if (sessionEvent != null) {
+					fulfillCheckout(sessionEvent.getId());
+				}
+			}
+		} catch (StripeException e) {
+			throw new ExternalProviderException("Error while trying to handle Stripe webhook.", e);
+		}
 	}
 
 	@Override
