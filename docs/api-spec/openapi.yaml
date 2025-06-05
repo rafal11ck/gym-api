@@ -120,37 +120,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/TargetMuscleDto"
-  /payments:
-    get:
-      tags:
-      - payment-controller
-      operationId: listPayments
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/PaymentDto"
-    post:
-      tags:
-      - payment-controller
-      operationId: createPayment
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PaymentRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/PaymentDto"
   /memberships:
     get:
       tags:
@@ -182,6 +151,46 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/MembershipDto"
+  /memberships/{id}/payments:
+    get:
+      tags:
+      - membership-controller
+      operationId: getMembershipPayments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PaymentDto"
+    post:
+      tags:
+      - membership-controller
+      operationId: getPaymentURI
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: uri
   /membership-types:
     get:
       tags:
@@ -417,49 +426,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/WorkoutSessionDto"
-  /payments/{id}:
-    get:
-      tags:
-      - payment-controller
-      operationId: getPayment
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/PaymentDto"
-    patch:
-      tags:
-      - payment-controller
-      operationId: updatePayment
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PaymentRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/PaymentDto"
   /memberships/{id}:
     get:
       tags:
@@ -880,20 +846,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/UserRoleDto"
-  /payment-statuses:
-    get:
-      tags:
-      - payment-status-controller
-      operationId: listPaymentStatuses
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/PaymentStatusDto"
   /hall-types:
     get:
       tags:
@@ -1111,7 +1063,7 @@ components:
         uuid:
           type: string
           format: uuid
-        purchaseDate:
+        validFrom:
           type: string
           format: date-time
         validUntil:
@@ -1127,9 +1079,25 @@ components:
           format: uuid
         type:
           type: string
+        currency:
+          type: object
+          properties:
+            currencyCode:
+              type: string
+            numericCode:
+              type: integer
+              format: int32
+            numericCodeAsString:
+              type: string
+            displayName:
+              type: string
+            symbol:
+              type: string
+            defaultFractionDigits:
+              type: integer
+              format: int32
         price:
           type: number
-          format: float
     TargetMuscle:
       type: object
       properties:
@@ -1264,58 +1232,14 @@ components:
           format: uuid
         name:
           type: string
-    PaymentRequest:
-      type: object
-      properties:
-        cardUuid:
-          type: string
-          format: uuid
-        statusUuid:
-          type: string
-          format: uuid
-        membershipUuid:
-          type: string
-          format: uuid
-      required:
-      - cardUuid
-      - membershipUuid
-      - statusUuid
-    PaymentDto:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        card:
-          $ref: "#/components/schemas/Card"
-        status:
-          $ref: "#/components/schemas/PaymentStatus"
-        membership:
-          $ref: "#/components/schemas/Membership"
-    PaymentStatus:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        status:
-          type: string
     MembershipRequest:
       type: object
       properties:
-        purchaseDate:
-          type: string
-          format: date-time
-        validUntil:
-          type: string
-          format: date-time
         membershipTypeUuid:
           type: string
           format: uuid
       required:
       - membershipTypeUuid
-      - purchaseDate
-      - validUntil
     MembershipDto:
       type: object
       properties:
@@ -1337,8 +1261,10 @@ components:
           type: string
         price:
           type: number
-          format: float
+        currencyCode:
+          type: string
       required:
+      - currencyCode
       - price
       - type
     MembershipTypeDto:
@@ -1351,7 +1277,8 @@ components:
           type: string
         price:
           type: number
-          format: float
+        currency:
+          type: string
     MaintenanceTaskRequest:
       type: object
       properties:
@@ -1608,14 +1535,8 @@ components:
           format: uuid
         role:
           type: string
-    PaymentStatusDto:
+    PaymentDto:
       type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        status:
-          type: string
     HallTypeDto:
       type: object
       properties:
