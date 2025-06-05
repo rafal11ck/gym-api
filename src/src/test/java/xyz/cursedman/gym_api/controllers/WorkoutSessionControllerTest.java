@@ -28,7 +28,7 @@ import java.util.UUID;
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@WithMockUser(roles = {"CLIENT"})
+@WithMockUser(roles = {"CLIENT", "COACH"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class WorkoutSessionControllerTest {
 	private final String endpointUri = "/workout-sessions";
