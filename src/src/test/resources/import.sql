@@ -2,11 +2,10 @@
 -- insert line break inside sql to greet one kilometer long stack trace!
 -- (learned about it the hard way)
 
-INSERT INTO "membership_type" ("currency", "price", "uuid", "type")
-VALUES ('PLN', '40.0', '9d4e894f-30e4-488e-9689-ad0fa32a69d1', 'standard');
-
-INSERT INTO "membership_type" ("currency", "price", "uuid", "type")
-VALUES ('PLN', '69.69', '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'Premium');
+INSERT INTO membership_type (price, uuid, type, currency)
+VALUES (21.37, '9d4e894f-30e4-488e-9689-ad0fa32a69d1', 'Standard', 'PLN');
+INSERT INTO membership_type (price, uuid, type, currency)
+VALUES (69.69, '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'Premium', 'PLN');
 
 INSERT INTO membership (valid_until, membership_type_uuid, uuid)
 VALUES ('2025-04-18 13:44:45.621014', '9d4e894f-30e4-488e-9689-ad0fa32a69d1', '06d25bae-8d09-4170-b566-fd17f2ee6a23');
@@ -14,6 +13,13 @@ INSERT INTO membership (valid_until, membership_type_uuid, uuid)
 VALUES ('2025-04-18 13:45:04.293944', '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'bbac838e-4a2f-4ef8-b562-075d64d8493a');
 INSERT INTO membership (valid_until, membership_type_uuid, uuid)
 VALUES ('2025-04-18 13:45:04.393944', '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'ddd5f2a7-157e-4bf1-b11c-fa46e0d6bad1');
+
+INSERT INTO payment_status (uuid, status)
+VALUES ('dbc10aab-cce9-4813-b8b1-cb0ff763b0b1', 'Success');
+INSERT INTO payment_status (uuid, status)
+VALUES ('6cc7d83c-cfb3-46d5-a6cb-d16b5f1ef246', 'Pending');
+INSERT INTO payment_status (uuid, status)
+VALUES ('0ebfdd32-7faf-48f1-8921-d59155acb756', 'Error');
 
 INSERT INTO country (uuid, country_name)
 VALUES ('352ed7f1-8bb1-4baa-9ca7-88995ec58d8a', 'Poland');
@@ -109,7 +115,7 @@ INSERT INTO workout_session_attendants (attendants_uuid, workout_session_uuid)
 VALUES ('4a3e70f9-bd65-45c4-a47a-eaae0a0d3d56', '9a9c531a-e4a7-4c6b-b4f6-eea79009ddae');
 
 INSERT INTO exercise (uuid, name)
-VALUES ('ee371adf-3ac7-4a0a-a6c2-254990c1c80f', 'Bench Press');
+VALUES ('ee371adf-3ac7-4a0a-a6c2-254990c1c80f', 'Bench press');
 INSERT INTO exercise (uuid, name)
 VALUES ('c5c07bb9-424a-4b9c-866d-6240ae0732d5', 'Push up');
 INSERT INTO exercise (uuid, name)
@@ -140,7 +146,7 @@ VALUES ('0713a057-a183-4f13-be9d-9fe3985db31e', 'ee371adf-3ac7-4a0a-a6c2-254990c
         '8d64dca2-87dc-479f-bcb5-9f91b16d870c', 3, 30, 1);
 INSERT INTO workout_session_exercise (uuid, exercise_uuid, workout_session_uuid, reps, weight, exercise_order)
 VALUES ('70eb7aea-c056-42ab-bd08-f8e78caf4ea7', 'c5c07bb9-424a-4b9c-866d-6240ae0732d5',
-        '8d64dca2-87dc-479f-bcb5-9f91b16d870c', 3, 35, 2);
+        '8d64dca2-87dc-479f-bcb5-9f91b16d870c', 3, 37.5, 2);
 INSERT INTO workout_session_exercise (uuid, exercise_uuid, workout_session_uuid, reps, weight, exercise_order)
 VALUES ('4a287342-c608-446b-a8d3-575531edc12e', 'ee371adf-3ac7-4a0a-a6c2-254990c1c80f',
         '9a9c531a-e4a7-4c6b-b4f6-eea79009ddae', 3, 50, 1);

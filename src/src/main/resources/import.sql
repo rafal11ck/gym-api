@@ -2,10 +2,10 @@
 -- insert line break inside sql to greet one kilometer long stack trace!
 -- (learned about it the hard way)
 
-INSERT INTO membership_type (price, uuid, type)
-VALUES (21.37, '9d4e894f-30e4-488e-9689-ad0fa32a69d1', 'Standard');
-INSERT INTO membership_type (price, uuid, type)
-VALUES (69.69, '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'Premium');
+INSERT INTO membership_type (price, uuid, type, currency)
+VALUES (21.37, '9d4e894f-30e4-488e-9689-ad0fa32a69d1', 'Standard', 'PLN');
+INSERT INTO membership_type (price, uuid, type, currency)
+VALUES (69.69, '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'Premium', 'PLN');
 
 INSERT INTO membership (valid_until, membership_type_uuid, uuid)
 VALUES ('2025-04-18 13:44:45.621014', '9d4e894f-30e4-488e-9689-ad0fa32a69d1', '06d25bae-8d09-4170-b566-fd17f2ee6a23');
@@ -13,13 +13,6 @@ INSERT INTO membership (valid_until, membership_type_uuid, uuid)
 VALUES ('2025-04-18 13:45:04.293944', '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'bbac838e-4a2f-4ef8-b562-075d64d8493a');
 INSERT INTO membership (valid_until, membership_type_uuid, uuid)
 VALUES ('2025-04-18 13:45:04.393944', '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'ddd5f2a7-157e-4bf1-b11c-fa46e0d6bad1');
-
-INSERT INTO payment_status (uuid, status)
-VALUES ('dbc10aab-cce9-4813-b8b1-cb0ff763b0b1', 'Success');
-INSERT INTO payment_status (uuid, status)
-VALUES ('6cc7d83c-cfb3-46d5-a6cb-d16b5f1ef246', 'Pending');
-INSERT INTO payment_status (uuid, status)
-VALUES ('0ebfdd32-7faf-48f1-8921-d59155acb756', 'Error');
 
 INSERT INTO country (uuid, country_name)
 VALUES ('352ed7f1-8bb1-4baa-9ca7-88995ec58d8a', 'Poland');
@@ -34,13 +27,6 @@ VALUES ('2025-04-23 19:34:43.34018', '352ed7f1-8bb1-4baa-9ca7-88995ec58d8a', '5b
 INSERT INTO card (date_of_birth, country_uuid, uuid, card_number, cvv, name_on_card, postal_code)
 VALUES ('2025-04-23 19:35:20.328561', '15529918-2212-4451-ae0d-b9e0f2301bbd', 'ed36b15c-89d7-43cd-aa1b-354b2ec9067d',
         '2137213721372137', '213', 'Bob Beef', '21-370');
-
-INSERT INTO payment (card_uuid, membership_uuid, status_uuid, uuid)
-VALUES ('5bd05494-155e-4bd1-b14c-61421d0caaae', '06d25bae-8d09-4170-b566-fd17f2ee6a23',
-        'dbc10aab-cce9-4813-b8b1-cb0ff763b0b1', 'a9e17e91-8792-42dd-badd-f2639e09ebc2');
-INSERT INTO payment (card_uuid, membership_uuid, status_uuid, uuid)
-VALUES ('ed36b15c-89d7-43cd-aa1b-354b2ec9067d', 'bbac838e-4a2f-4ef8-b562-075d64d8493a',
-        '0ebfdd32-7faf-48f1-8921-d59155acb756', 'f36c3d20-00c6-4227-af89-ea8c04442ea5');
 
 INSERT INTO user_role (uuid, role_name)
 VALUES ('0608911b-f8fa-4a83-8f63-f314030a36ed', 'Client');

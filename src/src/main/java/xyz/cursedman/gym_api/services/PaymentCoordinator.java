@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import xyz.cursedman.gym_api.domain.dtos.payment.PaymentDto;
 import xyz.cursedman.gym_api.domain.entities.Payment;
 import xyz.cursedman.gym_api.domain.entities.PaymentStatusEnum;
 import xyz.cursedman.gym_api.mappers.PaymentMapper;
@@ -30,6 +31,7 @@ public class PaymentCoordinator {
 	}
 
 	public URI getPaymentUri(Payment payment) {
+		PaymentDto dto = paymentMapper.toPaymentDto(payment);
 		return paymentProvider.getPaymentUri(paymentMapper.toPaymentDto(payment));
 	}
 }
