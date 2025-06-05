@@ -4,4 +4,5 @@ public enum UserRoleEnum {
 	CLIENT,
 	MANAGER,
 	EMPLOYEE,
+	COACH,
 }
