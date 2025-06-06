@@ -24,7 +24,9 @@ public class UserController {
 	private final UserService userService;
 
 	private final ChatService chatService;
+
 	private final WorkoutSessionService workoutSessionService;
+
 	private final ProgressStatisticsService progressStatisticsService;
 
 	@GetMapping

@@ -10,5 +10,6 @@ import xyz.cursedman.gym_api.domain.entities.Payment;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public interface PaymentMapper {
+	@Mapping(target = "status", source = "status")
 	PaymentDto toPaymentDto(Payment payment);
 }

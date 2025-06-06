@@ -6,19 +6,20 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import xyz.cursedman.gym_api.domain.dtos.membership.MembershipRequest;
 import xyz.cursedman.gym_api.helpers.TestJsonHelper;
 import xyz.cursedman.gym_api.services.PaymentProvider;
+import xyz.cursedman.gym_api.services.impl.MembershipPaymentFacade;
+import xyz.cursedman.gym_api.services.impl.StripeProvider;
 
 import java.net.URI;
-import java.util.Date;
 import java.util.UUID;
 
 import static org.mockito.BDDMockito.given;
@@ -37,8 +38,14 @@ class MembershipControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@MockBean
+	@MockitoBean
 	private PaymentProvider paymentProvider;
+
+	@MockitoBean
+	private StripeProvider stripeProvider;
+
+	@MockitoBean
+	private MembershipPaymentFacade membershipPaymentFacade;
 
 	// GET
 
@@ -82,7 +89,6 @@ class MembershipControllerTest {
 				.content(TestJsonHelper.stringify(validMembershipRequest))
 		).andReturn();
 	}
-
 
 
 	@Test

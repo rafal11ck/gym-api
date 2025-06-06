@@ -27,7 +27,7 @@ public class StripeConfig {
 	public void validate() {
 		if (apiKey == null) {
 			logger.warn(
-				"Missing STRIPE_API_KEY (stripe.api-key). "
+				"\n\tMissing STRIPE_API_KEY (stripe.api-key). "
 					+ "Set in application.yml or as environment variable (preferably). "
 					+ "Payments will not work unless key is set!"
 			);
@@ -35,7 +35,7 @@ public class StripeConfig {
 
 		if (webhookSecret == null) {
 			logger.warn(
-				"Missing STRIPE_WEBHOOK_SECRET (stripe.webhook-secret). "
+				"\n\tMissing STRIPE_WEBHOOK_SECRET (stripe.webhook-secret). "
 					+ "Set in application.yml or as environment variable (preferably). "
 					+ "Payments will not work unless secret is set!"
 			);

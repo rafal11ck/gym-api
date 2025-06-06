@@ -2,10 +2,7 @@ package xyz.cursedman.gym_api.services.impl;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Event;
-import com.stripe.model.MetadataStore;
-import com.stripe.model.Price;
-import com.stripe.model.Product;
+import com.stripe.model.*;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 import com.stripe.param.*;
@@ -16,18 +13,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.config.StripeConfig;
 import xyz.cursedman.gym_api.domain.dtos.payment.PaymentDto;
+import xyz.cursedman.gym_api.domain.entities.PaymentStatusEnum;
 import xyz.cursedman.gym_api.exceptions.ExternalProviderException;
 import xyz.cursedman.gym_api.services.PaymentProvider;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class StripeProvider implements PaymentProvider {
 
 	private final StripeConfig stripeConfig;
+
+	private final PaymentServiceImpl paymentService;
 
 	@PostConstruct
 	private void initializeStripe() {
@@ -53,25 +54,39 @@ public class StripeProvider implements PaymentProvider {
 		}
 	}
 
-	private void fulfillCheckout(String sessionId) throws StripeException {
-		SessionRetrieveParams params = SessionRetrieveParams.builder().addExpand("line_items").build();
-		Session checkoutSession = Session.retrieve(sessionId, params, null);
+	public void dispatchStripeEvent(Event event, PaymentStatusEnum newPaymentStatus) {
+		Session sessionEvent = (Session) event.getDataObjectDeserializer().getObject().orElse(null);
+
+		if (sessionEvent == null) {
+			throw new ExternalProviderException("Could not deserialize Stripe session event.");
+		}
+
+		UUID paymentId = UUID.fromString(sessionEvent.getClientReferenceId());
+		paymentService.changePaymentStatus(paymentId, newPaymentStatus);
 	}
 
 	public void handleWebhook(String payload, String sigHeader) {
 		try {
 			Event event = Webhook.constructEvent(payload, sigHeader, stripeConfig.getWebhookSecret());
 
-			if ("checkout.session.completed".equals(event.getType())
-				|| "checkout.session.async_payment_succeeded".equals(event.getType())
-			) {
-				Session sessionEvent = (Session) event.getDataObjectDeserializer().getObject().orElse(null);
-				if (sessionEvent != null) {
-					fulfillCheckout(sessionEvent.getId());
-				}
+			switch (event.getType()) {
+				case "checkout.session.completed":
+				case "checkout.session.async_payment_succeeded":
+					dispatchStripeEvent(event, PaymentStatusEnum.SUCCEEDED);
+					break;
+
+				case "checkout.session.expired":
+					dispatchStripeEvent(event, PaymentStatusEnum.EXPIRED);
+					break;
+
+				case "checkout.session.async_payment_failed":
+					dispatchStripeEvent(event, PaymentStatusEnum.FAILED);
+					break;
 			}
+
 		} catch (StripeException e) {
-			throw new ExternalProviderException("Error while trying to handle Stripe webhook.", e);
+			throw new ExternalProviderException(
+				"Error while trying to handle Stripe webhook. Is STRIPE_WEBHOOK_SECRET set?", e);
 		}
 	}
 
@@ -79,6 +94,7 @@ public class StripeProvider implements PaymentProvider {
 	public URI getPaymentUri(PaymentDto payment) {
 		SessionCreateParams sessionCreateParams = SessionCreateParams.builder()
 			.setMode(SessionCreateParams.Mode.PAYMENT)
+			.setClientReferenceId(payment.getPaymentId().toString())
 			.setSuccessUrl(stripeConfig.getSuccessRedirectUrl())
 			.setCancelUrl(stripeConfig.getCancelRedirectUrl())
 			.addLineItem(

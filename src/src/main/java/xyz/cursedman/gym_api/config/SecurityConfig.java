@@ -31,6 +31,9 @@ public class SecurityConfig {
 				.requestMatchers("/swagger", "/swagger-ui/*", "/api-docs.yaml", "/api-docs/**")
 				.permitAll()
 
+				.requestMatchers("/stripe/webhook")
+				.permitAll()
+
 				// everything else authenticated
 				.anyRequest()
 				.authenticated()

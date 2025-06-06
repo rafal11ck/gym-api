@@ -26,6 +26,5 @@ public interface MembershipService {
 	// used by mapper
 	Membership getMembershipById(UUID id);
 
-	Collection<PaymentDto> getMembershipPayments(UUID id);
-
+	List<PaymentDto> getMembershipPayments(UUID id);
 }

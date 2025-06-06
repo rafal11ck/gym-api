@@ -13,17 +13,17 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class MembershipPaymentStatusHandler implements PaymentStatusHandler {
-	private MembershipService membershipService;
+	
+	private final MembershipService membershipService;
 
 	@Override
 	public boolean supports(Payment payment) {
 		return payment.getExternalRefType().equals(PaymentExternalRefType.MEMBERSHIP);
-
 	}
 
 	@Override
 	public void handle(Payment payment, PaymentStatusEnum newStatus) {
-		if (newStatus == PaymentStatusEnum.COMPLETED) {
+		if (newStatus == PaymentStatusEnum.SUCCEEDED) {
 			UUID memberShipId = payment.getExternalRefId();
 			membershipService.activateMembership(memberShipId);
 		}

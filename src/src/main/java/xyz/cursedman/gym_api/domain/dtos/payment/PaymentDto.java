@@ -1,8 +1,7 @@
 package xyz.cursedman.gym_api.domain.dtos.payment;
 
 import lombok.Data;
-import xyz.cursedman.gym_api.domain.entities.PaymentExternalRefType;
-import xyz.cursedman.gym_api.domain.entities.PaymentType;
+import xyz.cursedman.gym_api.domain.entities.PaymentStatusEnum;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -16,5 +15,5 @@ public class PaymentDto {
 
 	BigDecimal price;
 
-	PaymentType paymentType;
+	PaymentStatusEnum status;
 }
