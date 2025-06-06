@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.payment.PaymentDto;
 import xyz.cursedman.gym_api.domain.entities.Payment;
+import xyz.cursedman.gym_api.domain.entities.PaymentExternalRefType;
 import xyz.cursedman.gym_api.domain.entities.PaymentStatusEnum;
 import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.PaymentMapper;
@@ -48,9 +49,9 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
-	public List<PaymentDto> listPaymentsForExternalRef(UUID externalRefId) {
+	public List<PaymentDto> listPaymentsForExternalRef(UUID externalRefId, PaymentExternalRefType refType) {
 		return paymentRepository
-			.findByExternalRefId(externalRefId)
+			.findByExternalRefIdEqualsAndExternalRefTypeEquals(externalRefId, refType)
 			.stream()
 			.map(paymentMapper::toPaymentDto)
 			.toList();

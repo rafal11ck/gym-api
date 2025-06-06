@@ -28,7 +28,7 @@ public class MembershipPaymentFacade {
 	private final PaymentProvider paymentProvider;
 
 	private final PaymentMapper paymentMapper;
-	
+
 	private final PaymentService paymentService;
 
 	public URI getPaymentURIFor(UUID id) {
@@ -46,6 +46,6 @@ public class MembershipPaymentFacade {
 	}
 
 	public List<PaymentDto> listPaymentsFor(UUID id) {
-		return paymentService.listPaymentsForExternalRef(id);
+		return paymentService.listPaymentsForExternalRef(id, PaymentExternalRefType.MEMBERSHIP);
 	}
 }
