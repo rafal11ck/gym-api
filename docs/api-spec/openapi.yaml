@@ -120,6 +120,26 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/TargetMuscleDto"
+  /stripe/webhook:
+    post:
+      tags:
+      - stripe-controller
+      operationId: handleStripeWebhook
+      parameters:
+      - name: Stripe-Signature
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "200":
+          description: OK
   /memberships:
     get:
       tags:
@@ -1556,6 +1576,36 @@ components:
           type: string
     PaymentDto:
       type: object
+      properties:
+        paymentId:
+          type: string
+          format: uuid
+        currency:
+          type: object
+          properties:
+            currencyCode:
+              type: string
+            numericCode:
+              type: integer
+              format: int32
+            numericCodeAsString:
+              type: string
+            displayName:
+              type: string
+            symbol:
+              type: string
+            defaultFractionDigits:
+              type: integer
+              format: int32
+        price:
+          type: number
+        status:
+          type: string
+          enum:
+          - PENDING
+          - SUCCEEDED
+          - EXPIRED
+          - FAILED
     HallTypeDto:
       type: object
       properties:
