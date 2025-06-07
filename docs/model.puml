@@ -4,28 +4,6 @@
 top to bottom direction
 skinparam linetype ortho
 
-class card {
-   date_of_birth: timestamp(6)
-   country_uuid: uuid
-   card_number: varchar(255)
-   cvv: varchar(255)
-   name_on_card: varchar(255)
-   postal_code: varchar(255)
-   uuid: uuid
-}
-class chat {
-   uuid: uuid
-}
-class chat_participant {
-   last_read_date_time: timestamp(6)
-   chat_uuid: uuid
-   user_uuid: uuid
-   uuid: uuid
-}
-class country {
-   country_name: varchar(255)
-   uuid: uuid
-}
 class exercise {
    name: varchar(255)
    uuid: uuid
@@ -53,32 +31,24 @@ class maintenance_task {
    uuid: uuid
 }
 class membership {
-   purchase_date: timestamp(6)
+   valid_from: timestamp(6)
    valid_until: timestamp(6)
    membership_type_uuid: uuid
    uuid: uuid
 }
 class membership_type {
-   price: real
+   currency: varchar(3)
+   price: numeric(38,2)
    type: varchar(255)
    uuid: uuid
 }
-class message {
-   date_time: timestamp(6)
-   chat_uuid: uuid
-   sender_uuid: uuid
-   content: varchar(255)
-   uuid: uuid
-}
 class payment {
-   card_uuid: uuid
-   membership_uuid: uuid
-   status_uuid: uuid
-   uuid: uuid
-}
-class payment_status {
+   currency: varchar(3)
+   price: numeric(38,2)
+   external_ref_id: uuid
+   external_ref_type: varchar(255)
    status: varchar(255)
-   uuid: uuid
+   payment_id: uuid
 }
 class target_muscle {
    name: varchar(255)
@@ -90,33 +60,27 @@ class user_account_connection {
    external_authorization_user_id: varchar(255)
    uuid: uuid
 }
-class user_details {
-   date_of_birth: timestamp(6)
-   email: varchar(255)
-   first_name: varchar(255)
-   image_url: varchar(255)
-   last_name: varchar(255)
-   phone_number: varchar(255)
-   uuid: uuid
-}
 class user_role {
    role_name: varchar(255)
    uuid: uuid
 }
 class users {
    date_of_birth: timestamp(6)
-   card_uuid: uuid
    membership_uuid: uuid
-   role_uuid: uuid
    email: varchar(255)
    first_name: varchar(255)
    image_url: varchar(255)
    last_name: varchar(255)
    phone_number: varchar(255)
+   username: varchar(255)
    uuid: uuid
 }
+class users_roles {
+   roles_uuid: uuid
+   user_uuid: uuid
+}
 class workout_session {
-   date: timestamp(6)
+   date: date
    coach_uuid: uuid
    hall_uuid: uuid
    description: varchar(255)
@@ -130,33 +94,22 @@ class workout_session_attendants {
 class workout_session_exercise {
    exercise_order: integer
    reps: integer
+   weight: real
    exercise_uuid: uuid
    workout_session_uuid: uuid
    uuid: uuid
 }
-class workout_session_exercises {
-   exercises_uuid: uuid
-   workout_session_uuid: uuid
-}
 
-card                        -[#595959,plain]-^  country                    : "country_uuid:uuid"
-chat_participant            -[#595959,plain]-^  chat                       : "chat_uuid:uuid"
-chat_participant            -[#595959,plain]-^  users                      : "user_uuid:uuid"
 exercise_target_muscle      -[#595959,plain]-^  exercise                   : "exercise_uuid:uuid"
 exercise_target_muscle      -[#595959,plain]-^  target_muscle              : "target_muscle_uuid:uuid"
 hall                        -[#595959,plain]-^  hall_type                  : "hall_type_uuid:uuid"
 maintenance_task            -[#595959,plain]-^  hall                       : "maintenance_hall_uuid:uuid"
 maintenance_task            -[#595959,plain]-^  users                      : "maintainer_uuid:uuid"
 membership                  -[#595959,plain]-^  membership_type            : "membership_type_uuid:uuid"
-message                     -[#595959,plain]-^  chat                       : "chat_uuid:uuid"
-message                     -[#595959,plain]-^  users                      : "sender_uuid:uuid"
-payment                     -[#595959,plain]-^  card                       : "card_uuid:uuid"
-payment                     -[#595959,plain]-^  membership                 : "membership_uuid:uuid"
-payment                     -[#595959,plain]-^  payment_status             : "status_uuid:uuid"
 user_account_connection     -[#595959,plain]-^  users                      : "user_uuid:uuid"
-users                       -[#595959,plain]-^  card                       : "card_uuid:uuid"
 users                       -[#595959,plain]-^  membership                 : "membership_uuid:uuid"
-users                       -[#595959,plain]-^  user_role                  : "role_uuid:uuid"
+users_roles                 -[#595959,plain]-^  user_role                  : "roles_uuid:uuid"
+users_roles                 -[#595959,plain]-^  users                      : "user_uuid:uuid"
 workout_session             -[#595959,plain]-^  hall                       : "hall_uuid:uuid"
 workout_session             -[#595959,plain]-^  users                      : "coach_uuid:uuid"
 workout_session_attendants  -[#595959,plain]-^  users                      : "attendants_uuid:uuid"
