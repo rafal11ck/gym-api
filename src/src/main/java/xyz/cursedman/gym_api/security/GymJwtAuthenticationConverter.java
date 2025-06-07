@@ -59,6 +59,6 @@ public class GymJwtAuthenticationConverter implements Converter<Jwt, AbstractAut
 			.map(SimpleGrantedAuthority::new)
 			.collect(Collectors.toList());
 
-		return new JwtAuthenticationToken(jwt, authorities, user.getUsername());
+		return new JwtAuthenticationToken(jwt, authorities, user.getUuid().toString());
 	}
 }

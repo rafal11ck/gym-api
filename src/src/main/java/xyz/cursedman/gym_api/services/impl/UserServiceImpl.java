@@ -15,7 +15,6 @@ import xyz.cursedman.gym_api.repositories.UserAccountConnectionRepository;
 import xyz.cursedman.gym_api.repositories.UserRepository;
 import xyz.cursedman.gym_api.services.UserService;
 
-import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -143,11 +142,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDto getCurrentUser() {
-		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return userRepository.findById(UUID.fromString(principal.getName())).map(userMapper::toDtoFromEntity).orElseThrow(
-			// This is internal server error not found exception.
-			// Given principal is set correctly it should always contain valid user id
-			() -> new RuntimeException("User with id " + UUID.fromString(principal.getName()) + " not found")
-		);
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		UUID uuid = UUID.fromString(userId);
+
+		return userRepository.findById(uuid)
+			.map(userMapper::toDtoFromEntity)
+			.orElseThrow(() -> new RuntimeException("User with id " + uuid + " not found"));
 	}
+
 }
