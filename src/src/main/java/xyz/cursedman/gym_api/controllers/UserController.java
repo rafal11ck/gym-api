@@ -21,7 +21,6 @@ import java.util.UUID;
 public class UserController {
 	private final UserService userService;
 
-
 	private final WorkoutSessionService workoutSessionService;
 
 	private final ProgressStatisticsService progressStatisticsService;
@@ -71,4 +70,6 @@ public class UserController {
 	public ResponseEntity<WorkoutSessionDto> getUserLastWorkoutSession(@Valid @PathVariable UUID id) {
 		return ResponseEntity.ok(workoutSessionService.getUserLastWorkoutSession(id));
 	}
+
+
 }

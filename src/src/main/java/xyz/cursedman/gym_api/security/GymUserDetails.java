@@ -30,7 +30,7 @@ public class GymUserDetails implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return user.getUsername();
+		return user.getUuid().toString();
 	}
 
 	@Override

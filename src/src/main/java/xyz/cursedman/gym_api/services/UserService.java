@@ -32,4 +32,7 @@ public interface UserService {
 
 	// used by mapper
 	User getUserByUuid(UUID id);
+
+	UserDto getCurrentUser();
+
 }
