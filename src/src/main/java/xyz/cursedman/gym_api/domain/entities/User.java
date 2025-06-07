@@ -20,9 +20,6 @@ public final class User {
 	@ManyToMany(fetch = FetchType.EAGER)
 	Set<UserRole> roles = new HashSet<>();
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	Card card;
-
 	@OneToOne
 	Membership membership;
 

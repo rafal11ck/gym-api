@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import xyz.cursedman.gym_api.domain.entities.Card;
 import xyz.cursedman.gym_api.domain.entities.Membership;
 
 import java.util.Collection;
@@ -19,8 +18,6 @@ public class UserDto {
 	private UUID uuid;
 
 	private Collection<String> roles;
-
-	private Card card;
 
 	private Membership membership;
 

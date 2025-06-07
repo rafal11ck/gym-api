@@ -4,12 +4,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.cursedman.gym_api.domain.dtos.chat.ChatDto;
 import xyz.cursedman.gym_api.domain.dtos.progressStatistics.ChartDto;
 import xyz.cursedman.gym_api.domain.dtos.progressStatistics.ProgressOverviewDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionDto;
-import xyz.cursedman.gym_api.services.ChatService;
 import xyz.cursedman.gym_api.services.ProgressStatisticsService;
 import xyz.cursedman.gym_api.services.UserService;
 import xyz.cursedman.gym_api.services.WorkoutSessionService;
@@ -23,7 +21,6 @@ import java.util.UUID;
 public class UserController {
 	private final UserService userService;
 
-	private final ChatService chatService;
 
 	private final WorkoutSessionService workoutSessionService;
 
@@ -64,12 +61,6 @@ public class UserController {
 		return ResponseEntity.ok(progressStatisticsService.getUserExerciseChartData(id, numberOfWeeks));
 	}
 
-	// chats
-
-	@GetMapping("{id}/chats")
-	public ResponseEntity<List<ChatDto>> listChats(@PathVariable UUID id) {
-		return ResponseEntity.ok(chatService.listUserChats(id));
-	}
 
 	@GetMapping("{id}/workout-sessions")
 	public ResponseEntity<List<WorkoutSessionDto>> listUserWorkoutSessions(@Valid @PathVariable UUID id) {

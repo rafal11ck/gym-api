@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -19,16 +18,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
-import xyz.cursedman.gym_api.helpers.TestJsonHelper;
 
 import java.time.Clock;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
 
 @SpringBootTest
@@ -65,24 +60,14 @@ class UserControllerTest {
 	@Autowired
 	private Clock clock;
 
-	@TestConfiguration
-	static class TestClockConfig {
-		@Bean
-		@Primary
-		public Clock testClock() {
-			LocalDate fixedDate = LocalDate.of(2025, 6, 3);
-			return Clock.fixed(fixedDate.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
-		}
-	}
-
-	// GET
-
 	@Test
 	void checkIfGetUsersReturnsHttp200AndAllRecords() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(endpointUri))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.greaterThan(0)));
 	}
+
+	// GET
 
 	@Test
 	void checkIfGetUserByIdReturnsHttp200AndRequestedRecord() throws Exception {
@@ -97,10 +82,6 @@ class UserControllerTest {
 			.andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 
-	// TODO: make new stats tests
-
-	// GET
-
 	@Test
 	void checkIfGetUserLastWorkoutSessionReturnsHttp200AndCorrectData() throws Exception {
 		String expectedLastSessionDate = LocalDate
@@ -111,26 +92,14 @@ class UserControllerTest {
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.date").value(expectedLastSessionDate));
 	}
-	// chat
 
-	// GET
-
-	@Test
-	void checkIfGetUserChatsReturnsHttp200AndAllRecords() throws Exception {
-		mockMvc.perform(
-				MockMvcRequestBuilders.get(endpointUri + "/" + validUserUuid + "/chats")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(TestJsonHelper.stringify(validUserRequest))
-			).andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.greaterThan(0)));
-	}
-
-	@Test
-	void checkIfGetChatsOfNonExistingUserReturnsHttp404() throws Exception {
-		mockMvc.perform(
-			MockMvcRequestBuilders.get(endpointUri + "/" + UUID.randomUUID() + "/chats")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(TestJsonHelper.stringify(validUserRequest))
-		).andExpect(MockMvcResultMatchers.status().isNotFound());
+	@TestConfiguration
+	static class TestClockConfig {
+		@Bean
+		@Primary
+		public Clock testClock() {
+			LocalDate fixedDate = LocalDate.of(2025, 6, 3);
+			return Clock.fixed(fixedDate.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+		}
 	}
 }
