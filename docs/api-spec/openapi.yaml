@@ -359,74 +359,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/ExerciseDto"
-  /chats:
-    post:
-      tags:
-      - chat-controller
-      operationId: createChat
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ChatDto"
-  /chats/{id}/participants:
-    post:
-      tags:
-      - chat-controller
-      operationId: addChatParticipant
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ChatParticipantCreateRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ChatParticipantDto"
-  /cards:
-    get:
-      tags:
-      - card-controller
-      operationId: listCards
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/CardDto"
-    post:
-      tags:
-      - card-controller
-      operationId: createCard
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CardRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/CardDto"
   /workout-sessions/{id}:
     get:
       tags:
@@ -656,80 +588,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/HallDto"
-  /chats/{id}/participants/{userId}:
-    patch:
-      tags:
-      - chat-controller
-      operationId: updateChatParticipant
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ChatParticipantPatchRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ChatParticipantDto"
-  /cards/{id}:
-    get:
-      tags:
-      - card-controller
-      operationId: getCard
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/CardDto"
-    patch:
-      tags:
-      - card-controller
-      operationId: updateCard_2
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CardRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/CardDto"
   /users:
     get:
       tags:
@@ -874,27 +732,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/WorkoutSessionDto"
-  /users/{id}/chats:
-    get:
-      tags:
-      - user-controller
-      operationId: listChats
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ChatDto"
   /user-roles:
     get:
       tags:
@@ -923,39 +760,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/HallTypeDto"
-  /countries:
-    get:
-      tags:
-      - country-controller
-      operationId: getCountry
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/CountryDto"
-  /chats/{id}:
-    get:
-      tags:
-      - chat-controller
-      operationId: getChat
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ChatDto"
   /workout-sessions/{id}/exercises/{exerciseId}:
     delete:
       tags:
@@ -1052,41 +856,6 @@ components:
       - description
       - hallUuid
       - title
-    Card:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        country:
-          $ref: "#/components/schemas/Country"
-        cardNumber:
-          type: string
-        cvv:
-          type: string
-        dateOfBirth:
-          type: string
-          format: date-time
-        nameOnCard:
-          type: string
-        postalCode:
-          type: string
-      required:
-      - cardNumber
-      - cvv
-      - dateOfBirth
-      - nameOnCard
-      - postalCode
-    Country:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        countryName:
-          type: string
-      required:
-      - countryName
     Exercise:
       type: object
       properties:
@@ -1180,8 +949,6 @@ components:
           items:
             $ref: "#/components/schemas/UserRole"
           uniqueItems: true
-        card:
-          $ref: "#/components/schemas/Card"
         membership:
           $ref: "#/components/schemas/Membership"
         firstName:
@@ -1433,90 +1200,6 @@ components:
           items:
             $ref: "#/components/schemas/TargetMuscleDto"
           uniqueItems: true
-    ChatDto:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        participants:
-          type: array
-          items:
-            $ref: "#/components/schemas/ChatParticipantDto"
-          uniqueItems: true
-    ChatParticipantDto:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        user:
-          $ref: "#/components/schemas/User"
-        lastReadDateTime:
-          type: string
-          format: date-time
-    ChatParticipantCreateRequest:
-      type: object
-      properties:
-        userUuid:
-          type: string
-          format: uuid
-        lastReadDateTime:
-          type: string
-          format: date-time
-      required:
-      - userUuid
-    CardRequest:
-      type: object
-      properties:
-        countryUuid:
-          type: string
-          format: uuid
-        cardNumber:
-          type: string
-        cvv:
-          type: string
-        dateOfBirth:
-          type: string
-          format: date-time
-        nameOnCard:
-          type: string
-        postalCode:
-          type: string
-      required:
-      - cardNumber
-      - countryUuid
-      - cvv
-      - dateOfBirth
-      - nameOnCard
-      - postalCode
-    CardDto:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        country:
-          $ref: "#/components/schemas/Country"
-        cardNumber:
-          type: string
-        cvv:
-          type: string
-        dateOfBirth:
-          type: string
-          format: date-time
-        nameOnCard:
-          type: string
-        postalCode:
-          type: string
-    ChatParticipantPatchRequest:
-      type: object
-      properties:
-        lastReadDateTime:
-          type: string
-          format: date-time
-      required:
-      - lastReadDateTime
     UserDto:
       type: object
       properties:
@@ -1527,8 +1210,6 @@ components:
           type: array
           items:
             type: string
-        card:
-          $ref: "#/components/schemas/Card"
         membership:
           $ref: "#/components/schemas/Membership"
         firstName:
@@ -1696,14 +1377,6 @@ components:
           type: string
           format: uuid
         name:
-          type: string
-    CountryDto:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        countryName:
           type: string
   securitySchemes:
     OAuth2:
