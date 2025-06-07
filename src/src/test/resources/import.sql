@@ -30,7 +30,7 @@ VALUES ('c5237de2-09ad-4106-8853-6ae0c04cdc9b', 'Coach');
 INSERT INTO user_role (uuid, role_name)
 VALUES ('f247de64-c7dd-4162-81d5-6496c224ac33', 'Manager');
 
-INSERT INTO users (card_uuid, membership_uuid, date_of_birth, email, first_name, image_url, last_name,
+INSERT INTO users (membership_uuid, date_of_birth, email, first_name, image_url, last_name,
                    phone_number, uuid)
 VALUES ('06d25bae-8d09-4170-b566-fd17f2ee6a23',
         '2025-04-23 19:40:32.598028', 'email1@email.com', 'John',

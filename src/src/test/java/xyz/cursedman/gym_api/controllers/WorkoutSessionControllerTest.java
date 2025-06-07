@@ -20,7 +20,6 @@ import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionRequest;
 import xyz.cursedman.gym_api.helpers.TestJsonHelper;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -36,7 +35,7 @@ class WorkoutSessionControllerTest {
 	private final String validCoachUuid = "4a3e70f9-bd65-45c4-a47a-eaae0a0d3d56";
 	private final Map<String, String> validWorkoutSessionUuids = Map.of(
 		"workout_session_uuid", "8d64dca2-87dc-479f-bcb5-9f91b16d870c",
-		"attendant_uuid", "65f40335-135a-47ec-ad7d-72278c4be65c",
+		"attendant_uuid", "4a3e70f9-bd65-45c4-a47a-eaae0a0d3d56",
 		"exercise_uuid", "ee371adf-3ac7-4a0a-a6c2-254990c1c80f",
 		"workout_session_exercise_uuid", "0713a057-a183-4f13-be9d-9fe3985db31e"
 	);

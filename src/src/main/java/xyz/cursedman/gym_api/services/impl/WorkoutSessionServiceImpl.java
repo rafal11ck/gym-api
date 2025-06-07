@@ -18,7 +18,6 @@ import xyz.cursedman.gym_api.services.WorkoutSessionService;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -109,11 +108,11 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 		WorkoutSession session = workoutSessionRepository.findById(workoutSessionId)
 			.orElseThrow(() -> new NotFoundException("Workout session with id " + workoutSessionId + " not found"));
 
-		User user = userService.getUserByUuid(userId);
-
-		boolean deleted = session.getAttendants().remove(user);
+		boolean deleted = session.getAttendants().removeIf(userIn -> userIn.getUuid().equals(userId));
 		if (!deleted) {
-			throw new NotFoundException("User with id " + userId + " not found");
+			throw new NotFoundException("User with id " + userId +
+				" can not be deleted from workout session with id "
+				+ workoutSessionId + "as it does not exist in this session");
 		}
 
 		workoutSessionRepository.save(session);
