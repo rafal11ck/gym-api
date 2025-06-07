@@ -2,16 +2,16 @@ package xyz.cursedman.gym_api.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.cursedman.gym_api.domain.dtos.exercise.CreateExerciseRequest;
 import xyz.cursedman.gym_api.domain.dtos.exercise.ExerciseDto;
-import xyz.cursedman.gym_api.domain.entities.Exercise;
-import xyz.cursedman.gym_api.mappers.ExerciseMapper;
 import xyz.cursedman.gym_api.services.ExerciseService;
 
-import java.util.List;
 import java.util.UUID;
 
 
@@ -23,8 +23,8 @@ public class ExerciseController {
 	private final ExerciseService exerciseService;
 
 	@GetMapping
-	public ResponseEntity<List<ExerciseDto>> listExercises() {
-		return ResponseEntity.ok(exerciseService.listExercises());
+	public ResponseEntity<Page<ExerciseDto>> listExercises(@ParameterObject Pageable pageable) {
+		return ResponseEntity.ok(exerciseService.listExercises(pageable));
 	}
 
 	@DeleteMapping(path = "/{id}")

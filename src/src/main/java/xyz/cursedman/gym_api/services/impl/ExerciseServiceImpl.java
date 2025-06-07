@@ -1,7 +1,8 @@
 package xyz.cursedman.gym_api.services.impl;
 
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.exercise.CreateExerciseRequest;
 import xyz.cursedman.gym_api.domain.dtos.exercise.ExerciseDto;
@@ -11,7 +12,6 @@ import xyz.cursedman.gym_api.mappers.ExerciseMapper;
 import xyz.cursedman.gym_api.repositories.ExerciseRepository;
 import xyz.cursedman.gym_api.services.ExerciseService;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -23,8 +23,8 @@ public class ExerciseServiceImpl implements ExerciseService {
 	private final ExerciseMapper exerciseMapper;
 
 	@Override
-	public List<ExerciseDto> listExercises() {
-		return exerciseRepository.findAll().stream().map(exerciseMapper::toDto).toList();
+	public Page<ExerciseDto> listExercises(Pageable pageable) {
+		return exerciseRepository.findAll(pageable).map(exerciseMapper::toDto);
 	}
 
 	@Override
