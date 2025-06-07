@@ -1,8 +1,10 @@
 package xyz.cursedman.gym_api.controllers;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +12,6 @@ import xyz.cursedman.gym_api.domain.dtos.maintenanceTask.MaintenanceTaskDto;
 import xyz.cursedman.gym_api.domain.dtos.maintenanceTask.MaintenanceTaskRequest;
 import xyz.cursedman.gym_api.services.MaintenanceTaskService;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,8 +21,8 @@ public class MaintenanceTaskController {
 	private final MaintenanceTaskService maintenanceTaskService;
 
 	@GetMapping
-	public ResponseEntity<List<MaintenanceTaskDto>> listMaintenanceTasks() {
-		return ResponseEntity.ok(maintenanceTaskService.listMaintenanceTasks());
+	public ResponseEntity<Page<MaintenanceTaskDto>> listMaintenanceTasks(@ParameterObject Pageable pageable) {
+		return ResponseEntity.ok(maintenanceTaskService.listMaintenanceTasks(pageable));
 	}
 
 	@GetMapping("/{id}")

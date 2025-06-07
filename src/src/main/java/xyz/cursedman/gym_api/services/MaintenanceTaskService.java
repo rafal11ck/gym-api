@@ -1,20 +1,20 @@
 package xyz.cursedman.gym_api.services;
 
-import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import xyz.cursedman.gym_api.domain.dtos.maintenanceTask.MaintenanceTaskDto;
 import xyz.cursedman.gym_api.domain.dtos.maintenanceTask.MaintenanceTaskRequest;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface MaintenanceTaskService {
-	List<MaintenanceTaskDto> listMaintenanceTasks();
+	Page<MaintenanceTaskDto> listMaintenanceTasks(Pageable pageable);
 
-	MaintenanceTaskDto getMaintenanceTask(UUID id) ;
+	MaintenanceTaskDto getMaintenanceTask(UUID id);
 
 	MaintenanceTaskDto createMaintenanceTask(MaintenanceTaskRequest request);
 
-	MaintenanceTaskDto patchMaintenanceTask(UUID id, MaintenanceTaskRequest request) ;
+	MaintenanceTaskDto patchMaintenanceTask(UUID id, MaintenanceTaskRequest request);
 
-	void deleteMaintenanceTask(UUID id) ;
+	void deleteMaintenanceTask(UUID id);
 }
