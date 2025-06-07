@@ -1,14 +1,15 @@
 package xyz.cursedman.gym_api.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import xyz.cursedman.gym_api.domain.dtos.hall.HallDto;
 import xyz.cursedman.gym_api.domain.dtos.hall.HallRequest;
 import xyz.cursedman.gym_api.domain.entities.Hall;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface HallService {
-	List<HallDto> listHalls();
+	Page<HallDto> listHalls(Pageable pageable);
 
 	HallDto getHall(UUID id);
 
