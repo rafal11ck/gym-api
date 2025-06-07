@@ -1,5 +1,7 @@
 package xyz.cursedman.gym_api.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionAttendantRequest;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionDto;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionExerciseRequest;
@@ -10,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface WorkoutSessionService {
-	List<WorkoutSessionDto> listWorkoutSessions();
+	Page<WorkoutSessionDto> listWorkoutSessions(Pageable pageable);
 
 	List<WorkoutSessionDto> listUserWorkoutSessions(UUID userId);
 

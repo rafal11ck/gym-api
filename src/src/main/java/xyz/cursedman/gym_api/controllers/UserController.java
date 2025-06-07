@@ -2,6 +2,9 @@ package xyz.cursedman.gym_api.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.cursedman.gym_api.domain.dtos.progressStatistics.ChartDto;
@@ -26,8 +29,8 @@ public class UserController {
 	private final ProgressStatisticsService progressStatisticsService;
 
 	@GetMapping
-	public ResponseEntity<List<UserDto>> listUsers() {
-		return ResponseEntity.ok(userService.listUsers());
+	public ResponseEntity<Page<UserDto>> listUsers(@ParameterObject Pageable pageable) {
+		return ResponseEntity.ok(userService.listUsers(pageable));
 	}
 
 	@GetMapping(path = "/{id}")

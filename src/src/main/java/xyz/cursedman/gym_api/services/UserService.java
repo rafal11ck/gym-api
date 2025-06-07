@@ -1,16 +1,17 @@
 package xyz.cursedman.gym_api.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
 import xyz.cursedman.gym_api.domain.entities.User;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
-	List<UserDto> listUsers();
+	Page<UserDto> listUsers(Pageable pageable);
 
 	boolean existsUser(UUID uuid);
 

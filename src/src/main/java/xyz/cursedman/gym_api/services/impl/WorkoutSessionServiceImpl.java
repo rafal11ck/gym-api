@@ -2,6 +2,8 @@ package xyz.cursedman.gym_api.services.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionAttendantRequest;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionDto;
@@ -33,12 +35,10 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 
 
 	@Override
-	public List<WorkoutSessionDto> listWorkoutSessions() {
+	public Page<WorkoutSessionDto> listWorkoutSessions(Pageable pageable) {
 		return workoutSessionRepository
-			.findAll()
-			.stream()
-			.map(workoutSessionMapper::toDtoFromEntity)
-			.toList();
+			.findAll(pageable)
+			.map(workoutSessionMapper::toDtoFromEntity);
 	}
 
 	@Override
