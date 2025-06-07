@@ -1,7 +1,8 @@
 package xyz.cursedman.gym_api.services.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.membership.MembershipDto;
 import xyz.cursedman.gym_api.domain.dtos.membership.MembershipRequest;
@@ -11,7 +12,6 @@ import xyz.cursedman.gym_api.exceptions.NotFoundException;
 import xyz.cursedman.gym_api.mappers.MembershipMapper;
 import xyz.cursedman.gym_api.repositories.MembershipRepository;
 import xyz.cursedman.gym_api.services.MembershipService;
-import xyz.cursedman.gym_api.services.PaymentService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,12 +36,10 @@ public class MembershipServiceImpl implements MembershipService {
 	}
 
 	@Override
-	public List<MembershipDto> listMemberships() {
+	public Page<MembershipDto> listMemberships(Pageable pageable) {
 		return membershipRepository
-			.findAll()
-			.stream()
-			.map(membershipMapper::toDtoFromEntity)
-			.toList();
+			.findAll(pageable)
+			.map(membershipMapper::toDtoFromEntity);
 	}
 
 	@Override
