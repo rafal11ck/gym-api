@@ -1,6 +1,28 @@
 {
   "realm" : "gym",
   "users" : [ {
+    "id" : "8e23a4b3-f3f1-4072-89d5-c69c00d4a329",
+    "username" : "gigachad",
+    "firstName" : "gigachad",
+    "lastName" : "gigachad",
+    "emailVerified" : true,
+    "createdTimestamp" : 1749395335980,
+    "enabled" : true,
+    "totp" : false,
+    "credentials" : [ {
+      "id" : "dddfde48-ab38-44ff-a90a-3ee8ad15ad92",
+      "type" : "password",
+      "userLabel" : "My password",
+      "createdDate" : 1749395558169,
+      "secretData" : "{\"value\":\"JhT5gyIp62gxMY37hKo200kU2PD2sRd56cFEkxhVVsY=\",\"salt\":\"HMlymuyWSJR9b2jA3QFqKA==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":5,\"algorithm\":\"argon2\",\"additionalParameters\":{\"hashLength\":[\"32\"],\"memory\":[\"7168\"],\"type\":[\"id\"],\"version\":[\"1.3\"],\"parallelism\":[\"1\"]}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-gym" ],
+    "notBefore" : 0,
+    "groups" : [ "/coach" ]
+  }, {
     "id" : "5f939b6d-500b-4b1f-b7bb-36dcef58ce18",
     "username" : "gustaw",
     "firstName" : "gustaw",
