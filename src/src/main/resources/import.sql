@@ -14,13 +14,6 @@ VALUES ('2025-04-18 13:45:04.293944', '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'b
 INSERT INTO membership (valid_until, membership_type_uuid, uuid)
 VALUES ('2025-04-18 13:45:04.393944', '38dc2c0f-566f-48c7-a147-95fd0f0632ee', 'ddd5f2a7-157e-4bf1-b11c-fa46e0d6bad1');
 
-INSERT INTO country (uuid, country_name)
-VALUES ('352ed7f1-8bb1-4baa-9ca7-88995ec58d8a', 'Poland');
-INSERT INTO country (uuid, country_name)
-VALUES ('15529918-2212-4451-ae0d-b9e0f2301bbd', 'USA');
-INSERT INTO country (uuid, country_name)
-VALUES ('55fbb9f2-22ae-4195-a390-92a9d740d7cb', 'Germany');
-
 INSERT INTO user_role (uuid, role_name)
 VALUES ('0608911b-f8fa-4a83-8f63-f314030a36ed', 'Client');
 INSERT INTO user_role (uuid, role_name)

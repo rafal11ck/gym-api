@@ -7,9 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeDto;
+import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeRequest;
 import xyz.cursedman.gym_api.domain.dtos.progressStatistics.ChartDto;
 import xyz.cursedman.gym_api.domain.dtos.progressStatistics.ProgressOverviewDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
+import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionDto;
 import xyz.cursedman.gym_api.services.ProgressStatisticsService;
 import xyz.cursedman.gym_api.services.UserService;
@@ -37,6 +40,14 @@ public class UserController {
 	public ResponseEntity<UserDto> getUser(@Valid @PathVariable UUID id) {
 		UserDto userDto = userService.getUser(id);
 		return ResponseEntity.ok(userDto);
+	}
+
+	@PatchMapping(path = "/{id}")
+	public ResponseEntity<UserDto> updateUser(
+		@Valid @PathVariable UUID id,
+		@RequestBody UserRequest request
+	) {
+		return ResponseEntity.ok(userService.patchUser(id, request));
 	}
 
 	// stats
@@ -73,6 +84,4 @@ public class UserController {
 	public ResponseEntity<WorkoutSessionDto> getUserLastWorkoutSession(@Valid @PathVariable UUID id) {
 		return ResponseEntity.ok(workoutSessionService.getUserLastWorkoutSession(id));
 	}
-
-
 }
