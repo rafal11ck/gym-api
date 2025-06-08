@@ -1,5 +1,6 @@
 package xyz.cursedman.gym_api.domain.entities;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,9 +18,11 @@ public final class WorkoutSession {
 	UUID uuid;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@Nullable
 	User coach;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@Nullable
 	Hall hall;
 
 	LocalDate date;

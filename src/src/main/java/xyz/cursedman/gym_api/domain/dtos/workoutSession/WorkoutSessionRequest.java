@@ -15,10 +15,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WorkoutSessionRequest {
-	@NotNull
 	private UUID coachUuid;
 
-	@NotNull
 	private UUID hallUuid;
 
 	@NotNull

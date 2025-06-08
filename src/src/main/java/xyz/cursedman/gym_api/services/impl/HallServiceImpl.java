@@ -51,8 +51,7 @@ public class HallServiceImpl implements HallService {
 
 	@Override
 	public Hall findHallByUuid(UUID id) {
-		return hallRepository.findById(id).orElseThrow(
-			() -> new NotFoundException("Hall with ID " + id + " not found")
-		);
+		if (id == null) return null;
+		return hallRepository.findById(id).orElse(null);
 	}
 }

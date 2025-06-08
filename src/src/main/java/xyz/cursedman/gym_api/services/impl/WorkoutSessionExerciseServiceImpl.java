@@ -80,6 +80,7 @@ public class WorkoutSessionExerciseServiceImpl implements WorkoutSessionExercise
 			.workoutSession(workoutSession)
 			.exercise(exerciseService.getExerciseByUuid(request.getExerciseUuid()))
 			.reps(request.getReps())
+			.weight(request.getWeight())
 			.exerciseOrder(request.getExerciseOrder())
 			.build();
 

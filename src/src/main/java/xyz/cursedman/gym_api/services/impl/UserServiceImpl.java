@@ -136,9 +136,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserByUuid(UUID id) {
-		return userRepository.findById(id).orElseThrow(
-			() -> new NotFoundException("User with ID " + id + " not found")
-		);
+		if (id == null) return null;
+		return userRepository.findById(id).orElse(null);
 	}
 
 	@Override
