@@ -502,6 +502,49 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/WorkoutSessionDto"
+  /users/{id}:
+    get:
+      tags:
+      - user-controller
+      operationId: getUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+    patch:
+      tags:
+      - user-controller
+      operationId: updateUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
   /memberships/{id}:
     get:
       tags:
@@ -738,25 +781,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/PageUserDto"
-  /users/{id}:
-    get:
-      tags:
-      - user-controller
-      operationId: getUser
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/UserDto"
   /users/{id}/workout-sessions:
     get:
       tags:
@@ -1336,6 +1360,66 @@ components:
           items:
             $ref: "#/components/schemas/TargetMuscleDto"
           uniqueItems: true
+    UserRequest:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+        cardUuid:
+          type: string
+          format: uuid
+        membershipUuid:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date-time
+        email:
+          type: string
+        username:
+          type: string
+        phoneNumber:
+          type: string
+        imageUrl:
+          type: string
+      required:
+      - email
+      - firstName
+      - lastName
+    UserDto:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        roles:
+          type: array
+          items:
+            type: string
+        membership:
+          $ref: "#/components/schemas/Membership"
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date-time
+        email:
+          type: string
+        username:
+          type: string
+        phoneNumber:
+          type: string
+        imageUrl:
+          type: string
     PageWorkoutSessionDto:
       type: object
       properties:
@@ -1395,33 +1479,6 @@ components:
           type: boolean
         unsorted:
           type: boolean
-    UserDto:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        roles:
-          type: array
-          items:
-            type: string
-        membership:
-          $ref: "#/components/schemas/Membership"
-        firstName:
-          type: string
-        lastName:
-          type: string
-        dateOfBirth:
-          type: string
-          format: date-time
-        email:
-          type: string
-        username:
-          type: string
-        phoneNumber:
-          type: string
-        imageUrl:
-          type: string
     PageUserDto:
       type: object
       properties:
