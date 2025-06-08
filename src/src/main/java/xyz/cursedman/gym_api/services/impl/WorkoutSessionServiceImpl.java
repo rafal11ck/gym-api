@@ -96,6 +96,9 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 			.orElseThrow(() -> new NotFoundException("Workout session with id " + workoutSessionId + " not found"));
 
 		User user = userService.getUserByUuid(request.getUserUuid());
+		if (user == null) {
+			throw new NotFoundException("User with id " + request.getUserUuid() + " not found");
+		}
 
 		session.getAttendants().add(user);
 		WorkoutSession updatedSession = workoutSessionRepository.save(session);
