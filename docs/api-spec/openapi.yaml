@@ -1242,6 +1242,8 @@ components:
           format: date-time
         membershipType:
           $ref: "#/components/schemas/MembershipType"
+        valid:
+          type: boolean
     MembershipTypeRequest:
       type: object
       properties:
@@ -1402,7 +1404,7 @@ components:
           items:
             type: string
         membership:
-          $ref: "#/components/schemas/Membership"
+          $ref: "#/components/schemas/MembershipDto"
         firstName:
           type: string
         lastName:
@@ -1421,12 +1423,12 @@ components:
     PageWorkoutSessionDto:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
         pageable:
           $ref: "#/components/schemas/PageableObject"
         first:
@@ -1480,12 +1482,12 @@ components:
     PageUserDto:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
         pageable:
           $ref: "#/components/schemas/PageableObject"
         first:
@@ -1579,12 +1581,12 @@ components:
     PageMembershipDto:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
         pageable:
           $ref: "#/components/schemas/PageableObject"
         first:
@@ -1643,12 +1645,12 @@ components:
     PageMembershipTypeDto:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
         pageable:
           $ref: "#/components/schemas/PageableObject"
         first:
@@ -1675,12 +1677,12 @@ components:
     PageMaintenanceTaskDto:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
         pageable:
           $ref: "#/components/schemas/PageableObject"
         first:
@@ -1707,12 +1709,12 @@ components:
     PageHallDto:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
         pageable:
           $ref: "#/components/schemas/PageableObject"
         first:
@@ -1747,12 +1749,12 @@ components:
     PageExerciseDto:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
         pageable:
           $ref: "#/components/schemas/PageableObject"
         first:
