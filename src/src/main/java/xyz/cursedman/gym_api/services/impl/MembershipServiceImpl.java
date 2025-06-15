@@ -13,7 +13,7 @@ import xyz.cursedman.gym_api.mappers.MembershipMapper;
 import xyz.cursedman.gym_api.repositories.MembershipRepository;
 import xyz.cursedman.gym_api.services.MembershipService;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,8 +28,8 @@ public class MembershipServiceImpl implements MembershipService {
 	public MembershipDto activateMembership(UUID membershipId) {
 		Membership membership = membershipRepository.findById(membershipId)
 			.orElseThrow(NotFoundException::new);
-		membership.setValidFrom(LocalDateTime.now());
-		membership.setValidUntil(LocalDateTime.now().plusMonths(1));
+		membership.setValidFrom(ZonedDateTime.now());
+		membership.setValidUntil(ZonedDateTime.now().plusMonths(1));
 		membershipRepository.save(membership);
 		return membershipMapper.toDtoFromEntity(membership);
 

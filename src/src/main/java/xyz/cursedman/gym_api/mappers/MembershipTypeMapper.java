@@ -1,6 +1,9 @@
 package xyz.cursedman.gym_api.mappers;
 
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeDto;
 import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeRequest;
 import xyz.cursedman.gym_api.domain.entities.MembershipType;

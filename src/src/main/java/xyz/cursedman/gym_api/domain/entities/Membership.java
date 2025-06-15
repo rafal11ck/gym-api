@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
@@ -20,9 +20,9 @@ public final class Membership {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	UUID uuid;
 
-	LocalDateTime validFrom;
+	ZonedDateTime validFrom;
 
-	LocalDateTime validUntil;
+	ZonedDateTime validUntil;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
