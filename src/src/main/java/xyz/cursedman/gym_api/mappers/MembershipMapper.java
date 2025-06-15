@@ -25,12 +25,15 @@ public interface MembershipMapper extends EntityRequestMapper<Membership, Member
 
 	@Override
 	default MembershipDto toDtoFromEntity(Membership entity) {
-		return MembershipDto.builder()
-			.membershipType(entity.getMembershipType())
-			.uuid(entity.getUuid())
-			.validUntil(entity.getValidUntil())
-			.isValid(entity.getValidUntil().isAfter(ZonedDateTime.now()))
-			.purchaseDate(entity.getValidFrom())
-			.build();
+		MembershipDto membershipDto = new MembershipDto();
+		membershipDto.setMembershipType(entity.getMembershipType());
+		membershipDto.setUuid(entity.getUuid());
+		membershipDto.setValidUntil(entity.getValidUntil());
+		membershipDto.setPurchaseDate(entity.getValidFrom());
+		if (membershipDto.getValidUntil() != null) {
+			membershipDto.setValid(membershipDto.getValidUntil().isAfter(ZonedDateTime.now()));
+		}
+		
+		return membershipDto;
 	}
 }
