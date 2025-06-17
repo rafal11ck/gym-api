@@ -17,9 +17,9 @@ public class StripeConfig {
 
 	private String paymentTitle = "Membership";
 
-	private String successRedirectUrl = "http://localhost:8080/success";
+	private String successRedirectUrl = "http://localhost:5173";
 
-	private String cancelRedirectUrl = "http://localhost:8080/cancel";
+	private String cancelRedirectUrl = "http://localhost:5173";
 
 	private final Logger logger = LoggerFactory.getLogger(StripeConfig.class);
 

@@ -1,5 +1,6 @@
 package xyz.cursedman.gym_api.services;
 
+import org.mapstruct.Named;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import xyz.cursedman.gym_api.domain.dtos.membership.MembershipDto;

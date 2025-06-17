@@ -29,11 +29,11 @@ public interface MembershipMapper extends EntityRequestMapper<Membership, Member
 		membershipDto.setMembershipType(entity.getMembershipType());
 		membershipDto.setUuid(entity.getUuid());
 		membershipDto.setValidUntil(entity.getValidUntil());
-		membershipDto.setPurchaseDate(entity.getValidFrom());
+		membershipDto.setValidFrom(entity.getValidFrom());
 		if (membershipDto.getValidUntil() != null) {
 			membershipDto.setValid(membershipDto.getValidUntil().isAfter(ZonedDateTime.now()));
 		}
-		
+
 		return membershipDto;
 	}
 }

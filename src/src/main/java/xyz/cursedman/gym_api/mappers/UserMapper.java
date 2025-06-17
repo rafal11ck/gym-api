@@ -29,11 +29,14 @@ public interface UserMapper extends EntityRequestMapper<User, UserDto, UserReque
 	User toEntityFromRequest(UserRequest request);
 
 	@Override
+	@Mapping(target = "membership", source = "membership")
+	UserDto toDtoFromEntity(User user);
+
+	@Override
 //	@Mapping(target = "roles", source = "roleUuid")
 	@Mapping(target = "membership", source = "membershipUuid")
 	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 	void updateFromRequest(UserRequest request, @MappingTarget User entity);
-
 
 	default Set<String> mapRolesToStrings(Set<UserRole> roles) {
 		if (roles == null) return null;

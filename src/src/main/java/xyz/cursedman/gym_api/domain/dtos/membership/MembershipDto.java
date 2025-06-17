@@ -16,7 +16,7 @@ import java.util.UUID;
 public class MembershipDto {
 	private UUID uuid;
 
-	private ZonedDateTime purchaseDate;
+	private ZonedDateTime validFrom;
 
 	private ZonedDateTime validUntil;
 
