@@ -1234,7 +1234,7 @@ components:
         uuid:
           type: string
           format: uuid
-        purchaseDate:
+        validFrom:
           type: string
           format: date-time
         validUntil:
