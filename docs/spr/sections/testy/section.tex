@@ -4,6 +4,20 @@
 
 \section{Testy}
 \subsection{Opis metod testowania (np. testy manualne i automatyczne)}
+
+W projekcie zastosowano automatyczne testy integracyjne warstwy kontrolerów w aplikacji Spring Boot.
+Testy uruchamiane są na pełnym kontekście aplikacji,
+co pozwala na weryfikację poprawności działania endpointów HTTP wraz z rzeczywistą logiką biznesową.
+W celu zapewnienia izolacji testów od zewnętrznych systemów, komponenty komunikujące się z
+usługami zewnętrznymi są mockowane, natomiast pozostałe serwisy odpowiedzialne za logikę biznesową
+działają rzeczywiście. Takie podejście umożliwia sprawdzenie zarówno poprawności odpowiedzi HTTP,
+walidacji danych, jak i integracji kontrolerów z warstwą serwisów.
+Testy pozwalają na wykrywanie błędów na poziomie integracji, jednocześnie gwarantując stabilność
+i powtarzalność testów poprzez eliminację zależności od zewnętrznych systemów.
+
+
 \subsection{Wyniki testów, napotkane błędy oraz zastosowane rozwiązania}
+
+
 
 \end{document}
