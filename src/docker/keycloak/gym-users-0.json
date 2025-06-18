@@ -5,7 +5,8 @@
     "username" : "gigachad",
     "firstName" : "gigachad",
     "lastName" : "gigachad",
-    "emailVerified" : true,
+    "email" : "gigachad@example.com",
+    "emailVerified" : false,
     "createdTimestamp" : 1749395335980,
     "enabled" : true,
     "totp" : false,
@@ -44,7 +45,7 @@
     "requiredActions" : [ ],
     "realmRoles" : [ "default-roles-gym" ],
     "notBefore" : 0,
-    "groups" : [ "/manager/employee" ]
+    "groups" : [ "/employee" ]
   }, {
     "id" : "a7686140-ea77-4905-ba78-d0bc527dac3b",
     "username" : "juzek",

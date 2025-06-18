@@ -267,14 +267,6 @@
         "containerId" : "89391756-438d-4603-941d-f14f375fe268",
         "attributes" : { }
       }, {
-        "id" : "b16c5809-22e9-48f8-9874-4b90fdc10a79",
-        "name" : "emplyee",
-        "description" : "",
-        "composite" : false,
-        "clientRole" : true,
-        "containerId" : "89391756-438d-4603-941d-f14f375fe268",
-        "attributes" : { }
-      }, {
         "id" : "51f54cf8-1752-4899-94c1-2498ee47556d",
         "name" : "coach",
         "description" : "",
@@ -286,6 +278,14 @@
         "id" : "88d97386-026b-427f-ae21-934d2b448ef9",
         "name" : "manager",
         "description" : "manager",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "89391756-438d-4603-941d-f14f375fe268",
+        "attributes" : { }
+      }, {
+        "id" : "07226182-f2de-41a7-bb38-55aa6f6ea256",
+        "name" : "employee",
+        "description" : "",
         "composite" : false,
         "clientRole" : true,
         "containerId" : "89391756-438d-4603-941d-f14f375fe268",
@@ -389,21 +389,20 @@
       "gym-app" : [ "coach" ]
     }
   }, {
+    "id" : "a4589916-18a2-4925-9bab-a14ab31fe6f3",
+    "name" : "employee",
+    "path" : "/employee",
+    "subGroups" : [ ],
+    "attributes" : { },
+    "realmRoles" : [ ],
+    "clientRoles" : {
+      "gym-app" : [ "employee" ]
+    }
+  }, {
     "id" : "f82f1879-4f95-431d-8b01-5d89123de421",
     "name" : "manager",
     "path" : "/manager",
-    "subGroups" : [ {
-      "id" : "a4589916-18a2-4925-9bab-a14ab31fe6f3",
-      "name" : "employee",
-      "path" : "/manager/employee",
-      "parentId" : "f82f1879-4f95-431d-8b01-5d89123de421",
-      "subGroups" : [ ],
-      "attributes" : { },
-      "realmRoles" : [ ],
-      "clientRoles" : {
-        "gym-app" : [ "emplyee" ]
-      }
-    } ],
+    "subGroups" : [ ],
     "attributes" : { },
     "realmRoles" : [ ],
     "clientRoles" : {
