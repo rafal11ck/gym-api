@@ -23,7 +23,7 @@ import java.util.UUID;
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@WithMockUser(roles = {"MANAGER", "EMPLOYEE"})
+@WithMockUser(roles = {"CLIENT"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class HallControllerTest {
 	private final String endpointUri = "/halls";

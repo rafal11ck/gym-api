@@ -5,5 +5,4 @@ public enum UserRoleEnum {
 	COACH,
 	MANAGER,
 	EMPLOYEE,
-	COACH,
 }
