@@ -24,7 +24,7 @@ import java.util.UUID;
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@WithMockUser(roles = {"CLIENT"})
+@WithMockUser(roles = {"MANAGER", "EMPLOYEE"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class MaintenanceTaskControllerTest {
 	private final String endpointUri = "/maintenance-tasks";

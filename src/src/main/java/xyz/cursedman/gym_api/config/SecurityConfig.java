@@ -31,12 +31,23 @@ public class SecurityConfig {
 				.requestMatchers("/swagger", "/swagger-ui/*", "/api-docs.yaml", "/api-docs/**")
 				.permitAll()
 
+
 				.requestMatchers("/stripe/webhook")
 				.permitAll()
 
+
+				.requestMatchers("/workout-sessions").hasAnyRole("CLIENT","COACH")
+					.requestMatchers("/target-muscles").hasAnyRole("CLIENT","COACH")
+					.requestMatchers("/memberships").hasRole("CLIENT")
+					.requestMatchers("/maintenance-tasks").hasAnyRole("EMPLOYEE","MANAGER")
+					.requestMatchers("/halls").hasAnyRole("EMPLOYEE","MANAGER")
+					.requestMatchers("/exercises").hasRole("CLIENT")
+					.requestMatchers("/users").hasAnyRole("CLIENT","COACH","MANAGER")
+					.requestMatchers("/hall-types").hasAnyRole("EMPLOYEE","MANAGER")
+
 				// everything else authenticated
-				.anyRequest()
-				.authenticated()
+				//.anyRequest()
+				//.authenticated()
 			)
 			.sessionManagement((session) ->
 				session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@WithMockUser(roles = {"CLIENT"})
+@WithMockUser(roles = {"CLIENT", "COACH"})
 @ActiveProfiles("test")
 class TargetMuscleControllerTest {
 
