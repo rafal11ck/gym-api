@@ -25,14 +25,47 @@
 
 \subsubsection{Autoryzacja z tokena JWT}
 
-Obsługę autoryzacji z tokena JWT przedstawia \cref{auth_jwt}
+\captionsetup{hypcap=false}
+\begin{center}
+  \inputminted[
+    breaklines,
+    fontsize=\footnotesize,
+    breakanywhere,
+    numbers=left
+  ]{java}{./sections/implementacja/GymJwtAuthenticationConverter.java}
+  \captionof{listing}{Autoryzacja z tokena JWT (OIDC)}
+\end{center}
 
-\begin{listing}
-  \inputminted[breaklines, fontsize=\footnotesize, breakanywhere, firstline=18, numbers=left]
-  {java}{./sections/implementacja/GymJwtAuthenticationConverter.java}
-  \caption{Autoryzacja z tokena JWT OIDC}
-  \label{auth_jwt}
-\end{listing}
+
+\begin{center}
+  \inputminted[
+    breaklines,
+    fontsize=\footnotesize,
+    breakanywhere,
+    numbers=left
+  ]{java}{./sections/implementacja/HallController.java}
+  \captionof{listing}{Przykładowy kontroler}
+\end{center}
+
+\begin{center}
+  \inputminted[
+    breaklines,
+    fontsize=\footnotesize,
+    breakanywhere,
+    numbers=left
+  ]{java}{./sections/implementacja/HallServiceImpl.java}
+  \captionof{listing}{Przykładowy serwis}
+\end{center}
+
+\begin{center}
+  \inputminted[
+    breaklines,
+    fontsize=\footnotesize,
+    breakanywhere,
+    numbers=left
+  ]{java}{./sections/implementacja/HallControllerTest.java}
+  \captionof{listing}{Przykładowe testy jednego z kontrolerów}
+\end{center}
 
 \subsubsection{}
 
