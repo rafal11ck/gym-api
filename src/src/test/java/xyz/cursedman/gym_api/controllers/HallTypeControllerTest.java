@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@WithMockUser(roles = {"CLIENT"})
+@WithMockUser(roles = {"MANAGER", "EMPLOYEE"})
 class HallTypeControllerTest {
 
 	private final String endpointUri = "/hall-types";

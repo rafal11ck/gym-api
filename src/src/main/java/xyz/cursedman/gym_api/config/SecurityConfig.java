@@ -26,17 +26,30 @@ public class SecurityConfig {
 		http
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests((authorize) -> authorize
-				// allow all to docs
+					// allow all to docs
 
-				.requestMatchers("/swagger", "/swagger-ui/*", "/api-docs.yaml", "/api-docs/**")
-				.permitAll()
+					.requestMatchers("/swagger", "/swagger-ui/*", "/api-docs.yaml", "/api-docs/**")
+					.permitAll()
 
-				.requestMatchers("/stripe/webhook")
-				.permitAll()
+					.requestMatchers("/stripe/webhook", "/whoami")
+					.permitAll()
+
+					.requestMatchers("/membership-types", "/membership-types/**").authenticated()
+					.requestMatchers("/halls", "/halls/**").authenticated()
+					.requestMatchers("/user-roles").hasAnyRole("CLIENT", "COACH", "MANAGER", "EMPLOYEE")
+					.requestMatchers("/workout-sessions", "/workout-sessions/**").hasAnyRole("CLIENT", "COACH")
+					.requestMatchers("/target-muscles").hasAnyRole("CLIENT", "COACH")
+					.requestMatchers("/memberships", "/memberships/*", "/memberships/*/payments").hasRole("CLIENT")
+					.requestMatchers("/maintenance-tasks", "/maintenance-tasks/*").hasAnyRole("EMPLOYEE", "MANAGER")
+					.requestMatchers("/halls").hasAnyRole("EMPLOYEE", "MANAGER")
+					.requestMatchers("/exercises").hasRole("CLIENT")
+					.requestMatchers("/users", "/users/*/last-workout-session", "/users/*").hasAnyRole("CLIENT", "COACH", "MANAGER")
+					.requestMatchers("/hall-types", "/hall-types/*").hasAnyRole("EMPLOYEE", "MANAGER")
+					.requestMatchers("/workouts").hasAnyRole("EMPLOYEE", "MANAGER")
 
 				// everything else authenticated
-				.anyRequest()
-				.authenticated()
+				//.anyRequest()
+				//.authenticated()
 			)
 			.sessionManagement((session) ->
 				session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
