@@ -57,6 +57,7 @@ public class GymJwtAuthenticationConverter implements Converter<Jwt, AbstractAut
 		Collection<String> roles = userService.getUserRoles(user.getUuid());
 		Collection<GrantedAuthority> authorities
 			= roles.stream()
+			.map(String::toUpperCase)
 			.map(role -> new SimpleGrantedAuthority(("ROLE_" + role)))
 			.collect(Collectors.toList());
 

@@ -43,7 +43,8 @@ public class SecurityConfig {
 					.requestMatchers("/maintenance-tasks", "/maintenance-tasks/*").hasAnyRole("EMPLOYEE", "MANAGER")
 					.requestMatchers("/halls").hasAnyRole("EMPLOYEE", "MANAGER")
 					.requestMatchers("/exercises").hasRole("CLIENT")
-					.requestMatchers("/users", "/users/*/last-workout-session", "/users/*").hasAnyRole("CLIENT", "COACH", "MANAGER")
+					.requestMatchers("/users", "/users/*/last-workout-session", "/users/**")
+					.hasAnyRole("CLIENT", "COACH", "MANAGER", "EMPLOYEE")
 					.requestMatchers("/hall-types", "/hall-types/*").hasAnyRole("EMPLOYEE", "MANAGER")
 					.requestMatchers("/workouts").hasAnyRole("EMPLOYEE", "MANAGER")
 
