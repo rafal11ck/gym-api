@@ -5,9 +5,22 @@
 \section{Podsumowanie}
 
 \subsection{Wnioski z realizacji projektu}
+Możemy stwierdzić, że stworzono solidne API dla aplikacji fitness,
+oparte na architekturze MVC, umożliwiające zarządzanie sesjami treningowymi,
+ćwiczeniami, członkostwami użytkowników oraz przetwarzanie płatności.
+Zaimplementowanie operacji CRUD (GET, POST, PATCH, DELETE) w różnych kontrolerach
+w ramach wzorca MVC pokazuje kompleksowe rozwiązanie backendowe,
+gdzie modele obsługują logikę biznesową, widoki prezentują dane,
+a kontrolery zarządzają przepływem. Użycie zasad SOLID
+zapewniło modułowość i łatwość rozbudowy kodu.
+Ponadto zastosowanie paginacji zwiększa skalowalność i efektywną obsługę dużych ilości danych.
 
 \subsection{Ocena osiągniętych rezultatów i refleksje na temat procesu implementacji}
+Oceniając rezultaty, API spełnia podstawowe wymagania platformy fitness.
+Proces podkreślił znaczenie bezpiecznego uwierzytelniania (OAuth2) oraz elastycznych opcji sortowania i paginacji.
+Wyzwania obejmowały zapewnienie spójności danych między powiązanymi encjami (np. ćwiczenia i uczestnicy),
+co zostało rozwiązane dzięki uporządkowanym schematom żądań i odpowiedzi.
 
 \subsection{Propozycje usprawnień lub dalszego rozwoju aplikacji}
-
+Proponując usprawnienia, można rozważyć dodanie śledzenia treningów w czasie rzeczywistym.
 \end{document}
