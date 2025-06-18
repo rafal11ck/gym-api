@@ -13,15 +13,39 @@ paths:
       tags:
       - workout-session-controller
       operationId: listWorkoutSessions
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+          minimum: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          type: integer
+          default: 20
+          minimum: 1
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/WorkoutSessionDto"
+                $ref: "#/components/schemas/PageWorkoutSessionDto"
     post:
       tags:
       - workout-session-controller
@@ -120,20 +144,44 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/TargetMuscleDto"
+  /stripe/webhook:
+    post:
+      tags:
+      - stripe-controller
+      operationId: handleStripeWebhook
+      parameters:
+      - name: Stripe-Signature
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "200":
+          description: OK
   /memberships:
     get:
       tags:
       - membership-controller
       operationId: listMemberships
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/MembershipDto"
+                $ref: "#/components/schemas/PageMembershipDto"
     post:
       tags:
       - membership-controller
@@ -196,15 +244,39 @@ paths:
       tags:
       - membership-type-controller
       operationId: listMembershipTypes
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+          minimum: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          type: integer
+          default: 20
+          minimum: 1
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/MembershipTypeDto"
+                $ref: "#/components/schemas/PageMembershipTypeDto"
     post:
       tags:
       - membership-type-controller
@@ -227,15 +299,39 @@ paths:
       tags:
       - maintenance-task-controller
       operationId: listMaintenanceTasks
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+          minimum: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          type: integer
+          default: 20
+          minimum: 1
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/MaintenanceTaskDto"
+                $ref: "#/components/schemas/PageMaintenanceTaskDto"
     post:
       tags:
       - maintenance-task-controller
@@ -258,15 +354,39 @@ paths:
       tags:
       - hall-controller
       operationId: listHalls
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+          minimum: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          type: integer
+          default: 20
+          minimum: 1
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/HallDto"
+                $ref: "#/components/schemas/PageHallDto"
     post:
       tags:
       - hall-controller
@@ -289,15 +409,39 @@ paths:
       tags:
       - exercise-controller
       operationId: listExercises
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+          minimum: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          type: integer
+          default: 20
+          minimum: 1
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ExerciseDto"
+                $ref: "#/components/schemas/PageExerciseDto"
     post:
       tags:
       - exercise-controller
@@ -315,74 +459,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/ExerciseDto"
-  /chats:
-    post:
-      tags:
-      - chat-controller
-      operationId: createChat
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ChatDto"
-  /chats/{id}/participants:
-    post:
-      tags:
-      - chat-controller
-      operationId: addChatParticipant
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ChatParticipantCreateRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ChatParticipantDto"
-  /cards:
-    get:
-      tags:
-      - card-controller
-      operationId: listCards
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/CardDto"
-    post:
-      tags:
-      - card-controller
-      operationId: createCard
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CardRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/CardDto"
   /workout-sessions/{id}:
     get:
       tags:
@@ -426,6 +502,49 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/WorkoutSessionDto"
+  /users/{id}:
+    get:
+      tags:
+      - user-controller
+      operationId: getUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+    patch:
+      tags:
+      - user-controller
+      operationId: updateUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
   /memberships/{id}:
     get:
       tags:
@@ -612,106 +731,11 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/HallDto"
-  /chats/{id}/participants/{userId}:
-    patch:
-      tags:
-      - chat-controller
-      operationId: updateChatParticipant
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ChatParticipantPatchRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ChatParticipantDto"
-  /cards/{id}:
+  /whoami:
     get:
       tags:
-      - card-controller
-      operationId: getCard
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/CardDto"
-    patch:
-      tags:
-      - card-controller
-      operationId: updateCard_2
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CardRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/CardDto"
-  /users:
-    get:
-      tags:
-      - user-controller
-      operationId: listUsers
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UserDto"
-  /users/{id}:
-    get:
-      tags:
-      - user-controller
-      operationId: getUser
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
+      - who-am-i-controller
+      operationId: whoAmI
       responses:
         "200":
           description: OK
@@ -719,6 +743,44 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/UserDto"
+  /users:
+    get:
+      tags:
+      - user-controller
+      operationId: listUsers
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+          minimum: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          type: integer
+          default: 20
+          minimum: 1
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageUserDto"
   /users/{id}/workout-sessions:
     get:
       tags:
@@ -830,27 +892,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/WorkoutSessionDto"
-  /users/{id}/chats:
-    get:
-      tags:
-      - user-controller
-      operationId: listChats
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ChatDto"
   /user-roles:
     get:
       tags:
@@ -879,39 +920,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/HallTypeDto"
-  /countries:
-    get:
-      tags:
-      - country-controller
-      operationId: getCountry
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/CountryDto"
-  /chats/{id}:
-    get:
-      tags:
-      - chat-controller
-      operationId: getChat
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ChatDto"
   /workout-sessions/{id}/exercises/{exerciseId}:
     delete:
       tags:
@@ -1003,46 +1011,9 @@ components:
         description:
           type: string
       required:
-      - coachUuid
       - date
       - description
-      - hallUuid
       - title
-    Card:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        country:
-          $ref: "#/components/schemas/Country"
-        cardNumber:
-          type: string
-        cvv:
-          type: string
-        dateOfBirth:
-          type: string
-          format: date-time
-        nameOnCard:
-          type: string
-        postalCode:
-          type: string
-      required:
-      - cardNumber
-      - cvv
-      - dateOfBirth
-      - nameOnCard
-      - postalCode
-    Country:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        countryName:
-          type: string
-      required:
-      - countryName
     Exercise:
       type: object
       properties:
@@ -1136,8 +1107,6 @@ components:
           items:
             $ref: "#/components/schemas/UserRole"
           uniqueItems: true
-        card:
-          $ref: "#/components/schemas/Card"
         membership:
           $ref: "#/components/schemas/Membership"
         firstName:
@@ -1265,7 +1234,7 @@ components:
         uuid:
           type: string
           format: uuid
-        purchaseDate:
+        validFrom:
           type: string
           format: date-time
         validUntil:
@@ -1273,6 +1242,8 @@ components:
           format: date-time
         membershipType:
           $ref: "#/components/schemas/MembershipType"
+        valid:
+          type: boolean
     MembershipTypeRequest:
       type: object
       properties:
@@ -1389,104 +1360,20 @@ components:
           items:
             $ref: "#/components/schemas/TargetMuscleDto"
           uniqueItems: true
-    ChatDto:
+    UserRequest:
       type: object
       properties:
-        uuid:
-          type: string
-          format: uuid
-        participants:
-          type: array
-          items:
-            $ref: "#/components/schemas/ChatParticipantDto"
-          uniqueItems: true
-    ChatParticipantDto:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        user:
-          $ref: "#/components/schemas/User"
-        lastReadDateTime:
-          type: string
-          format: date-time
-    ChatParticipantCreateRequest:
-      type: object
-      properties:
-        userUuid:
-          type: string
-          format: uuid
-        lastReadDateTime:
-          type: string
-          format: date-time
-      required:
-      - userUuid
-    CardRequest:
-      type: object
-      properties:
-        countryUuid:
-          type: string
-          format: uuid
-        cardNumber:
-          type: string
-        cvv:
-          type: string
-        dateOfBirth:
-          type: string
-          format: date-time
-        nameOnCard:
-          type: string
-        postalCode:
-          type: string
-      required:
-      - cardNumber
-      - countryUuid
-      - cvv
-      - dateOfBirth
-      - nameOnCard
-      - postalCode
-    CardDto:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
-        country:
-          $ref: "#/components/schemas/Country"
-        cardNumber:
-          type: string
-        cvv:
-          type: string
-        dateOfBirth:
-          type: string
-          format: date-time
-        nameOnCard:
-          type: string
-        postalCode:
-          type: string
-    ChatParticipantPatchRequest:
-      type: object
-      properties:
-        lastReadDateTime:
-          type: string
-          format: date-time
-      required:
-      - lastReadDateTime
-    UserDto:
-      type: object
-      properties:
-        uuid:
-          type: string
-          format: uuid
         roles:
           type: array
           items:
             type: string
-        card:
-          $ref: "#/components/schemas/Card"
-        membership:
-          $ref: "#/components/schemas/Membership"
+          uniqueItems: true
+        cardUuid:
+          type: string
+          format: uuid
+        membershipUuid:
+          type: string
+          format: uuid
         firstName:
           type: string
         lastName:
@@ -1502,6 +1389,128 @@ components:
           type: string
         imageUrl:
           type: string
+      required:
+      - email
+      - firstName
+      - lastName
+    UserDto:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        roles:
+          type: array
+          items:
+            type: string
+        membership:
+          $ref: "#/components/schemas/MembershipDto"
+        firstName:
+          type: string
+        lastName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date-time
+        email:
+          type: string
+        username:
+          type: string
+        phoneNumber:
+          type: string
+        imageUrl:
+          type: string
+    PageWorkoutSessionDto:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorkoutSessionDto"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        empty:
+          type: boolean
+    PageableObject:
+      type: object
+      properties:
+        paged:
+          type: boolean
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        offset:
+          type: integer
+          format: int64
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        unpaged:
+          type: boolean
+    SortObject:
+      type: object
+      properties:
+        sorted:
+          type: boolean
+        empty:
+          type: boolean
+        unsorted:
+          type: boolean
+    PageUserDto:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserDto"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        empty:
+          type: boolean
     ProgressOverviewDto:
       type: object
       properties:
@@ -1554,8 +1563,181 @@ components:
           format: uuid
         role:
           type: string
+    Pageable:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+          minimum: 0
+        size:
+          type: integer
+          format: int32
+          minimum: 1
+        sort:
+          type: array
+          items:
+            type: string
+    PageMembershipDto:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/MembershipDto"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        empty:
+          type: boolean
     PaymentDto:
       type: object
+      properties:
+        paymentId:
+          type: string
+          format: uuid
+        currency:
+          type: object
+          properties:
+            currencyCode:
+              type: string
+            numericCode:
+              type: integer
+              format: int32
+            numericCodeAsString:
+              type: string
+            displayName:
+              type: string
+            symbol:
+              type: string
+            defaultFractionDigits:
+              type: integer
+              format: int32
+        price:
+          type: number
+        status:
+          type: string
+          enum:
+          - PENDING
+          - SUCCEEDED
+          - EXPIRED
+          - FAILED
+    PageMembershipTypeDto:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/MembershipTypeDto"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        empty:
+          type: boolean
+    PageMaintenanceTaskDto:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/MaintenanceTaskDto"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        empty:
+          type: boolean
+    PageHallDto:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/HallDto"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        empty:
+          type: boolean
     HallTypeDto:
       type: object
       properties:
@@ -1564,14 +1746,38 @@ components:
           format: uuid
         name:
           type: string
-    CountryDto:
+    PageExerciseDto:
       type: object
       properties:
-        uuid:
-          type: string
-          format: uuid
-        countryName:
-          type: string
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExerciseDto"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        empty:
+          type: boolean
   securitySchemes:
     OAuth2:
       type: oauth2

@@ -1,3 +1,14 @@
 .direnv
 .idea
 .env
+indent.log
+_minted
+section.log
+section.aux
+section.synctex.gz
+section.pdf
+docs/spr/spr.synctex.gz
+docs/spr/spr.aux
+docs/spr/spr.log
+section.out
+docs/spr/spr.out

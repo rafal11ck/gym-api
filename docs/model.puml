@@ -1,191 +1,119 @@
 @startuml
+
+!theme plain
+top to bottom direction
 skinparam linetype ortho
 
-enum "user_role" as user_role {
-    id
-    role
+class exercise {
+   name: varchar(255)
+   uuid: uuid
+}
+class exercise_target_muscle {
+   exercise_uuid: uuid
+   target_muscle_uuid: uuid
+}
+class hall {
+   hall_type_uuid: uuid
+   hall_description: varchar(255)
+   hall_name: varchar(255)
+   uuid: uuid
+}
+class hall_type {
+   name: varchar(255)
+   uuid: uuid
+}
+class maintenance_task {
+   planned_end_date: timestamp(6)
+   planned_start_date: timestamp(6)
+   maintainer_uuid: uuid
+   maintenance_hall_uuid: uuid
+   description: varchar(255)
+   uuid: uuid
+}
+class membership {
+   valid_from: timestamp(6)
+   valid_until: timestamp(6)
+   membership_type_uuid: uuid
+   uuid: uuid
+}
+class membership_type {
+   currency: varchar(3)
+   price: numeric(38,2)
+   type: varchar(255)
+   uuid: uuid
+}
+class payment {
+   currency: varchar(3)
+   price: numeric(38,2)
+   external_ref_id: uuid
+   external_ref_type: varchar(255)
+   status: varchar(255)
+   payment_id: uuid
+}
+class target_muscle {
+   name: varchar(255)
+   uuid: uuid
+}
+class user_account_connection {
+   user_uuid: uuid
+   external_authorization_provider_name: varchar(255)
+   external_authorization_user_id: varchar(255)
+   uuid: uuid
+}
+class user_role {
+   role_name: varchar(255)
+   uuid: uuid
+}
+class users {
+   date_of_birth: timestamp(6)
+   membership_uuid: uuid
+   email: varchar(255)
+   first_name: varchar(255)
+   image_url: varchar(255)
+   last_name: varchar(255)
+   phone_number: varchar(255)
+   username: varchar(255)
+   uuid: uuid
+}
+class users_roles {
+   roles_uuid: uuid
+   user_uuid: uuid
+}
+class workout_session {
+   date: date
+   coach_uuid: uuid
+   hall_uuid: uuid
+   description: varchar(255)
+   title: varchar(255)
+   uuid: uuid
+}
+class workout_session_attendants {
+   attendants_uuid: uuid
+   workout_session_uuid: uuid
+}
+class workout_session_exercise {
+   exercise_order: integer
+   reps: integer
+   weight: real
+   exercise_uuid: uuid
+   workout_session_uuid: uuid
+   uuid: uuid
 }
 
-entity "card" as card {
-    id
-    number
-    date
-    cvv
-    name_on_card
-    country
-    postal_code
-}
-
-enum "membership_type" as membership_type {
-    id
-    type
-    price
-}
-
-
-entity "membership" as membership {
-    id
-    id_membership_type
-    payment_interval
-    purchase_date
-    valid_until
-    automatic_renewal
-}
-
-entity "user_details" as user_details {
-    id
-    first_name
-    last_name
-    date_of_birth
-    email
-    phone_number
-    city
-    street
-    house_or_apartment
-    image_url
-}
-
-entity "user" as user {
-    id
-    id_role
-    id_card
-    id_membership
-    id_user_details
-}
-' 
-entity "workout_session" as workout_session {
-    id
-    id_coach
-    id_hall
-    date
-    time
-    title
-    description
-}
-
-entity "workout_session_exercise" as workout_session_exercise {
-    id
-    id_workout_session
-    id_exercise
-    reps
-    order
-}
-
-note right of workout_session
-  coach to też user
-end note
-
-entity "user_workout_session" as user_workout_session {
-    id
-    id_user
-    id_workout_session
-}
-
-note right of user_workout_session
-  tutaj user to osoba
-  która uczęszcza na sesję
-end note
-
-enum "target_muscle" as target_muscle {
-    id
-    muscle
-}
-
-entity "exercise_target_muscle" as exercise_target_muscle {
-    id
-    id_exercise
-    id_target_muscle
-}
-
-entity "exercise" as exercise {
-    id
-    name
-}
-
-enum "payment_status" as payment_status {
-    id
-    status
-}
-
-entity "payment" as payment {
-    id
-    id_card
-    id_status
-    id_membership
-    datetime
-    value
-}
-
-enum "hall_type" as hall_type {
-    id
-    type
-}
-
-entity "hall" as hall {
-    id
-    id_hall_type
-    hall_number
-    description
-}
-
-entity "maintenance_task" as maintenance_task {
-    id
-    id_user
-    id_hall
-    estimated_start_datetime
-    estimated_end_datetime
-    description
-}
-
-entity "chat" as chat {
-    id
-}
-
-entity "chat_participant" as chat_participant {
-    id
-    id_chat
-    id_user
-    last_read_datetime
-}
-
-entity "message" as message {
-    id
-    id_chat
-    id_sender
-    datetime
-}
-
-user ||--|| user_details
-user }|--|| user_role
-user }|--|| membership
-user }|--|| card
-
-membership }|--|| membership_type
-
-workout_session }|---|| user
-workout_session }|--|| hall
-
-user_workout_session }|--|| workout_session
-user_workout_session }|--|| user
-
-hall ||--|| hall_type
-
-workout_session_exercise }|--|| workout_session
-workout_session_exercise }|--|| exercise
-
-exercise_target_muscle }|--|| target_muscle
-exercise_target_muscle }|--|| exercise
-
-payment }|--|| payment_status
-payment }|--|| membership
-payment }|--|| card
-
-maintenance_task }|--|| hall
-maintenance_task }|--|| user
-
-message }|--|| chat
-message }|--|| user
-
-chat_participant }|--|| chat
-chat_participant }|--|| user
+exercise_target_muscle      -[#595959,plain]-^  exercise                   : "exercise_uuid:uuid"
+exercise_target_muscle      -[#595959,plain]-^  target_muscle              : "target_muscle_uuid:uuid"
+hall                        -[#595959,plain]-^  hall_type                  : "hall_type_uuid:uuid"
+maintenance_task            -[#595959,plain]-^  hall                       : "maintenance_hall_uuid:uuid"
+maintenance_task            -[#595959,plain]-^  users                      : "maintainer_uuid:uuid"
+membership                  -[#595959,plain]-^  membership_type            : "membership_type_uuid:uuid"
+user_account_connection     -[#595959,plain]-^  users                      : "user_uuid:uuid"
+users                       -[#595959,plain]-^  membership                 : "membership_uuid:uuid"
+users_roles                 -[#595959,plain]-^  user_role                  : "roles_uuid:uuid"
+users_roles                 -[#595959,plain]-^  users                      : "user_uuid:uuid"
+workout_session             -[#595959,plain]-^  hall                       : "hall_uuid:uuid"
+workout_session             -[#595959,plain]-^  users                      : "coach_uuid:uuid"
+workout_session_attendants  -[#595959,plain]-^  users                      : "attendants_uuid:uuid"
+workout_session_attendants  -[#595959,plain]-^  workout_session            : "workout_session_uuid:uuid"
+workout_session_exercise    -[#595959,plain]-^  exercise                   : "exercise_uuid:uuid"
+workout_session_exercise    -[#595959,plain]-^  workout_session            : "workout_session_uuid:uuid"
 @enduml

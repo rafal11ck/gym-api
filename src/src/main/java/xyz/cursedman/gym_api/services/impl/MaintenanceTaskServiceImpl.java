@@ -2,7 +2,8 @@ package xyz.cursedman.gym_api.services.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.maintenanceTask.MaintenanceTaskDto;
 import xyz.cursedman.gym_api.domain.dtos.maintenanceTask.MaintenanceTaskRequest;
@@ -12,7 +13,6 @@ import xyz.cursedman.gym_api.mappers.MaintenanceTaskMapper;
 import xyz.cursedman.gym_api.repositories.MaintenanceTaskRepository;
 import xyz.cursedman.gym_api.services.MaintenanceTaskService;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -24,8 +24,8 @@ public class MaintenanceTaskServiceImpl implements MaintenanceTaskService {
 	private final MaintenanceTaskMapper maintenanceTaskMapper;
 
 	@Override
-	public List<MaintenanceTaskDto> listMaintenanceTasks() {
-		return maintenanceTaskRepository.findAll().stream().map(maintenanceTaskMapper::toDtoFromEntity).toList();
+	public Page<MaintenanceTaskDto> listMaintenanceTasks(Pageable pageable) {
+		return maintenanceTaskRepository.findAll(pageable).map(maintenanceTaskMapper::toDtoFromEntity);
 	}
 
 	@Override
@@ -45,8 +45,7 @@ public class MaintenanceTaskServiceImpl implements MaintenanceTaskService {
 	}
 
 	@Override
-	public MaintenanceTaskDto patchMaintenanceTask(UUID id, MaintenanceTaskRequest request)
-	{
+	public MaintenanceTaskDto patchMaintenanceTask(UUID id, MaintenanceTaskRequest request) {
 		MaintenanceTask task = maintenanceTaskRepository.findById(id).orElseThrow(NotFoundException::new);
 		maintenanceTaskMapper.updateFromRequest(request, task);
 

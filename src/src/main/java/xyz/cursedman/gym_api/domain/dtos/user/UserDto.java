@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import xyz.cursedman.gym_api.domain.entities.Card;
-import xyz.cursedman.gym_api.domain.entities.Membership;
+import xyz.cursedman.gym_api.domain.dtos.membership.MembershipDto;
 
 import java.util.Collection;
 import java.util.Date;
@@ -20,9 +19,7 @@ public class UserDto {
 
 	private Collection<String> roles;
 
-	private Card card;
-
-	private Membership membership;
+	private MembershipDto membership;
 
 	private String firstName;
 

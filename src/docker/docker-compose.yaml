@@ -30,14 +30,14 @@ services:
       - "host.docker.internal:host-gateway"
     depends_on:
       - keycloak-db
-    networks: 
+    networks:
       - keycloak_network
 
   keycloak-db:
     image: postgres:latest
     environment:
       POSTGRES_PASSWORD: admin
-    volumes: 
+    volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - keycloak_network
@@ -49,7 +49,7 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: gym-api-user
       POSTGRES_DB: &dbname gym-api
-    ports:  
+    ports:
       - 5432:5432
     container_name:
       &dbserver gym-api-db
@@ -63,7 +63,13 @@ services:
       ADMINER_DEFAULT_DB_NAME: *dbname
       ADMINER_DEFAULT_DB_DRIVER: pgsql
       ADMINER_DEFAULT_SERVER: *dbserver
-      
+
+  stripe-cli:
+    image: stripe/stripe-cli:latest
+    environment:
+      STRIPE_API_KEY: ${STRIPE_API_KEY}
+    command: listen --forward-to=http://host.docker.internal:8080/stripe/webhook
+
 
 volumes:
   postgres_data:

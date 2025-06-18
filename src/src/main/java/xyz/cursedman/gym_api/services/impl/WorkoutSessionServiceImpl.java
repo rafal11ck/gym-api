@@ -2,6 +2,8 @@ package xyz.cursedman.gym_api.services.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionAttendantRequest;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionDto;
@@ -18,7 +20,6 @@ import xyz.cursedman.gym_api.services.WorkoutSessionService;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,12 +35,10 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 
 
 	@Override
-	public List<WorkoutSessionDto> listWorkoutSessions() {
+	public Page<WorkoutSessionDto> listWorkoutSessions(Pageable pageable) {
 		return workoutSessionRepository
-			.findAll()
-			.stream()
-			.map(workoutSessionMapper::toDtoFromEntity)
-			.toList();
+			.findAll(pageable)
+			.map(workoutSessionMapper::toDtoFromEntity);
 	}
 
 	@Override
@@ -97,6 +96,9 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 			.orElseThrow(() -> new NotFoundException("Workout session with id " + workoutSessionId + " not found"));
 
 		User user = userService.getUserByUuid(request.getUserUuid());
+		if (user == null) {
+			throw new NotFoundException("User with id " + request.getUserUuid() + " not found");
+		}
 
 		session.getAttendants().add(user);
 		WorkoutSession updatedSession = workoutSessionRepository.save(session);
@@ -109,11 +111,11 @@ public class WorkoutSessionServiceImpl implements WorkoutSessionService {
 		WorkoutSession session = workoutSessionRepository.findById(workoutSessionId)
 			.orElseThrow(() -> new NotFoundException("Workout session with id " + workoutSessionId + " not found"));
 
-		User user = userService.getUserByUuid(userId);
-
-		boolean deleted = session.getAttendants().remove(user);
+		boolean deleted = session.getAttendants().removeIf(userIn -> userIn.getUuid().equals(userId));
 		if (!deleted) {
-			throw new NotFoundException("User with id " + userId + " not found");
+			throw new NotFoundException("User with id " + userId +
+				" can not be deleted from workout session with id "
+				+ workoutSessionId + "as it does not exist in this session");
 		}
 
 		workoutSessionRepository.save(session);

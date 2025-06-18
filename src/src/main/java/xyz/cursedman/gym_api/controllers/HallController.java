@@ -1,8 +1,11 @@
 package xyz.cursedman.gym_api.controllers;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,18 +13,18 @@ import xyz.cursedman.gym_api.domain.dtos.hall.HallDto;
 import xyz.cursedman.gym_api.domain.dtos.hall.HallRequest;
 import xyz.cursedman.gym_api.services.HallService;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/halls")
 @RequiredArgsConstructor
+@EnableSpringDataWebSupport
 public class HallController {
 	private final HallService hallService;
 
 	@GetMapping
-	public ResponseEntity<List<HallDto>> listHalls() {
-		return ResponseEntity.ok(hallService.listHalls());
+	public ResponseEntity<Page<HallDto>> listHalls(@ParameterObject Pageable pageable) {
+		return ResponseEntity.ok(hallService.listHalls(pageable));
 	}
 
 	@GetMapping(path = "/{id}")

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import xyz.cursedman.gym_api.domain.entities.MembershipType;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Data
@@ -16,9 +16,11 @@ import java.util.UUID;
 public class MembershipDto {
 	private UUID uuid;
 
-	private Date purchaseDate;
+	private ZonedDateTime validFrom;
 
-	private Date validUntil;
+	private ZonedDateTime validUntil;
+
+	private boolean isValid;
 
 	private MembershipType membershipType;
 }

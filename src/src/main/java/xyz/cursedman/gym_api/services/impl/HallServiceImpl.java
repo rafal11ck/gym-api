@@ -1,6 +1,8 @@
 package xyz.cursedman.gym_api.services.impl;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.hall.HallDto;
 import xyz.cursedman.gym_api.domain.dtos.hall.HallRequest;
@@ -10,7 +12,6 @@ import xyz.cursedman.gym_api.mappers.HallMapper;
 import xyz.cursedman.gym_api.repositories.HallRepository;
 import xyz.cursedman.gym_api.services.HallService;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -22,8 +23,9 @@ public class HallServiceImpl implements HallService {
 	private final HallMapper hallMapper;
 
 	@Override
-	public List<HallDto> listHalls() {
-		return hallRepository.findAll().stream().map(hallMapper::toDtoFromEntity).toList();
+	public Page<HallDto> listHalls(Pageable pageable) {
+		return hallRepository.findAll(pageable)
+			.map(hallMapper::toDtoFromEntity);
 	}
 
 	@Override
@@ -49,8 +51,7 @@ public class HallServiceImpl implements HallService {
 
 	@Override
 	public Hall findHallByUuid(UUID id) {
-		return hallRepository.findById(id).orElseThrow(
-			() -> new NotFoundException("Hall with ID " + id + " not found")
-		);
+		if (id == null) return null;
+		return hallRepository.findById(id).orElse(null);
 	}
 }

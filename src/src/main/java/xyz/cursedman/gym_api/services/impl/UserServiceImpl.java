@@ -2,6 +2,9 @@ package xyz.cursedman.gym_api.services.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
@@ -15,7 +18,6 @@ import xyz.cursedman.gym_api.repositories.UserRepository;
 import xyz.cursedman.gym_api.services.UserService;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -31,8 +33,8 @@ public class UserServiceImpl implements UserService {
 	private final UserMapper userMapper;
 
 	@Override
-	public List<UserDto> listUsers() {
-		return userRepository.findAll().stream().map(userMapper::toDtoFromEntity).toList();
+	public Page<UserDto> listUsers(Pageable pageable) {
+		return userRepository.findAll(pageable).map(userMapper::toDtoFromEntity);
 	}
 
 	@Override
@@ -134,8 +136,18 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserByUuid(UUID id) {
-		return userRepository.findById(id).orElseThrow(
-			() -> new NotFoundException("User with ID " + id + " not found")
-		);
+		if (id == null) return null;
+		return userRepository.findById(id).orElse(null);
 	}
+
+	@Override
+	public UserDto getCurrentUser() {
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		UUID uuid = UUID.fromString(userId);
+
+		return userRepository.findById(uuid)
+			.map(userMapper::toDtoFromEntity)
+			.orElseThrow(() -> new RuntimeException("User with id " + uuid + " not found"));
+	}
+
 }

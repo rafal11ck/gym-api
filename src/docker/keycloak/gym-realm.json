@@ -267,6 +267,22 @@
         "containerId" : "89391756-438d-4603-941d-f14f375fe268",
         "attributes" : { }
       }, {
+        "id" : "b16c5809-22e9-48f8-9874-4b90fdc10a79",
+        "name" : "emplyee",
+        "description" : "",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "89391756-438d-4603-941d-f14f375fe268",
+        "attributes" : { }
+      }, {
+        "id" : "51f54cf8-1752-4899-94c1-2498ee47556d",
+        "name" : "coach",
+        "description" : "",
+        "composite" : false,
+        "clientRole" : true,
+        "containerId" : "89391756-438d-4603-941d-f14f375fe268",
+        "attributes" : { }
+      }, {
         "id" : "88d97386-026b-427f-ae21-934d2b448ef9",
         "name" : "manager",
         "description" : "manager",
@@ -363,6 +379,16 @@
       "gym-app" : [ "client" ]
     }
   }, {
+    "id" : "592b11b9-8156-4bb2-a075-2842dcc64e67",
+    "name" : "coach",
+    "path" : "/coach",
+    "subGroups" : [ ],
+    "attributes" : { },
+    "realmRoles" : [ ],
+    "clientRoles" : {
+      "gym-app" : [ "coach" ]
+    }
+  }, {
     "id" : "f82f1879-4f95-431d-8b01-5d89123de421",
     "name" : "manager",
     "path" : "/manager",
@@ -375,7 +401,7 @@
       "attributes" : { },
       "realmRoles" : [ ],
       "clientRoles" : {
-        "gym-app" : [ "client" ]
+        "gym-app" : [ "emplyee" ]
       }
     } ],
     "attributes" : { },
@@ -1369,7 +1395,7 @@
       "subType" : "anonymous",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "oidc-usermodel-property-mapper", "oidc-usermodel-attribute-mapper", "saml-user-attribute-mapper", "saml-role-list-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-full-name-mapper", "oidc-address-mapper", "saml-user-property-mapper" ]
+        "allowed-protocol-mapper-types" : [ "oidc-usermodel-property-mapper", "saml-user-attribute-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-full-name-mapper", "saml-user-property-mapper", "saml-role-list-mapper", "oidc-usermodel-attribute-mapper", "oidc-address-mapper" ]
       }
     }, {
       "id" : "fc81a71a-572b-4005-9895-26134502da44",
@@ -1413,7 +1439,7 @@
       "subType" : "authenticated",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "saml-user-attribute-mapper", "saml-role-list-mapper", "saml-user-property-mapper", "oidc-usermodel-attribute-mapper", "oidc-address-mapper", "oidc-full-name-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-usermodel-property-mapper" ]
+        "allowed-protocol-mapper-types" : [ "oidc-usermodel-attribute-mapper", "saml-user-property-mapper", "oidc-full-name-mapper", "saml-role-list-mapper", "oidc-address-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-usermodel-property-mapper", "saml-user-attribute-mapper" ]
       }
     }, {
       "id" : "d2a41948-5efe-460e-a355-f8433778d2ce",

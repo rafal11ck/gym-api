@@ -2,14 +2,18 @@ package xyz.cursedman.gym_api.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.cursedman.gym_api.domain.dtos.chat.ChatDto;
+import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeDto;
+import xyz.cursedman.gym_api.domain.dtos.membershipType.MembershipTypeRequest;
 import xyz.cursedman.gym_api.domain.dtos.progressStatistics.ChartDto;
 import xyz.cursedman.gym_api.domain.dtos.progressStatistics.ProgressOverviewDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
+import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
 import xyz.cursedman.gym_api.domain.dtos.workoutSession.WorkoutSessionDto;
-import xyz.cursedman.gym_api.services.ChatService;
 import xyz.cursedman.gym_api.services.ProgressStatisticsService;
 import xyz.cursedman.gym_api.services.UserService;
 import xyz.cursedman.gym_api.services.WorkoutSessionService;
@@ -23,19 +27,27 @@ import java.util.UUID;
 public class UserController {
 	private final UserService userService;
 
-	private final ChatService chatService;
 	private final WorkoutSessionService workoutSessionService;
+
 	private final ProgressStatisticsService progressStatisticsService;
 
 	@GetMapping
-	public ResponseEntity<List<UserDto>> listUsers() {
-		return ResponseEntity.ok(userService.listUsers());
+	public ResponseEntity<Page<UserDto>> listUsers(@ParameterObject Pageable pageable) {
+		return ResponseEntity.ok(userService.listUsers(pageable));
 	}
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<UserDto> getUser(@Valid @PathVariable UUID id) {
 		UserDto userDto = userService.getUser(id);
 		return ResponseEntity.ok(userDto);
+	}
+
+	@PatchMapping(path = "/{id}")
+	public ResponseEntity<UserDto> updateUser(
+		@Valid @PathVariable UUID id,
+		@RequestBody UserRequest request
+	) {
+		return ResponseEntity.ok(userService.patchUser(id, request));
 	}
 
 	// stats
@@ -62,12 +74,6 @@ public class UserController {
 		return ResponseEntity.ok(progressStatisticsService.getUserExerciseChartData(id, numberOfWeeks));
 	}
 
-	// chats
-
-	@GetMapping("{id}/chats")
-	public ResponseEntity<List<ChatDto>> listChats(@PathVariable UUID id) {
-		return ResponseEntity.ok(chatService.listUserChats(id));
-	}
 
 	@GetMapping("{id}/workout-sessions")
 	public ResponseEntity<List<WorkoutSessionDto>> listUserWorkoutSessions(@Valid @PathVariable UUID id) {
