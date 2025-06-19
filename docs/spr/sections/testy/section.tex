@@ -17,21 +17,16 @@ i powtarzalność testów poprzez eliminację zależności od zewnętrznych syst
 
 
 \subsection{Wyniki testów, napotkane błędy oraz zastosowane rozwiązania}
-Przeprowadzone testy integracyjne
-potwierdziły poprawność działania endpointów.(\cref{fig:test-results}).
-Testy GET na endpointach np. /hall-types, /memberships, /membership-types i /workout-sessions
-zwracały kod HTTP 200 oraz listy rekordów, co świadczy o poprawnej implementacji pobierania danych.
-Testy POST, takie jak tworzenie nowych sesji treningowych czy członkostw,
-zwracały kod HTTP 201, potwierdzając sukces tworzenia rekordów.
-Operacje PATCH, np. aktualizacja członkostwa, również działały poprawnie,
-zwracając kod 200 i zaktualizowane dane. Testy DELETE, np. usuwanie uczestników
-lub ćwiczeń z sesji, kończyły się sukcesem z kodem 204, a następnie weryfikacja GET
-potwierdzała usunięcie rekordów. Testy negatywnych scenariuszy,
-takich jak pobieranie nieistniejących rekordów czy wysyłanie nieprawidłowych danych,
-zwracały odpowiednio kody 404 i 400, co jest zgodne z oczekiwaniami.
-Ogólnie, testy wykazały wysoką stabilność API, jeśli byłyby jakieś błędy,
-to CI nie wygenerowałby artefaktów, a testy nie przechodziłyby.
-\begin{figure}
+
+Przeprowadzone testy integracyjne potwierdziły poprawność działania endpointów (zob. \ref{fig:test-results}).  
+Testy typu \texttt{GET} na endpointach takich jak \texttt{/hall-types}, \texttt{/memberships}, \texttt{/membership-types} oraz \texttt{/workout-sessions} zwracały kod odpowiedzi \texttt{200} oraz listy rekordów, co świadczy o poprawnej implementacji operacji pobierania danych.
+Testy typu \texttt{POST}, takie jak tworzenie nowych sesji treningowych czy członkostw, zwracały kod \texttt{201}, potwierdzając sukces operacji tworzenia rekordów.
+Operacje \texttt{PATCH}, np. aktualizacja danych członkostwa, również działały poprawnie – serwer zwracał kod \texttt{200} oraz zaktualizowane dane.
+Testy typu \texttt{DELETE}, np. usuwanie uczestników lub ćwiczeń z sesji treningowych, kończyły się kodem \texttt{204}, a następnie testy \texttt{GET} potwierdzały, że rekordy zostały skutecznie usunięte.
+Testy scenariuszy negatywnych, takich jak próba pobrania nieistniejących zasobów lub wysłanie niepoprawnych danych, skutkowały odpowiednimi kodami błędów: \texttt{404} oraz \texttt{400}, co było zgodne z założeniami.
+Ogólnie testy wykazały wysoką stabilność API. W przypadku wystąpienia jakichkolwiek krytycznych błędów, system CI nie generowałby artefaktów, a testy nie przechodziłyby poprawnie – co nie miało miejsca.
+
+\begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{tests.png}
   \caption{Wyniki testów integracyjnych}
