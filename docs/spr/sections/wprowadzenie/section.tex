@@ -5,40 +5,51 @@
 
 \subsection{Krótki opis aplikacji}
 Aplikacja to system do zarządzania siłownią.
-Umożliwia kompleksowe zarządzanie obiektem fitness, 
-w tym: rejestrację użytkowników, zarządzanie członkostwami, 
-planowanie sesji treningowych oraz obsługę płatności. 
-System zapewnia bezpieczną autoryzację poprzez integrację z Keycloak (OIDC) 
+Umożliwia kompleksowe zarządzanie obiektem fitness,
+w tym: rejestrację użytkowników, zarządzanie członkostwami,
+planowanie sesji treningowych oraz obsługę płatności.
+System zapewnia bezpieczną autoryzację poprzez integrację z Keycloak (OIDC)
 i oferuje REST API z pełną dokumentacją w Swaggerze.
 \subsection{Wykorzystane technologie oraz narzędzia}
 
 
-  \begin{itemize}
-    \item \textbf{Nix} - System do zarządzania pakietami i środowiskami – pozwala tworzyć powtarzalne konfiguracje projektów.
-    \item \textbf{GitHub Actions} -
-    System CI/CD w GitHubie do automatyzacji testów, buildów i wdrożeń przy pomocy workflowów.
+\begin{itemize}
+  \item \textbf{Nix} - System do zarządzania pakietami i środowiskami – pozwala tworzyć powtarzalne konfiguracje projektów.
 
-    \item \textbf{Spring Boot} -
-    Framework w Javie do szybkiego tworzenia aplikacji webowych i mikroserwisów.
+  \item \textbf{git} - system kontroli wersji
 
-    \item \textbf{Swagger (OpenAPI)} -
-    Narzędzie do generowania i testowania dokumentacji REST API w sposób interaktywny.
+  \item \textbf{GitHub Actions} -
+        System CI/CD w GitHubie do automatyzacji testów, buildów i wdrożeń przy pomocy workflowów.
 
-    \item \textbf{OIDC} -
-    Protokół uwierzytelniania oparty na OAuth 2.0 – pozwala na bezpieczne logowanie użytkowników.
+  \item \textbf{Spring Boot} -
+        Framework w Javie do szybkiego tworzenia aplikacji webowych i mikroserwisów.
 
-    \item \textbf{Keycloak} -
-    Open-source’owy serwer tożsamości z obsługą SSO, OIDC i integracją z LDAP.
+  \item \textbf{Swagger (OpenAPI)} -
+        Narzędzie do generowania i testowania dokumentacji REST API w sposób interaktywny.
 
-    \item \textbf{PostgreSQL} -
-    Zaawansowany relacyjny system baz danych, otwartoźródłowy, skalowalny i wydajny.
+  \item \textbf{OIDC} -
+        Protokół uwierzytelniania oparty na OAuth 2.0 – pozwala na bezpieczne logowanie użytkowników.
 
-    \item \textbf{Stripe} -
-    Platforma płatnicza do obsługi płatności online – łatwa integracja przez REST API.
+  \item \textbf{Keycloak} -
+        Open-source’owy serwer tożsamości z obsługą SSO, OIDC i integracją z LDAP.
 
-    \item \textbf{Taskfile} -
-    Lekki zamiennik Makefile – automatyzuje zadania developerskie w plikach YAML.
-  \end{itemize}
+  \item \textbf{PostgreSQL} -
+        Zaawansowany relacyjny system baz danych, otwartoźródłowy, skalowalny i wydajny.
+
+  \item \textbf{Stripe} -
+        Platforma płatnicza do obsługi płatności online – łatwa integracja przez REST API.
+
+  \item \textbf{Taskfile} -
+        Lekki zamiennik Makefile – automatyzuje zadania developerskie w plikach YAML.
+
+  \item \textbf{adminer} - system zarządzania bazą danych
+
+  \item \textbf{lombok} - redukcja kodu typu boilerplate
+
+  \item \textbf{docker-compose} - do jednolitego środowiska uruchominiowego (baza danych, keycloak, stripe)
+
+  \item
+\end{itemize}
 
 
 
