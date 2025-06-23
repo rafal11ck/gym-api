@@ -1074,6 +1074,11 @@ components:
           properties:
             currencyCode:
               type: string
+            numericCode:
+              type: integer
+              format: int32
+            numericCodeAsString:
+              type: string
             displayName:
               type: string
             symbol:
@@ -1081,11 +1086,6 @@ components:
             defaultFractionDigits:
               type: integer
               format: int32
-            numericCode:
-              type: integer
-              format: int32
-            numericCodeAsString:
-              type: string
         price:
           type: number
     TargetMuscle:
@@ -1621,6 +1621,11 @@ components:
           properties:
             currencyCode:
               type: string
+            numericCode:
+              type: integer
+              format: int32
+            numericCodeAsString:
+              type: string
             displayName:
               type: string
             symbol:
@@ -1628,11 +1633,6 @@ components:
             defaultFractionDigits:
               type: integer
               format: int32
-            numericCode:
-              type: integer
-              format: int32
-            numericCodeAsString:
-              type: string
         price:
           type: number
         status:
