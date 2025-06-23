@@ -68,7 +68,7 @@ services:
     image: stripe/stripe-cli:latest
     environment:
       STRIPE_API_KEY: ${STRIPE_API_KEY}
-    command: listen --forward-to=http://host.docker.internal:8080/stripe/webhook
+    command: listen --forward-to=http://172.17.0.1:8080/stripe/webhook
 
 
 volumes:
