@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.stereotype.Component;
 import xyz.cursedman.gym_api.domain.dtos.user.UserDto;
 import xyz.cursedman.gym_api.domain.dtos.user.UserRequest;
+import xyz.cursedman.gym_api.domain.entities.UserRoleEnum;
 import xyz.cursedman.gym_api.services.UserService;
 
 import java.util.*;
@@ -38,7 +39,7 @@ public class GymJwtAuthenticationConverter implements Converter<Jwt, AbstractAut
 					jwt.getClaimAsStringList(userRolesClaimName)
 				)
 				// if roles claim doesn't set no roles
-				.orElse(new ArrayList<>())
+				.orElse(List.of(UserRoleEnum.CLIENT.name()))
 		);
 		userRequest.setRoles(userRoleNames);
 
