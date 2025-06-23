@@ -69,6 +69,10 @@ public class MembershipServiceImpl implements MembershipService {
 
 	@Override
 	public Membership getMembershipById(UUID id) {
+		if (id == null) {
+			return null;
+		}
+
 		return membershipRepository.findById(id).orElseThrow(
 			() -> new NotFoundException("Membership with ID " + id + " not found")
 		);
